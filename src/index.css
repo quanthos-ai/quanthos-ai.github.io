@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .text-quanthos-blue {
+    color: #1e40af;
+  }
+  .bg-quanthos-blue {
+    background-color: #1e40af;
+  }
+  .hover\:bg-quanthos-blue-dark:hover {
+    background-color: #1e3a8a;
+  }
+  .border-quanthos-blue {
+    border-color: #1e40af;
+  }
+
+  .text-quanthos-green {
+    color: #059669;
+  }
+  .bg-quanthos-green {
+    background-color: #059669;
+  }
+  .hover\:bg-quanthos-green-dark:hover {
+    background-color: #047857;
+  }
+  .border-quanthos-green {
+    border-color: #059669;
+  }
+
+  .text-quanthos-orange {
+    color: #ea580c;
+  }
+  .bg-quanthos-orange {
+    background-color: #ea580c;
+  }
+  .hover\:bg-quanthos-orange-dark:hover {
+    background-color: #c2410c;
+  }
+  .border-quanthos-orange {
+    border-color: #ea580c;
+  }
+
+  .text-quanthos-purple {
+    color: #7c3aed;
+  }
+  .bg-quanthos-purple {
+    background-color: #7c3aed;
+  }
+  .hover\:bg-quanthos-purple-dark:hover {
+    background-color: #6d28d9;
+  }
+  .border-quanthos-purple {
+    border-color: #7c3aed;
+  }
+}
