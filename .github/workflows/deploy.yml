@@ -29,5 +29,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
-        external_repository: quanthos-ai/quanthos-ai.github.io
-        publish_branch: master
+        publish_branch: gh-pages
