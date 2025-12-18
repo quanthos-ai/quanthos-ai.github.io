@@ -268,13 +268,13 @@ function App() {
             </a>
            </div>
            {showReturnship && (
-             <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm text-right">
+             <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm text-center scale-[0.85]">
                <button aria-label="Close" className="absolute top-2 right-2 text-white/80 hover:text-white" onClick={() => setShowReturnship(false)}>✕</button>
                <div className="font-bold mb-1">The "Returnship" Program</div>
                <div className="text-sm">Limited-time: 50% discount if registered before end of December or referred by "Momken" Committee.</div>
                <div className="text-sm mt-2"><span className="font-bold">1500 L.E</span> total — 3 Practical Sessions for AI <span className="uppercase">Upskilling</span> and <span className="uppercase">Confidence-Building</span>.</div>
                <a href="#returnship" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl">
-                 Secure your seat
+                 {t.labels.secureSeat}
                </a>
              </div>
            )}
@@ -313,14 +313,14 @@ function App() {
         
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-quanthos-magenta font-bold tracking-wider uppercase text-sm">Empowerment</span>
+            <span className="text-quanthos-magenta font-bold tracking-wider uppercase text-sm">{t.labels.empowerment}</span>
             <h2 className="text-3xl md:text-4xl font-bold mt-2 text-quanthos-dark">{t.talentFoundry.title}</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">{t.talentFoundry.description}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {t.talentFoundry.segments.map((seg, idx) => (
-              <div key={idx} id={idx === 0 ? 'returnship' : undefined} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-quanthos-magenta hover:-translate-y-2 transition-transform duration-300">
+              <div key={idx} id={idx === 0 ? 'returnship' : undefined} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-quanthos-magenta hover:-translate-y-2 transition-transform duration-300 h-full flex flex-col">
                 <div className="w-14 h-14 bg-quanthos-lightViolet/20 rounded-2xl flex items-center justify-center text-quanthos-dark mb-6">
                   {idx === 0 && <Users size={28} />}
                   {idx === 1 && <GraduationCap size={28} />}
@@ -329,7 +329,7 @@ function App() {
                 <h3 className="text-xl font-bold text-quanthos-dark mb-2">{seg.title}</h3>
                 <p className="text-sm font-semibold text-quanthos-magenta mb-4">{seg.target}</p>
                 <p className="text-gray-600 leading-relaxed text-sm">{seg.desc}</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-6 inline-block px-4 py-2 rounded-lg text-white font-semibold" style={{ backgroundColor: '#634e86' }}>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-auto mx-auto inline-block px-4 py-2 rounded-lg text-white font-semibold" style={{ backgroundColor: '#634e86' }}>
                   Join Now
                 </a>
               </div>
@@ -340,7 +340,7 @@ function App() {
           <div className="bg-quanthos-dark rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-quanthos-magenta/10 to-transparent"></div>
             <h3 className="text-2xl font-bold mb-8 text-center flex items-center justify-center gap-2 relative z-0">
-              <Star className="text-quanthos-magenta fill-quanthos-magenta" /> Success Stories
+              <Star className="text-quanthos-magenta fill-quanthos-magenta" /> {t.labels.successTitle}
             </h3>
             <div className="grid md:grid-cols-2 gap-8 relative z-0">
               {t.talentFoundry.successStories.map((story, idx) => (
@@ -445,7 +445,7 @@ function App() {
       {/* Collaborators */}
       <section id="collaborators" className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-quanthos-dark mb-8">Collaborators</h2>
+          <h2 className="text-2xl font-bold text-quanthos-dark mb-8">{t.labels.collaborators}</h2>
           <img src={collaboratorsImg} alt="Quanthos Collaborators" className="w-full h-auto" />
         </div>
       </section>
@@ -568,7 +568,7 @@ function App() {
       <footer className="bg-gradient-main text-white py-16">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
           <div>
-            <h4 className="font-bold mb-3">Contact Us</h4>
+            <h4 className="font-bold mb-3">{t.labels.footerContact}</h4>
             <div className="text-white/80 text-sm space-y-2">
               <div className="font-semibold">Egypt</div>
               <div className="flex items-center gap-2"><Phone size={14} /> +20 100 124 01 86 <a href="https://wa.me/201001240186" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
@@ -579,7 +579,7 @@ function App() {
             </div>
           </div>
           <div>
-            <h4 className="font-bold mb-3">Quick Links</h4>
+            <h4 className="font-bold mb-3">{t.labels.footerQuickLinks}</h4>
             <div className="text-white/80 text-sm space-y-2">
               <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">About</button>
               <button onClick={()=>goToSection('methodology')} className="hover:text-quanthos-lightViolet block">Methodology</button>
@@ -592,7 +592,7 @@ function App() {
           </div>
           <div className="text-right">
             <img src={logo} alt="Quanthos" style={{ height: '9.375rem' }} className="ml-auto opacity-90 cursor-pointer" onClick={() => { window.location.href = '/'; window.location.reload(); }} />
-              <div className="text-white/70 text-2xl mt-2" style={{ width: '20rem' }}>Growth Clinic and Talent Foundary</div>
+            <div className="text-white/70 text-2xl mt-2" style={{ width: '20rem' }}>{t.labels.footerTagline}</div>
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-4 text-center text-white/70 text-sm max-w-md mx-auto">
@@ -605,7 +605,7 @@ function App() {
         className="fixed bottom-6 right-6 bg-quanthos-magenta text-white rounded-full px-5 py-3 shadow-xl hover:bg-[#d633f0] flex items-center gap-2 z-[9999]"
       >
         <MessageCircle size={20} />
-        Ask Quanthos
+        {t.labels.askQuanthos}
       </button>
 
       <div className={`${isChatOpen ? 'block' : 'hidden'} fixed bottom-24 right-6 w-[min(420px,90vw)] bg-white border border-gray-200 rounded-2xl shadow-2xl z-[9999]`}>

@@ -1,5 +1,15 @@
 export const content = {
   en: {
+    labels: {
+      empowerment: "Empowerment",
+      successTitle: "Success Stories",
+      footerContact: "Contact Us",
+      footerQuickLinks: "Quick Links",
+      footerTagline: "Growth Clinic and Talent Foundary",
+      collaborators: "Collaborators",
+      secureSeat: "Secure your seat",
+      askQuanthos: "Ask Quanthos",
+    },
     nav: {
       about: "About",
       methodology: "Methodology",
@@ -237,8 +247,18 @@ export const content = {
     }
   },
   ar: {
+    labels: {
+      empowerment: "تمكين",
+      successTitle: "قصص نجاح",
+      footerContact: "تواصل معنا",
+      footerQuickLinks: "روابط سريعة",
+      footerTagline: "عيادة النمو ومصنع المواهب",
+      collaborators: "الشركاء",
+      secureSeat: "احجز مقعدك",
+      askQuanthos: "اسأل كوانثوس",
+    },
     nav: {
-      about: "عن كوانثوث",
+      about: "نبذة عنا",
       methodology: "المنهجية",
       talent: "مصنع المواهب",
       services: "عيادة النمو",
@@ -253,9 +273,9 @@ export const content = {
       cta_secondary: "انضم إلى المصنع",
     },
     about: {
-      title: "عن كوانثوث",
-      overview: "كوانثوث شركة استشارات بيانات وذكاء اصطناعي تقدم تشخيصًا دقيقًا ثم تفعيلًا عمليًا عبر الأتمتة وتمكين الفرق.",
-      whatIsTitle: "ما هو كوانثوث؟",
+      title: "عن كوانثوس",
+      overview: "كوانثوس شركة استشارات بيانات وذكاء اصطناعي تقدم تشخيصًا دقيقًا ثم تفعيلًا عمليًا عبر الأتمتة وتمكين الفرق.",
+      whatIsTitle: "ما هو كوانثوس؟",
       whatIsDesc: "مزيج من “كوانت” و“إيثوس”: بصيرة كمية مقرونة بمبادئ موثوقة. كل توصية مبنية على البيانات ومنضبطة بالقيم.",
       philosophyTitle: "فلسفتنا",
       philosophyDesc: "نمزج الحكمة العملية بالدقة الهندسية. بيانات مع مبادئ—قرارات تستند إلى قياس موثوق ونزاهة."
