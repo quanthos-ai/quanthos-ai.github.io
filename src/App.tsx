@@ -3,10 +3,14 @@ import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Mes
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
 
-// Assets (served from /public/assets)
-const osamaImg = '/assets/Osama-DrCAYwX-.svg';
-const amrousyImg = '/assets/Amrousy-BD9BxXFd.svg';
-const logo = '/assets/Quanthos Transparent White Letters.svg';
+const osamaImg = new URL('../assets/Osama-DrCAYwX-.svg', import.meta.url).href;
+const amrousyImg = new URL('../assets/Amrousy-BD9BxXFd.svg', import.meta.url).href;
+const logo = new URL('../assets/Quanthos Transparent White Letters.svg', import.meta.url).href;
+const collaboratorsImg = new URL('../assets/Collaborators.svg', import.meta.url).href;
+const pillarImg1 = new URL('../assets/4 Pillars Images/1. Growth CLinic.png', import.meta.url).href;
+const pillarImg2 = new URL('../assets/4 Pillars Images/2. AI Autiomation.png', import.meta.url).href;
+const pillarImg3 = new URL('../assets/4 Pillars Images/3. Sales and marketing meeting.png', import.meta.url).href;
+const pillarImg4 = new URL('../assets/4 Pillars Images/4. AI Training.png', import.meta.url).href;
 
 type Page = 'home' | 'about' | 'insights' | 'contact';
 
@@ -177,8 +181,8 @@ function App() {
            </div>
            <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
              <div className="inline-block">
-               <div style={{ marginLeft: '-1ch' }}>Insight Diagnosed..</div>
-               <div style={{ marginLeft: '9ch' }}>Impact Engineered</div>
+               <div>Insight Diagnosed..</div>
+               <div>Impact Engineered</div>
              </div>
            </div>
            <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">Bridging the critical gap between high-level data strategy and real-world business execution.</p>
@@ -190,7 +194,7 @@ function App() {
               Join the Talent Foundary
             </a>
            </div>
-           <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm text-right">
+           <div className="absolute top-28 left-1/2 -translate-x-1/2 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm w-full text-center scale-[0.9]">
              <div className="font-bold mb-1">The "Returnship" Program</div>
              <div className="text-sm">Limited-time: 50% discount if registered before end of December or referred by "Momken" Committee.</div>
              <div className="text-sm mt-2"><span className="font-bold">1500 L.E</span> total — 3 Practical Sessions for AI <span className="uppercase">Upskilling</span> and <span className="uppercase">Confidence-Building</span>.</div>
@@ -290,12 +294,12 @@ function App() {
                  <img
                     src={
                       idx === 0
-                        ? '/assets/4 Pillars Images/1. Growth CLinic.png'
+                        ? pillarImg1
                         : idx === 1
-                        ? '/assets/4 Pillars Images/2. AI Autiomation.png'
+                        ? pillarImg2
                         : idx === 2
-                        ? '/assets/4 Pillars Images/3. Sales and marketing meeting.png'
-                        : '/assets/4 Pillars Images/4. AI Training.png'
+                        ? pillarImg3
+                        : pillarImg4
                     }
                     alt="pillar"
                     className="w-full h-32 object-cover rounded-xl mb-4"
@@ -325,15 +329,15 @@ function App() {
         <div className="absolute inset-0 bg-gradient-to-br from-quanthos-dark via-quanthos-dark to-[#2a1b4a]"></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">{t.portfolio.title}</h2>
-            <p className="text-quanthos-lightViolet">{t.portfolio.subtitle}</p>
-            <div className="mt-6">
-              <a href="/Quanthos Portfolio.pdf" target="_blank" className="inline-block px-6 py-3 bg-quanthos-magenta text-white rounded-xl font-bold shadow-xl">
-                Download Full Portfolio
-              </a>
-            </div>
-          </div>
+                <div className="text-center mb-16">
+                  <h2 className="text-3xl font-bold mb-4">{t.portfolio.title}</h2>
+                  <p className="text-quanthos-lightViolet">{t.portfolio.subtitle}</p>
+                  <div className="mt-6">
+                    <a href="Quanthos Portfolio.pdf" target="_blank" className="inline-block px-6 py-3 bg-quanthos-magenta text-white rounded-xl font-bold shadow-xl">
+                      Download Full Portfolio
+                    </a>
+                  </div>
+                </div>
           <h3 className="text-xl font-bold mb-4">Organizations</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {t.portfolio.orgs.map((study, idx) => (
@@ -366,7 +370,7 @@ function App() {
       <section id="collaborators" className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl font-bold text-quanthos-dark mb-8">Collaborators</h2>
-          <img src="/assets/Collaborators.svg" alt="Quanthos Collaborators" className="w-full h-auto" />
+          <img src={collaboratorsImg} alt="Quanthos Collaborators" className="w-full h-auto" />
         </div>
       </section>
       </>
