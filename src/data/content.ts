@@ -4,7 +4,7 @@ export const content = {
       about: "About",
       methodology: "Methodology",
       talent: "Talent Foundry",
-      services: "Services",
+      services: "Growth Clinic",
       portfolio: "Case Studies",
       team: "Leadership",
       contact: "Book Consultation",
@@ -93,7 +93,7 @@ export const content = {
     },
     // SECTION 3: The 4 Pillars (From Corporate Text)
     services: {
-      title: "Comprehensive Service Ecosystem",
+      title: "Growth Clinic",
       subtitle: "Four interconnected pillars designed to modernize every aspect of the enterprise.",
       items: [
         {
@@ -238,10 +238,10 @@ export const content = {
   },
   ar: {
     nav: {
-      about: "نبذة عنا",
+      about: "عن كوانثوث",
       methodology: "المنهجية",
       talent: "مصنع المواهب",
-      services: "الخدمات",
+      services: "عيادة النمو",
       portfolio: "دراسات الحالة",
       team: "القيادة",
       contact: "احجز استشارة",
@@ -253,9 +253,9 @@ export const content = {
       cta_secondary: "انضم إلى المصنع",
     },
     about: {
-      title: "عن كواثنوس",
-      overview: "كواثنوس شركة استشارات بيانات وذكاء اصطناعي تقدم تشخيصًا دقيقًا ثم تفعيلًا عمليًا عبر الأتمتة وتمكين الفرق.",
-      whatIsTitle: "ما هو كواثنوس؟",
+      title: "عن كوانثوث",
+      overview: "كوانثوث شركة استشارات بيانات وذكاء اصطناعي تقدم تشخيصًا دقيقًا ثم تفعيلًا عمليًا عبر الأتمتة وتمكين الفرق.",
+      whatIsTitle: "ما هو كوانثوث؟",
       whatIsDesc: "مزيج من “كوانت” و“إيثوس”: بصيرة كمية مقرونة بمبادئ موثوقة. كل توصية مبنية على البيانات ومنضبطة بالقيم.",
       philosophyTitle: "فلسفتنا",
       philosophyDesc: "نمزج الحكمة العملية بالدقة الهندسية. بيانات مع مبادئ—قرارات تستند إلى قياس موثوق ونزاهة."
@@ -284,7 +284,7 @@ export const content = {
       ]
     },
     services: {
-      title: "منظومة خدمات شاملة",
+      title: "عيادة النمو",
       subtitle: "أعمدة مترابطة لتحديث المؤسسة.",
       items: [
         { title: "الركيزة I: استراتيجية البيانات والذكاء", desc: "مصدر واحد للحقيقة", points: ["تنبؤ المبيعات", "لوحات تنفيذية", "جاهزية الذكاء الاصطناعي", "تقسيم العملاء"] },
@@ -309,7 +309,7 @@ export const content = {
     },
     team: {
       title: "القيادة التنفيذية",
-      osama: { name: "د. أسامة م. نجيب", role: "شريك مؤسس | الاستراتيجية والبيانات", bio: "تشخيص دقيق يقود النمو." },
+      osama: { name: "د. أسامة نجيب", role: "شريك مؤسس | الاستراتيجية والبيانات", bio: "تشخيص دقيق يقود النمو." },
       amrousy: { name: "د. أحمد عمروسي", role: "شريك مؤسس | التسويق والتفعيل", bio: "هندسة للتحديات التجارية." }
     }
   }

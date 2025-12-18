@@ -12,6 +12,21 @@ const pillarImg2 = new URL('../assets/4 Pillars Images/2. AI Autiomation.png', i
 const pillarImg3 = new URL('../assets/4 Pillars Images/3. Sales and marketing meeting.png', import.meta.url).href;
 const pillarImg4 = new URL('../assets/4 Pillars Images/4. AI Training.png', import.meta.url).href;
 
+function WhatsAppIcon({ size = 18, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
+      <path d="M12.04 2C6.58 2 2.21 6.37 2.21 11.83c0 2.09.64 4.04 1.86 5.72L2 22l4.57-1.99c1.62.89 3.45 1.36 5.47 1.36 5.46 0 9.83-4.37 9.83-9.83S17.5 2 12.04 2zm0 17.88c-1.73 0-3.33-.5-4.67-1.36l-.33-.2-2.71 1.18.58-2.86-.22-.33c-1.1-1.54-1.69-3.37-1.69-5.27 0-4.73 3.85-8.58 8.58-8.58s8.58 3.85 8.58 8.58-3.85 8.58-8.58 8.58zm4.94-4.94c-.27-.14-1.57-.77-1.82-.86-.24-.09-.42-.14-.6.14-.18.27-.69.86-.85 1.03-.16.18-.31.2-.58.07-.27-.14-1.16-.43-2.2-1.37-.81-.72-1.36-1.6-1.52-1.88-.16-.27-.02-.42.12-.57.13-.13.27-.33.4-.5.13-.18.18-.31.27-.52.09-.18.04-.36-.02-.5-.07-.14-.6-1.45-.82-1.98-.22-.53-.44-.46-.6-.46-.16 0-.33-.02-.5-.02-.18 0-.46.07-.7.33-.24.27-.91.89-.91 2.17 0 1.28.93 2.52 1.06 2.7.13.18 1.83 2.79 4.43 3.91.62.27 1.1.43 1.47.55.62.2 1.18.17 1.62.1.49-.07 1.57-.64 1.8-1.26.22-.62.22-1.15.15-1.26-.07-.11-.25-.18-.53-.31z" />
+    </svg>
+  );
+}
+
 type Page = 'home' | 'about' | 'insights' | 'contact';
 
 function App() {
@@ -23,16 +38,17 @@ function App() {
   const [isSending, setIsSending] = useState(false);
   const [chatMessages, setChatMessages] = useState<{ role: 'user' | 'model'; text: string }[]>([]);
   const chatRef = useRef<HTMLDivElement | null>(null);
+  const [showReturnship, setShowReturnship] = useState(true);
 
   const t = content[lang];
   const isRTL = lang === 'ar';
   const toggleLang = () => setLang(prev => (prev === 'en' ? 'ar' : 'en'));
-  const isAssistantAvailable = Boolean(import.meta.env.VITE_GEMINI_API_KEY as string | undefined);
+  const isAssistantAvailable = true;
 
   function navigateTo(next: Page) {
     setPage(next);
-    const url = next === 'home' ? '/' : `#${next}`;
-    window.history.pushState({ page: next }, '', url);
+    window.history.pushState({ page: next }, '', next === 'home' ? '/' : `#${next}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function goToSection(sectionId: string) {
     setPage('home');
@@ -67,9 +83,26 @@ function App() {
   async function sendToGemini() {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
     if (!apiKey) {
+      const last = chatMessages[chatMessages.length - 1];
+      const userText = last?.text || '';
+      const fallbackAssistant = (input: string) => {
+        const txt = input.toLowerCase();
+        if (txt.includes('service') || txt.includes('clinic') || txt.includes('growth')) {
+          const items = t.services.items.slice(0, 4).map(i => `- ${i.title}`).join('\n');
+          return `Growth Clinic pillars:\n${items}\n\nWe transform strategy into execution across data, automation, sales/marketing, and training.`;
+        }
+        if (txt.includes('returnship')) {
+          const seg = t.talentFoundry.segments[0];
+          return `Returnship Program — ${seg.target}\n${seg.desc}\nRegister via "Join Now" under Talent Foundry or the "Secure your seat" button.`;
+        }
+        if (txt.includes('contact') || txt.includes('phone') || txt.includes('whatsapp')) {
+          return `Contact:\nEgypt: +20 100 124 01 86 (WhatsApp)\nEgypt: +20 100 900 94 82 (WhatsApp)\nUAE: +971 52 281 8558 (WhatsApp)\nEmail: osama_naguib@hotmail.com`;
+        }
+        return `Quanthos bridges data strategy with real-world execution.\nAsk about Growth Clinic, Returnship, or contact details.`;
+      };
       setChatMessages(prev => [
         ...prev,
-        { role: 'model', text: 'Assistant is temporarily offline.' },
+        { role: 'model', text: fallbackAssistant(userText) },
       ]);
       return;
     }
@@ -180,28 +213,38 @@ function App() {
              {t.methodology.title}
            </div>
            <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
-             <div className="inline-block">
-               <div>Insight Diagnosed..</div>
-               <div>Impact Engineered</div>
-             </div>
+             {(() => {
+               const parts = t.hero.tagline.split('. ');
+               const line1 = parts[0]?.endsWith('.') ? parts[0] : (parts[0] ? parts[0] + '.' : '');
+               const line2 = parts[1] || '';
+               return (
+                 <div className="inline-block">
+                   <div>{line1}</div>
+                   {line2 && <div>{line2}</div>}
+                 </div>
+               );
+             })()}
            </div>
            <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">Bridging the critical gap between high-level data strategy and real-world business execution.</p>
            <div className="flex flex-col sm:flex-row justify-center gap-5">
-            <a href="#services" className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white" style={{ backgroundColor: '#634e86' }}>
+            <a onClick={() => goToSection('services')} className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
               Visit the Growth Clinic
             </a>
-            <a href="#talent" className="px-8 py-4 rounded-xl font-bold transition-all shadow-xl text-white" style={{ backgroundColor: '#634e86' }}>
+            <a onClick={() => goToSection('talent')} className="px-8 py-4 rounded-xl font-bold transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
               Join the Talent Foundary
             </a>
            </div>
-           <div className="absolute top-28 left-1/2 -translate-x-1/2 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm w-full text-center scale-[0.9]">
-             <div className="font-bold mb-1">The "Returnship" Program</div>
-             <div className="text-sm">Limited-time: 50% discount if registered before end of December or referred by "Momken" Committee.</div>
-             <div className="text-sm mt-2"><span className="font-bold">1500 L.E</span> total — 3 Practical Sessions for AI <span className="uppercase">Upskilling</span> and <span className="uppercase">Confidence-Building</span>.</div>
-             <a href="#talent" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl">
-               Secure your seat
-             </a>
-           </div>
+           {showReturnship && (
+             <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm text-right">
+               <button aria-label="Close" className="absolute top-2 right-2 text-white/80 hover:text-white" onClick={() => setShowReturnship(false)}>✕</button>
+               <div className="font-bold mb-1">The "Returnship" Program</div>
+               <div className="text-sm">Limited-time: 50% discount if registered before end of December or referred by "Momken" Committee.</div>
+               <div className="text-sm mt-2"><span className="font-bold">1500 L.E</span> total — 3 Practical Sessions for AI <span className="uppercase">Upskilling</span> and <span className="uppercase">Confidence-Building</span>.</div>
+               <a href="#returnship" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl">
+                 Secure your seat
+               </a>
+             </div>
+           )}
          </div>
        </header>
 
@@ -244,7 +287,7 @@ function App() {
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {t.talentFoundry.segments.map((seg, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-quanthos-magenta hover:-translate-y-2 transition-transform duration-300">
+              <div key={idx} id={idx === 0 ? 'returnship' : undefined} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-quanthos-magenta hover:-translate-y-2 transition-transform duration-300">
                 <div className="w-14 h-14 bg-quanthos-lightViolet/20 rounded-2xl flex items-center justify-center text-quanthos-dark mb-6">
                   {idx === 0 && <Users size={28} />}
                   {idx === 1 && <GraduationCap size={28} />}
@@ -464,20 +507,20 @@ function App() {
                 <div className="font-semibold text-quanthos-dark mb-1">Egypt</div>
                 <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 124 01 86</div>
                 <a href="https://wa.me/201001240186" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
-                  <MessageCircle size={20} />
+                  <WhatsAppIcon size={20} className="text-green-600" />
                 </a>
               </div>
               <div className="p-6 rounded-2xl bg-quanthos-panel">
                 <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 900 94 82</div>
                 <a href="https://wa.me/201009009482" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
-                  <MessageCircle size={20} />
+                  <WhatsAppIcon size={20} className="text-green-600" />
                 </a>
               </div>
               <div className="p-6 rounded-2xl bg-quanthos-panel">
                 <div className="font-semibold text-quanthos-dark mb-1">UAE</div>
                 <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +971 52 281 8558</div>
                 <a href="https://wa.me/971522818558" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
-                  <MessageCircle size={20} />
+                  <WhatsAppIcon size={20} className="text-green-600" />
                 </a>
               </div>
               <div className="p-6 rounded-2xl bg-quanthos-panel md:col-span-3">
@@ -495,10 +538,10 @@ function App() {
             <h4 className="font-bold mb-3">Contact Us</h4>
             <div className="text-white/80 text-sm space-y-2">
               <div className="font-semibold">Egypt</div>
-              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 124 01 86 <a href="https://wa.me/201001240186" className="inline-flex items-center ml-2 text-green-500"><MessageCircle size={18} /></a></div>
-              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 900 94 82 <a href="https://wa.me/201009009482" className="inline-flex items-center ml-2 text-green-500"><MessageCircle size={18} /></a></div>
+              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 124 01 86 <a href="https://wa.me/201001240186" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
+              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 900 94 82 <a href="https://wa.me/201009009482" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
               <div className="font-semibold mt-2">UAE</div>
-              <div className="flex items-center gap-2"><Phone size={14} /> +971 52 281 8558 <a href="https://wa.me/971522818558" className="inline-flex items-center ml-2 text-green-500"><MessageCircle size={18} /></a></div>
+              <div className="flex items-center gap-2"><Phone size={14} /> +971 52 281 8558 <a href="https://wa.me/971522818558" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
               <div className="flex items-center gap-2 mt-2"><Mail size={14} /> osama_naguib@hotmail.com</div>
             </div>
           </div>
@@ -516,7 +559,7 @@ function App() {
           </div>
           <div className="text-right">
             <img src={logo} alt="Quanthos" style={{ height: '9.375rem' }} className="ml-auto opacity-90 cursor-pointer" onClick={() => { window.location.href = '/'; window.location.reload(); }} />
-            <div className="text-white/70 text-sm mt-2" style={{ width: '20rem' }}>Growth Clinic and AI-Enablement</div>
+              <div className="text-white/70 text-2xl mt-2" style={{ width: '20rem' }}>Growth Clinic and Talent Foundary</div>
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-4 text-center text-white/70 text-sm max-w-md mx-auto">
