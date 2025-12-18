@@ -7,22 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        'quanthos-blue': {
-          DEFAULT: '#1e40af',
-          dark: '#1e3a8a',
-        },
-        'quanthos-green': {
-          DEFAULT: '#059669',
-          dark: '#047857',
-        },
-        'quanthos-orange': {
-          DEFAULT: '#ea580c',
-          dark: '#c2410c',
-        },
-        'quanthos-purple': {
-          DEFAULT: '#7c3aed',
-          dark: '#6d28d9',
-        },
+        'quanthos-blue': { DEFAULT: '#6D7CFF' },
+        'quanthos-magenta': { DEFAULT: '#E344FF' },
+        'quanthos-pink': { DEFAULT: '#EB77FF' },
+        'quanthos-dark': { DEFAULT: '#493570' },
+        'quanthos-lightViolet': { DEFAULT: '#F2AAFF' },
+        'quanthos-panel': { DEFAULT: '#F9F9FC' },
       },
     },
   },

@@ -1,66 +1,207 @@
-import { useState } from 'react';
-import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, MessageCircle, Send, X, Globe, Phone, Mail } from 'lucide-react';
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
 
-// Assets
-import osamaImg from './assets/Osama.svg';
-import amrousyImg from './assets/Amrousy.svg';
-import logo from './assets/untitled_design.svg';
+// Assets (served from /public/assets)
+const osamaImg = '/assets/Osama-DrCAYwX-.svg';
+const amrousyImg = '/assets/Amrousy-BD9BxXFd.svg';
+const logo = '/assets/Quanthos Transparent White Letters.svg';
+
+type Page = 'home' | 'about' | 'insights' | 'contact';
 
 function App() {
-  const [lang] = useState<'en'>('en');
+  const [lang, setLang] = useState<'en' | 'ar'>('en');
+  const [page, setPage] = useState<Page>('home');
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [chatMessages, setChatMessages] = useState<{ role: 'user' | 'model'; text: string }[]>([]);
+  const chatRef = useRef<HTMLDivElement | null>(null);
 
   const t = content[lang];
+  const isRTL = lang === 'ar';
+  const toggleLang = () => setLang(prev => (prev === 'en' ? 'ar' : 'en'));
+  const isAssistantAvailable = Boolean(import.meta.env.VITE_GEMINI_API_KEY as string | undefined);
+
+  function navigateTo(next: Page) {
+    setPage(next);
+    const url = next === 'home' ? '/' : `#${next}`;
+    window.history.pushState({ page: next }, '', url);
+  }
+  function goToSection(sectionId: string) {
+    setPage('home');
+    const url = `/#${sectionId}`;
+    window.history.pushState({ page: 'home' }, '', url);
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  }
+
+  useEffect(() => {
+    const onPop = () => {
+      const hash = window.location.hash.replace('#', '') as Page;
+      setPage((hash as Page) || 'home');
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const corporateContext =
+    "#QUANTHOS: Corporate Profile & Comprehensive Service Portfolio\n##1. Executive Overview\nQuanthos is a premier AI and Data Consultancy dedicated to bridging the critical gap between high-level data strategy and real-world business execution. In an era where businesses are drowning in data but starving for insights, Quanthos provides the missing link: Activation.\n\nWe distinguish ourselves from traditional consultancies by offering a full-stack solution. We do not simply deliver strategic reports and leave; we build the automated systems, engineer the workflows, and train the human talent required to turn those strategies into measurable competitive advantages.\n\nOur Mission: To transform raw data into a decisive engine for growth, efficiency, and market leadership.\nOur Tagline: Insight Diagnosed. Impact Engineered.\n\n##2. The \"Diagnose & Activate\" Methodology\nQuanthos was founded on a unique, dual-phased philosophy that combines scientific rigor with engineering precision. This methodology ensures that every technological investment yields a tangible business return.\n\n###Phase 1: The Diagnosis (The \"Quant\")\nLed by the principles of data science and precision analytics, we approach business challenges like a medical diagnosis. We do not guess; we analyze. By ingesting and modeling historical data, we identify the root causes of inefficiency, churn, or revenue loss. We move beyond \"what happened\" to determine \"why it happened\" and \"what will happen next.\"\n\n###Phase 2: The Activation (The \"Anthos\")\nLed by the principles of engineering and human behavioral psychology, we translate the diagnosis into action. This involves two distinct steps:\n\n1. System Engineering: Building the AI agents, automation workflows, and dashboards that fix the problem.\n2. Human Activation: Training the workforce with hands-on, role-specific skills to ensure they adopt the new tools and processes effectively.\n\n##3. Comprehensive Service Ecosystem\nOur services are organized into four interconnected pillars designed to modernize every aspect of the enterprise.\n\n###Pillar I: Data Strategy & Business Intelligence\nWe transform data from a static record-keeping tool into a dynamic asset for decision-making. We build the \"single source of truth\" that aligns the C-suite and operations.\n\n• Predictive Sales & Demand Forecasting\n• Executive Dashboards & BI Frameworks\n• AI-Readiness & Data Maturity Assessments\n• Customer Segmentation & Clustering\n\n###Pillar II: AI Automation & Workflow Orchestration\nWe serve as the architects of organizational efficiency. By deploying \"Digital Workers\" (AI Agents) and robotic process automation, we eliminate the bottleneck of manual tasks.\n\n• Robotic Process Automation (RPA)\n• Custom AI Agents\n• Workflow Integration\n• Error Reduction Protocols\n\n###Pillar III: Sales & Marketing Activation\nWe engineer the revenue engine of the future. By integrating AI into the sales funnel, we empower teams to close more deals faster and with higher precision.\n\n• AI-Powered Lead Generation\n• Hyper-Personalized Content Engines\n• CRM Process Engineering\n• Sentiment Analysis & NLP\n\n###Pillar IV: Corporate AI Training & Enablement\nTechnology is only as powerful as the people using it. We upskill the entire organization to build a resilient, AI-native culture.\n\n• The \"AI Co-Pilot\" Program\n• Role-Specific Workshops";
+
+  // Do not show internal context to users; only use it when sending to the model.
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [chatMessages, isSending]);
+
+  async function sendToGemini() {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
+    if (!apiKey) {
+      setChatMessages(prev => [
+        ...prev,
+        { role: 'model', text: 'Assistant is temporarily offline.' },
+      ]);
+      return;
+    }
+    setIsSending(true);
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+      const body = {
+        contents: [
+          { role: 'user', parts: [{ text: corporateContext }] },
+          ...chatMessages.map(m => ({ role: m.role, parts: [{ text: m.text }] })),
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.95,
+          topK: 40,
+          maxOutputTokens: 1024,
+        },
+      };
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText);
+      }
+      type GeminiPart = { text?: string };
+      type GeminiContent = { parts?: GeminiPart[] };
+      type GeminiCandidate = { content?: GeminiContent };
+      type GeminiResponse = { candidates?: GeminiCandidate[] };
+      const data: GeminiResponse = await res.json();
+      const text =
+        (data.candidates?.[0]?.content?.parts || [])
+          .map(p => p.text || '')
+          .join('') || 'Sorry, I could not generate a response.';
+      setChatMessages(prev => [...prev, { role: 'model', text }]);
+    } catch (e: unknown) {
+      setChatMessages(prev => [
+        ...prev,
+        { role: 'model', text: 'Error contacting AI service.' },
+      ]);
+    } finally {
+      setIsSending(false);
+    }
+  }
+
+  async function handleSend() {
+    if (!chatInput.trim()) return;
+    setChatMessages(prev => [...prev, { role: 'user', text: chatInput.trim() }]);
+    setChatInput('');
+    await sendToGemini();
+  }
 
   return (
-    <div className="min-h-screen bg-white text-quanthos-dark font-sans overflow-x-hidden">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className="min-h-screen bg-white text-quanthos-dark font-sans overflow-x-hidden">
       
       {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="Quanthos" className="h-10 w-auto" />
-            <span className="text-2xl font-bold text-quanthos-dark hidden sm:block">
-              QUANTHOS<span className="text-quanthos-magenta">.</span>
-            </span>
+       <nav className="fixed w-full z-50 bg-[#493570] backdrop-blur-md border-b border-transparent shadow-sm">
+         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+           <div className="flex items-center gap-2">
+            <img
+              src={logo}
+              alt="Quanthos"
+              style={{ height: '4.25rem' }}
+              className="w-auto cursor-pointer"
+              onClick={() => {
+                window.location.href = '/';
+                window.location.reload();
+              }}
+            />
+           </div>
+          <div className="hidden lg:flex gap-8 text-sm font-medium text-white">
+            <button onClick={() => navigateTo('about')} className="hover:text-quanthos-magenta transition-colors">{t.nav.about}</button>
+            <button onClick={() => goToSection('methodology')} className="hover:text-quanthos-magenta transition-colors">{t.nav.methodology}</button>
+            <button onClick={() => goToSection('talent')} className="hover:text-quanthos-magenta transition-colors">{t.nav.talent}</button>
+            <button onClick={() => goToSection('services')} className="hover:text-quanthos-magenta transition-colors">{t.nav.services}</button>
+            <button onClick={() => goToSection('portfolio')} className="hover:text-quanthos-magenta transition-colors">{t.nav.portfolio}</button>
+            <button onClick={() => navigateTo('insights')} className="hover:text-quanthos-magenta transition-colors">Insights</button>
+            <button onClick={() => navigateTo('contact')} className="hover:text-quanthos-magenta transition-colors">Contact Us</button>
           </div>
-          <div className="hidden lg:flex gap-8 text-sm font-medium text-gray-600">
-            <a href="#methodology" className="hover:text-quanthos-magenta transition-colors">{t.nav.methodology}</a>
-            <a href="#talent" className="hover:text-quanthos-magenta transition-colors">{t.nav.talent}</a>
-            <a href="#services" className="hover:text-quanthos-magenta transition-colors">{t.nav.services}</a>
-            <a href="#portfolio" className="hover:text-quanthos-magenta transition-colors">{t.nav.portfolio}</a>
-            <a href="#team" className="hover:text-quanthos-magenta transition-colors">{t.nav.team}</a>
-          </div>
+          <div className="flex items-center gap-3">
           <button 
             onClick={() => setIsCalendlyOpen(true)}
-            className="px-6 py-2.5 bg-quanthos-blue text-white rounded-full font-semibold hover:bg-quanthos-dark transition-all text-sm shadow-lg shadow-quanthos-blue/30"
+            className="px-6 py-2.5 text-white rounded-full font-semibold transition-all text-sm shadow-lg"
+            style={{ backgroundImage: 'linear-gradient(135deg, #E344FF, #6D7CFF)' }}
           >
             {t.nav.contact}
           </button>
-        </div>
-      </nav>
+          <button 
+            onClick={toggleLang}
+            className="px-4 py-2.5 bg-white text-quanthos-dark rounded-full border border-gray-200 hover:bg-quanthos-panel transition-all text-sm font-semibold flex items-center gap-2"
+          >
+            <Globe size={16} />
+            {lang === 'en' ? 'AR' : 'EN'}
+          </button>
+          </div>
+         </div>
+       </nav>
 
+      {/* Routes */}
+      {page === 'home' && (
+      <>
       {/* Hero Section */}
-      <header className="relative pt-36 pb-24 px-6 bg-gradient-main text-white text-center">
-        <div className="max-w-5xl mx-auto">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-quanthos-lightViolet text-sm font-medium mb-8 backdrop-blur-sm">
-            {t.methodology.title}
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">{t.hero.tagline}</h1>
-          <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">{t.hero.sub}</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-5">
-            <a href="#services" className="px-8 py-4 bg-white text-quanthos-dark rounded-xl font-bold hover:bg-quanthos-panel hover:scale-105 transition-all shadow-xl">
-              {t.hero.cta_primary}
+       <header className="relative pt-36 pb-24 px-6 bg-gradient-main text-white text-center">
+         <div className="max-w-5xl mx-auto">
+           <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-quanthos-lightViolet text-sm font-medium mb-8 backdrop-blur-sm">
+             {t.methodology.title}
+           </div>
+           <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
+             <div className="inline-block">
+               <div style={{ marginLeft: '-1ch' }}>Insight Diagnosed..</div>
+               <div style={{ marginLeft: '9ch' }}>Impact Engineered</div>
+             </div>
+           </div>
+           <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">Bridging the critical gap between high-level data strategy and real-world business execution.</p>
+           <div className="flex flex-col sm:flex-row justify-center gap-5">
+            <a href="#services" className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white" style={{ backgroundColor: '#634e86' }}>
+              Visit the Growth Clinic
             </a>
-            <a href="#talent" className="px-8 py-4 border border-white/30 bg-white/5 text-white rounded-xl font-bold hover:bg-white/10 transition-all backdrop-blur-sm">
-              {t.hero.cta_secondary}
+            <a href="#talent" className="px-8 py-4 rounded-xl font-bold transition-all shadow-xl text-white" style={{ backgroundColor: '#634e86' }}>
+              Join the Talent Foundary
             </a>
-          </div>
-        </div>
-      </header>
+           </div>
+           <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm text-right">
+             <div className="font-bold mb-1">The "Returnship" Program</div>
+             <div className="text-sm">Limited-time: 50% discount if registered before end of December or referred by "Momken" Committee.</div>
+             <div className="text-sm mt-2"><span className="font-bold">1500 L.E</span> total — 3 Practical Sessions for AI <span className="uppercase">Upskilling</span> and <span className="uppercase">Confidence-Building</span>.</div>
+             <a href="#talent" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl">
+               Secure your seat
+             </a>
+           </div>
+         </div>
+       </header>
 
+      {/* Home continues */}
       {/* Methodology Section */}
       <section id="methodology" className="py-24 px-6 bg-white relative">
         <div className="max-w-7xl mx-auto">
@@ -108,6 +249,9 @@ function App() {
                 <h3 className="text-xl font-bold text-quanthos-dark mb-2">{seg.title}</h3>
                 <p className="text-sm font-semibold text-quanthos-magenta mb-4">{seg.target}</p>
                 <p className="text-gray-600 leading-relaxed text-sm">{seg.desc}</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-6 inline-block px-4 py-2 rounded-lg text-white font-semibold" style={{ backgroundColor: '#634e86' }}>
+                  Join Now
+                </a>
               </div>
             ))}
           </div>
@@ -133,33 +277,49 @@ function App() {
         </div>
       </section>
 
-      {/* Services Pillars */}
-      <section id="services" className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">{t.services.title}</h2>
-            <p className="text-gray-600">{t.services.subtitle}</p>
+       {/* Services Pillars */}
+       <section id="services" className="py-24 px-6 bg-white">
+         <div className="max-w-7xl mx-auto">
+           <div className="text-center mb-16">
+             <h2 className="text-3xl font-bold mb-4">{t.services.title}</h2>
+             <p className="text-gray-600">{t.services.subtitle}</p>
+           </div>
+           <div className="grid md:grid-cols-2 gap-8">
+             {t.services.items.map((item, idx) => (
+               <div key={idx} className="group bg-white border border-gray-100 p-8 rounded-2xl hover:shadow-2xl hover:border-quanthos-blue/20 transition-all duration-300">
+                 <img
+                    src={
+                      idx === 0
+                        ? '/assets/4 Pillars Images/1. Growth CLinic.png'
+                        : idx === 1
+                        ? '/assets/4 Pillars Images/2. AI Autiomation.png'
+                        : idx === 2
+                        ? '/assets/4 Pillars Images/3. Sales and marketing meeting.png'
+                        : '/assets/4 Pillars Images/4. AI Training.png'
+                    }
+                    alt="pillar"
+                    className="w-full h-32 object-cover rounded-xl mb-4"
+                    onError={(e) => {
+                      const t = e.currentTarget as HTMLImageElement;
+                      t.src = 'https://picsum.photos/id/180/600/300';
+                    }}
+                  />
+                  <h3 className="text-xl font-bold text-quanthos-dark mb-3 group-hover:text-quanthos-blue transition-colors">{idx === 0 ? 'Strategy and Businees Intelligence' : item.title}</h3>
+                  <p className="text-sm text-gray-500 mb-6">{item.desc}</p>
+                  <ul className="space-y-4">
+                    {item.points.map((pt, pIdx) => (
+                      <li key={pIdx} className="flex items-start gap-3 text-sm text-gray-700">
+                        <CheckCircle size={18} className="text-quanthos-magenta shrink-0 mt-0.5" />
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {t.services.items.map((item, idx) => (
-              <div key={idx} className="group bg-white border border-gray-100 p-8 rounded-2xl hover:shadow-2xl hover:border-quanthos-blue/20 transition-all duration-300">
-                <h3 className="text-xl font-bold text-quanthos-dark mb-3 group-hover:text-quanthos-blue transition-colors">{item.title}</h3>
-                <p className="text-sm text-gray-500 mb-6">{item.desc}</p>
-                <ul className="space-y-4">
-                  {item.points.map((pt, pIdx) => (
-                    <li key={pIdx} className="flex items-start gap-3 text-sm text-gray-700">
-                      <CheckCircle size={18} className="text-quanthos-magenta shrink-0 mt-0.5" />
-                      <span>{pt}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Proven Portfolio */}
       <section id="portfolio" className="py-24 px-6 bg-quanthos-dark text-white relative">
         {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-quanthos-dark via-quanthos-dark to-[#2a1b4a]"></div>
@@ -168,10 +328,15 @@ function App() {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">{t.portfolio.title}</h2>
             <p className="text-quanthos-lightViolet">{t.portfolio.subtitle}</p>
+            <div className="mt-6">
+              <a href="/Quanthos Portfolio.pdf" target="_blank" className="inline-block px-6 py-3 bg-quanthos-magenta text-white rounded-xl font-bold shadow-xl">
+                Download Full Portfolio
+              </a>
+            </div>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.portfolio.cases.map((study, idx) => (
+          <h3 className="text-xl font-bold mb-4">Organizations</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {t.portfolio.orgs.map((study, idx) => (
               <div key={idx} className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors group">
                 <div className="mb-4">
                   <div className="text-3xl font-bold text-quanthos-magenta mb-1 group-hover:scale-110 transition-transform origin-left">{study.metric}</div>
@@ -184,44 +349,234 @@ function App() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Leadership */}
-      <section id="team" className="py-24 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-16">{t.team.title}</h2>
-          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-            {/* Osama */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
-              <div className="w-40 h-40 mx-auto rounded-full overflow-hidden mb-6 border-4 border-quanthos-blue p-1 bg-white">
-                <img src={osamaImg} alt="Dr. Osama" className="w-full h-full object-cover rounded-full" />
+          <h3 className="text-xl font-bold mb-4">Individuals</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {t.portfolio.individuals.map((p, idx) => (
+              <div key={idx} className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                <div className="text-2xl font-bold text-white mb-2">{p.name}</div>
+                <div className="text-quanthos-magenta font-semibold mb-2">{p.result}</div>
+                <div className="text-sm text-gray-300">{p.detail}</div>
               </div>
-              <h3 className="text-xl font-bold text-quanthos-dark">{t.team.osama.name}</h3>
-              <p className="text-quanthos-blue font-semibold text-sm mb-4">{t.team.osama.role}</p>
-              <p className="text-gray-600 text-sm leading-relaxed">{t.team.osama.bio}</p>
-            </div>
-            
-            {/* Amrousy */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
-              <div className="w-40 h-40 mx-auto rounded-full overflow-hidden mb-6 border-4 border-quanthos-magenta p-1 bg-white">
-                <img src={amrousyImg} alt="Dr. Amrousy" className="w-full h-full object-cover rounded-full" />
-              </div>
-              <h3 className="text-xl font-bold text-quanthos-dark">{t.team.amrousy.name}</h3>
-              <p className="text-quanthos-magenta font-semibold text-sm mb-4">{t.team.amrousy.role}</p>
-              <p className="text-gray-600 text-sm leading-relaxed">{t.team.amrousy.bio}</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* Collaborators */}
+      <section id="collaborators" className="py-24 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl font-bold text-quanthos-dark mb-8">Collaborators</h2>
+          <img src="/assets/Collaborators.svg" alt="Quanthos Collaborators" className="w-full h-auto" />
+        </div>
+      </section>
+      </>
+      )}
+
+      {page === 'about' && (
+        <main className="pt-28">
+          <section className="px-6 py-16 bg-gradient-main text-white text-center">
+            <div className="max-w-4xl mx-auto">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4">About Quanthos</h1>
+              <p className="text-quanthos-panel/90">{t.about.overview}</p>
+            </div>
+          </section>
+          <section className="py-16 px-6 bg-white">
+            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+              <div className="p-8 rounded-2xl bg-quanthos-panel">
+                <h2 className="text-2xl font-bold text-quanthos-dark mb-3">{t.about.whatIsTitle}</h2>
+                <p className="text-gray-700">{t.about.whatIsDesc}</p>
+              </div>
+              <div className="p-8 rounded-2xl bg-quanthos-panel">
+                <h2 className="text-2xl font-bold text-quanthos-dark mb-3">{t.about.philosophyTitle}</h2>
+                <p className="text-gray-700">{t.about.philosophyDesc}</p>
+              </div>
+            </div>
+          </section>
+          <section className="py-16 px-6 bg-white">
+            <div className="max-w-4xl mx-auto text-center mb-10">
+              <h2 className="text-3xl font-bold text-quanthos-dark">Executive Leadership</h2>
+            </div>
+            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+              <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                <div className="w-40 h-40 mx-auto rounded-full overflow-hidden mb-6 border-4 border-quanthos-blue p-1 bg-white">
+                  <img src={osamaImg} alt="Dr. Osama" className="w-full h-full object-cover rounded-full" />
+                </div>
+                <h3 className="text-xl font-bold text-quanthos-dark">{t.team.osama.name}</h3>
+                <p className="text-quanthos-blue font-semibold text-sm mb-4">{t.team.osama.role}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{t.team.osama.bio}</p>
+              </div>
+              <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                <div className="w-40 h-40 mx-auto rounded-full overflow-hidden mb-6 border-4 border-quanthos-magenta p-1 bg-white">
+                  <img src={amrousyImg} alt="Dr. Amrousy" className="w-full h-full object-cover rounded-full" />
+                </div>
+                <h3 className="text-xl font-bold text-quanthos-dark">{t.team.amrousy.name}</h3>
+                <p className="text-quanthos-magenta font-semibold text-sm mb-4">{t.team.amrousy.role}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{t.team.amrousy.bio}</p>
+              </div>
+            </div>
+          </section>
+        </main>
+      )}
+
+      {page === 'insights' && (
+        <main className="pt-28">
+          <section className="px-6 py-16 bg-quanthos-dark text-white">
+            <div className="max-w-5xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Insights</h1>
+              <p className="text-quanthos-lightViolet">Strategic ideas on diagnosis, leadership, and activation.</p>
+            </div>
+          </section>
+          <section className="py-16 px-6 bg-white">
+            <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+              {[
+                { title: "Business Diagnosis", desc: "Hidden signals of structural issues and how to catch them early." },
+                { title: "Pre-crisis Readiness", desc: "Build an early warning system tailored to your context." },
+                { title: "Leadership Behavior", desc: "Transform leadership style to match growth demands." },
+                { title: "AI in Management", desc: "Use AI to diagnose performance with higher accuracy." },
+                { title: "Financial Data Analysis", desc: "Read financials to find weaknesses before they hurt." },
+                { title: "Operational Excellence", desc: "Five steps to evaluate and optimize internal processes." },
+              ].map((i,idx)=>(
+                <div key={idx} className="p-6 rounded-2xl bg-quanthos-panel border border-gray-100">
+                  <h3 className="font-bold text-quanthos-dark mb-2">{i.title}</h3>
+                  <p className="text-gray-700 text-sm">{i.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+      )}
+
+      {page === 'contact' && (
+        <main className="pt-28">
+          <section className="px-6 py-16 bg-quanthos-dark text-white">
+            <div className="max-w-5xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
+              <p className="text-quanthos-lightViolet">Reach us directly via phone, WhatsApp, or email.</p>
+            </div>
+          </section>
+          <section className="py-16 px-6 bg-white">
+            <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+              <div className="p-6 rounded-2xl bg-quanthos-panel">
+                <div className="font-semibold text-quanthos-dark mb-1">Egypt</div>
+                <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 124 01 86</div>
+                <a href="https://wa.me/201001240186" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
+                  <MessageCircle size={20} />
+                </a>
+              </div>
+              <div className="p-6 rounded-2xl bg-quanthos-panel">
+                <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 900 94 82</div>
+                <a href="https://wa.me/201009009482" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
+                  <MessageCircle size={20} />
+                </a>
+              </div>
+              <div className="p-6 rounded-2xl bg-quanthos-panel">
+                <div className="font-semibold text-quanthos-dark mb-1">UAE</div>
+                <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +971 52 281 8558</div>
+                <a href="https://wa.me/971522818558" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
+                  <MessageCircle size={20} />
+                </a>
+              </div>
+              <div className="p-6 rounded-2xl bg-quanthos-panel md:col-span-3">
+                <div className="flex items-center gap-3 font-semibold text-quanthos-dark"><Mail size={18} /> osama_naguib@hotmail.com</div>
+              </div>
+            </div>
+          </section>
+        </main>
+      )}
+
       {/* Footer */}
-      <footer className="bg-white py-12 text-center border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
-           <img src={logo} alt="Quanthos" className="h-8 w-auto mb-6 opacity-50 grayscale hover:grayscale-0 transition-all" />
-           <p className="text-gray-400 text-sm">© 2025 Quanthos. {t.hero.tagline}</p>
+      <footer className="bg-gradient-main text-white py-16">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+          <div>
+            <h4 className="font-bold mb-3">Contact Us</h4>
+            <div className="text-white/80 text-sm space-y-2">
+              <div className="font-semibold">Egypt</div>
+              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 124 01 86 <a href="https://wa.me/201001240186" className="inline-flex items-center ml-2 text-green-500"><MessageCircle size={18} /></a></div>
+              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 900 94 82 <a href="https://wa.me/201009009482" className="inline-flex items-center ml-2 text-green-500"><MessageCircle size={18} /></a></div>
+              <div className="font-semibold mt-2">UAE</div>
+              <div className="flex items-center gap-2"><Phone size={14} /> +971 52 281 8558 <a href="https://wa.me/971522818558" className="inline-flex items-center ml-2 text-green-500"><MessageCircle size={18} /></a></div>
+              <div className="flex items-center gap-2 mt-2"><Mail size={14} /> osama_naguib@hotmail.com</div>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3">Quick Links</h4>
+            <div className="text-white/80 text-sm space-y-2">
+              <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">About</button>
+              <button onClick={()=>goToSection('methodology')} className="hover:text-quanthos-lightViolet block">Methodology</button>
+              <button onClick={()=>goToSection('talent')} className="hover:text-quanthos-lightViolet block">Talent Foundry</button>
+              <button onClick={()=>goToSection('services')} className="hover:text-quanthos-lightViolet block">Services</button>
+              <button onClick={()=>goToSection('portfolio')} className="hover:text-quanthos-lightViolet block">Portfolio</button>
+              <button onClick={()=>navigateTo('insights')} className="hover:text-quanthos-lightViolet block">Insights</button>
+              <button onClick={()=>navigateTo('contact')} className="hover:text-quanthos-lightViolet block">Contact Us</button>
+            </div>
+          </div>
+          <div className="text-right">
+            <img src={logo} alt="Quanthos" style={{ height: '9.375rem' }} className="ml-auto opacity-90 cursor-pointer" onClick={() => { window.location.href = '/'; window.location.reload(); }} />
+            <div className="text-white/70 text-sm mt-2" style={{ width: '20rem' }}>Growth Clinic and AI-Enablement</div>
+          </div>
+        </div>
+        <div className="border-t border-white/10 mt-8 pt-4 text-center text-white/70 text-sm max-w-md mx-auto">
+          © Quanthos. All rights reserved.
         </div>
       </footer>
+
+      <button
+        onClick={() => setIsChatOpen(prev => !prev)}
+        className="fixed bottom-6 right-6 bg-quanthos-magenta text-white rounded-full px-5 py-3 shadow-xl hover:bg-[#d633f0] flex items-center gap-2"
+      >
+        <MessageCircle size={20} />
+        Ask Quanthos
+      </button>
+
+      <div className={`${isChatOpen ? 'block' : 'hidden'} fixed bottom-24 right-6 w-[min(420px,90vw)] bg-white border border-gray-200 rounded-2xl shadow-2xl`}>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+          <div className="font-semibold text-quanthos-dark">
+            Quanthos AI Assistant
+            {!isAssistantAvailable && <span className="ml-2 text-xs text-gray-500">(offline)</span>}
+          </div>
+          <button onClick={() => setIsChatOpen(false)} className="text-gray-500 hover:text-quanthos-dark">
+            <X size={18} />
+          </button>
+        </div>
+        <div ref={chatRef} className="h-80 overflow-y-auto p-4 space-y-3">
+          {chatMessages.map((m, idx) => (
+            <div key={idx} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`${m.role === 'user' ? 'bg-quanthos-magenta text-white' : 'bg-gray-100 text-quanthos-dark'} px-4 py-2 rounded-xl max-w-[75%] whitespace-pre-wrap`}>
+                {m.text}
+              </div>
+            </div>
+          ))}
+          {isSending && (
+            <div className="flex justify-start">
+              <div className="bg-gray-100 text-quanthos-dark px-4 py-2 rounded-xl">
+                Thinking...
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-2 p-3 border-t border-gray-100">
+          <input
+            value={chatInput}
+            onChange={e => setChatInput(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Ask about Quanthos services, methodology, training..."
+            className="flex-1 border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-quanthos-magenta"
+          />
+          <button
+            onClick={handleSend}
+            disabled={isSending || !isAssistantAvailable}
+            className="bg-quanthos-magenta text-white rounded-xl px-3 py-2 hover:bg-[#d633f0] disabled:opacity-50 flex items-center gap-1"
+          >
+            <Send size={16} />
+            Send
+          </button>
+        </div>
+      </div>
 
       <PopupModal 
         url="https://calendly.com/osbazoka/short-consultation-session" 

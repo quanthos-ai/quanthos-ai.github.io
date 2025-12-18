@@ -1,7 +1,7 @@
 export const content = {
   en: {
     nav: {
-      home: "Home",
+      about: "About",
       methodology: "Methodology",
       talent: "Talent Foundry",
       services: "Services",
@@ -14,6 +14,14 @@ export const content = {
       sub: "Bridging the critical gap between high-level data strategy and real-world business execution. We do not simply deliver reports; we build the systems and train the talent to activate them.",
       cta_primary: "Explore Services",
       cta_secondary: "Join the Foundry",
+    },
+    about: {
+      title: "About Quanthos",
+      overview: "Quanthos is a full-stack AI and Data Consultancy. We diagnose root-cause problems using data science, then activate solutions with engineered automation and hands-on enablement.",
+      whatIsTitle: "What’s Quanthos?",
+      whatIsDesc: "A fusion of “quant” and “ethos”—quantitative insight with trustworthy principles. Every recommendation is both data-driven and principled.",
+      philosophyTitle: "Our Philosophy",
+      philosophyDesc: "We combine practical wisdom with engineering rigor. Data with principles—decisions anchored in measurable insight and integrity."
     },
     // SECTION 1: The Core Philosophy
     methodology: {
@@ -70,6 +78,16 @@ export const content = {
           name: "Nour A.",
           role: "Fresh Business Graduate",
           quote: "University taught me business, but Quanthos taught me how to actually work. I landed a job in 3 weeks because I knew how to automate workflows."
+        },
+        {
+          name: "Marwa K",
+          role: "Returning Professional",
+          quote: "Quanthos rebuilt my confidence and toolkit. In six months I wasn’t just back—I was leading initiatives powered by AI."
+        },
+        {
+          name: "Marawan G",
+          role: "Junior Analyst",
+          quote: "The Foundry program made interviews effortless. Showing my automation portfolio got me into a multinational within a month."
         }
       ]
     },
@@ -120,11 +138,38 @@ export const content = {
         }
       ]
     },
-    // SECTION 4: Case Studies (From Corporate Text)
     portfolio: {
       title: "Portfolio of Impact",
       subtitle: "Proven Case Studies",
-      cases: [
+      orgs: [
+        {
+          title: "Technology Company",
+          metric: "28% → 16%",
+          subMetric: "Employee Turnover",
+          desc: "Leadership and environment improvement",
+          detail: "Reduced turnover and boosted satisfaction by 32% through diagnostics and leadership coaching."
+        },
+        {
+          title: "Manufacturing (Family Business)",
+          metric: "+12%",
+          subMetric: "Profit Margin",
+          desc: "Decision-making discipline upgrade",
+          detail: "Improved asset efficiency by 18% and ROI by 15% over one year."
+        },
+        {
+          title: "Services Company",
+          metric: "+35%",
+          subMetric: "Cash Flow",
+          desc: "Operational diagnosis and resource allocation",
+          detail: "Stabilized cash conversion and optimized process bottlenecks."
+        },
+        {
+          title: "Commercial Enterprise",
+          metric: "+22%",
+          subMetric: "Productivity",
+          desc: "Workflow orchestration and performance tracking",
+          detail: "Implemented KPIs and automation leading to measurable productivity gains."
+        },
         {
           title: "Automotive Retail",
           metric: "25% Reduction",
@@ -153,6 +198,28 @@ export const content = {
           desc: "Churn Diagnosis & Retention",
           detail: "Used NLP to diagnose 'slow delivery' (not price) as the root cause of churn, re-engineering the comms workflow."
         }
+      ],
+      individuals: [
+        {
+          name: "Sarah M.",
+          result: "Re-entered workforce after 5 years",
+          detail: "Applied AI to boost campaign performance; regained senior role."
+        },
+        {
+          name: "Nour A.",
+          result: "Landed first job in 3 weeks",
+          detail: "Automated workflows and stood out with practical AI skills."
+        },
+        {
+          name: "Marwa K",
+          result: "Promoted within 6 months",
+          detail: "Returned after 5+ years; Quanthos programs accelerated productivity and leadership."
+        },
+        {
+          name: "Marawan G",
+          result: "Joined a multinational in 1 month",
+          detail: "Completed the AI-Enablement & Talent Foundry program; showcased automation projects in interviews."
+        }
       ]
     },
     team: {
@@ -167,6 +234,83 @@ export const content = {
         role: "Co-Founder | Marketing & Human Activation Lead",
         bio: "Applying an 'engineer's mindset' to the commercial landscape. Over 20 years delivering high-impact programs for SMEs and AUC, reverse-engineering business challenges."
       }
+    }
+  },
+  ar: {
+    nav: {
+      about: "نبذة عنا",
+      methodology: "المنهجية",
+      talent: "مصنع المواهب",
+      services: "الخدمات",
+      portfolio: "دراسات الحالة",
+      team: "القيادة",
+      contact: "احجز استشارة",
+    },
+    hero: {
+      tagline: "تشخيص مدروس. تأثير مُهندس.",
+      sub: "نحوّل الاستراتيجية إلى تنفيذ فعلي. لا نكتب التقارير فقط، بل نبني الأنظمة وندرب الفرق على تفعيلها.",
+      cta_primary: "استكشف الخدمات",
+      cta_secondary: "انضم إلى المصنع",
+    },
+    about: {
+      title: "عن كواثنوس",
+      overview: "كواثنوس شركة استشارات بيانات وذكاء اصطناعي تقدم تشخيصًا دقيقًا ثم تفعيلًا عمليًا عبر الأتمتة وتمكين الفرق.",
+      whatIsTitle: "ما هو كواثنوس؟",
+      whatIsDesc: "مزيج من “كوانت” و“إيثوس”: بصيرة كمية مقرونة بمبادئ موثوقة. كل توصية مبنية على البيانات ومنضبطة بالقيم.",
+      philosophyTitle: "فلسفتنا",
+      philosophyDesc: "نمزج الحكمة العملية بالدقة الهندسية. بيانات مع مبادئ—قرارات تستند إلى قياس موثوق ونزاهة."
+    },
+    methodology: {
+      title: "منهجية “التشخيص والتفعيل”",
+      subtitle: "صرامة علمية بدقة هندسية.",
+      description: "نحلل الأسباب الجذرية ثم نترجمها إلى إجراءات هندسية قابلة للتنفيذ.",
+      phases: [
+        { step: "المرحلة 1", name: "التشخيص (Quant)", desc: "تحليل البيانات لتحديد أسباب الهدر والضعف." },
+        { step: "المرحلة 2", name: "التفعيل (Anthos)", desc: "بناء العوامل الذكية وتدريب الفرق لاعتماد الأدوات." }
+      ]
+    },
+    talentFoundry: {
+      title: "تمكين الذكاء الاصطناعي ومصنع المواهب",
+      subtitle: "تمكين القوى العاملة اليوم.",
+      description: "نعزز الإنتاجية عبر تدريب عملي على أدوات الذكاء الاصطناعي.",
+      segments: [
+        { title: "برنامج العودة للعمل", target: "نساء عادوا للعمل", desc: "مهارات وذكاء اصطناعي لاستعادة الثقة والتميّز." },
+        { title: "مسار القادة الجدد", target: "خريجون جدد", desc: "فجوة الجامعة والسوق تُسد عبر تطبيقات عملية." },
+        { title: "رفع مهارات الشركات", target: "نمو مهني", desc: "أتمتة الأعمال المتكررة والتركيز على الأثر." }
+      ],
+      successStories: [
+        { name: "سارة م.", role: "تسويق", quote: "استعدت دورًا قياديًا بفضل التفعيل العملي." },
+        { name: "نور أ.", role: "خريج أعمال", quote: "وظيفة خلال 3 أسابيع بفضل الأتمتة العملية." }
+      ]
+    },
+    services: {
+      title: "منظومة خدمات شاملة",
+      subtitle: "أعمدة مترابطة لتحديث المؤسسة.",
+      items: [
+        { title: "الركيزة I: استراتيجية البيانات والذكاء", desc: "مصدر واحد للحقيقة", points: ["تنبؤ المبيعات", "لوحات تنفيذية", "جاهزية الذكاء الاصطناعي", "تقسيم العملاء"] },
+        { title: "الركيزة II: الأتمتة والوكالات الرقمية", desc: "كفاءة مؤسسية", points: ["RPA", "وكلاء ويب", "تكامل الأنظمة", "تقليل الأخطاء"] },
+        { title: "الركيزة III: التسويق والمبيعات", desc: "محرك الإيرادات", points: ["توليد العملاء", "محتوى مخصص", "هندسة CRM", "تحليل المشاعر"] },
+        { title: "الركيزة IV: التدريب والتمكين", desc: "ثقافة أصلية بالذكاء", points: ["برنامج المساعد", "ورش خاصة", "إحاطات تنفيذية", "تدريب المدربين"] }
+      ]
+    },
+    portfolio: {
+      title: "محفظة التأثير",
+      subtitle: "دراسات حالة مثبتة",
+      orgs: [
+        { title: "بيع السيارات", metric: "خفض 25%", subMetric: "تأخيرات الخدمة", desc: "تحسين المخزون التنبؤي", detail: "تقليل المخزون الراكد 15%." },
+        { title: "المالية", metric: "توفير 95%", subMetric: "دقة 100%", desc: "مطابقة الفواتير آليًا", detail: "استبدال 40 ساعة شهرية." }
+      ],
+      individuals: [
+        { name: "سارة م.", result: "عودة للعمل", detail: "استخدمت الأتمتة لاستعادة دور قيادي." },
+        { name: "نور أ.", result: "وظيفة خلال 3 أسابيع", detail: "تميّز بمهارات أتمتة عملية." },
+        { name: "مروة", result: "ترقية خلال 6 أشهر", detail: "عادت بعد 5 سنوات؛ البرامج رفعت الأداء." },
+        { name: "مروان", result: "انضم لشركة عالمية", detail: "عرض مشاريع أتمتة في المقابلات." }
+      ]
+    },
+    team: {
+      title: "القيادة التنفيذية",
+      osama: { name: "د. أسامة م. نجيب", role: "شريك مؤسس | الاستراتيجية والبيانات", bio: "تشخيص دقيق يقود النمو." },
+      amrousy: { name: "د. أحمد عمروسي", role: "شريك مؤسس | التسويق والتفعيل", bio: "هندسة للتحديات التجارية." }
     }
   }
 };

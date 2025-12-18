@@ -9,55 +9,23 @@
 }
 
 @layer utilities {
-  .text-quanthos-blue {
-    color: #1e40af;
-  }
-  .bg-quanthos-blue {
-    background-color: #1e40af;
-  }
-  .hover\:bg-quanthos-blue-dark:hover {
-    background-color: #1e3a8a;
-  }
-  .border-quanthos-blue {
-    border-color: #1e40af;
-  }
+  .text-quanthos-blue { color: #6D7CFF; }
+  .bg-quanthos-blue { background-color: #6D7CFF; }
+  .border-quanthos-blue { border-color: #6D7CFF; }
 
-  .text-quanthos-green {
-    color: #059669;
-  }
-  .bg-quanthos-green {
-    background-color: #059669;
-  }
-  .hover\:bg-quanthos-green-dark:hover {
-    background-color: #047857;
-  }
-  .border-quanthos-green {
-    border-color: #059669;
-  }
+  .text-quanthos-magenta { color: #E344FF; }
+  .bg-quanthos-magenta { background-color: #E344FF; }
+  .border-quanthos-magenta { border-color: #E344FF; }
 
-  .text-quanthos-orange {
-    color: #ea580c;
-  }
-  .bg-quanthos-orange {
-    background-color: #ea580c;
-  }
-  .hover\:bg-quanthos-orange-dark:hover {
-    background-color: #c2410c;
-  }
-  .border-quanthos-orange {
-    border-color: #ea580c;
-  }
+  .text-quanthos-dark { color: #493570; }
+  .bg-quanthos-dark { background-color: #493570; }
+  .border-quanthos-dark { border-color: #493570; }
 
-  .text-quanthos-purple {
-    color: #7c3aed;
-  }
-  .bg-quanthos-purple {
-    background-color: #7c3aed;
-  }
-  .hover\:bg-quanthos-purple-dark:hover {
-    background-color: #6d28d9;
-  }
-  .border-quanthos-purple {
-    border-color: #7c3aed;
-  }
+  .text-quanthos-lightViolet { color: #F2AAFF; }
+  .bg-quanthos-lightViolet { background-color: #F2AAFF; }
+
+  .text-quanthos-panel { color: #F9F9FC; }
+  .bg-quanthos-panel { background-color: #F9F9FC; }
+
+  .bg-gradient-main { background-image: linear-gradient(135deg, #493570, #493570 40%, #E344FF); }
 }
