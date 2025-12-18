@@ -44,6 +44,53 @@ function App() {
   const isRTL = lang === 'ar';
   const toggleLang = () => setLang(prev => (prev === 'en' ? 'ar' : 'en'));
   const isAssistantAvailable = true;
+  const faqs = [
+    {
+      keywords: ['growth', 'clinic', 'service', 'pillars', 'services', 'عيادة', 'الخدمات', 'ركيزة'],
+      answer: () => {
+        const items = t.services.items.map(i => `• ${i.title}`).join('\n');
+        return `${t.services.title}\n${items}\n${t.services.subtitle}`;
+      }
+    },
+    {
+      keywords: ['returnship', 'momken', 'women', 'seat', 'عودة', 'برنامج', 'ممكن'],
+      answer: () => {
+        const seg = t.talentFoundry.segments[0];
+        return `${seg.title}\n${seg.target}\n${seg.desc}\nDetails at the Returnship card in Talent Foundry.`;
+      }
+    },
+    {
+      keywords: ['contact', 'phone', 'whatsapp', 'email', 'اتصل', 'هاتف', 'واتساب', 'بريد'],
+      answer: () => `Egypt: +20 100 124 01 86\nEgypt: +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com`
+    },
+    {
+      keywords: ['about', 'quanthos', 'نبذة', 'عن', 'كوانثوث'],
+      answer: () => `${t.about.title}\n${t.about.overview}`
+    },
+    {
+      keywords: ['methodology', 'diagnose', 'activate', 'منهجية', 'التشخيص', 'التفعيل'],
+      answer: () => `${t.methodology.title}\n${t.methodology.description}`
+    },
+    {
+      keywords: ['portfolio', 'case', 'studies', 'محفظة', 'دراسات'],
+      answer: () => `${t.portfolio.title}\n${t.portfolio.subtitle}`
+    },
+    {
+      keywords: ['insight', 'insights', 'رؤى', 'أفكار'],
+      answer: () => `Insights cover diagnosis, leadership, AI in management, and financial analysis.`
+    },
+    {
+      keywords: ['book', 'consultation', 'calendly', 'احجز', 'استشارة'],
+      answer: () => `Use "Book Consultation" to open Calendly and schedule a session.`
+    }
+  ];
+  const answerFaq = (input: string) => {
+    const txt = input.toLowerCase();
+    for (const f of faqs) {
+      if (f.keywords.some(k => txt.includes(k))) return f.answer();
+    }
+    return `Ask about ${t.services.title}, Returnship, or contact details.`;
+  };
 
   function navigateTo(next: Page) {
     setPage(next);
@@ -85,21 +132,7 @@ function App() {
     if (!apiKey) {
       const last = chatMessages[chatMessages.length - 1];
       const userText = last?.text || '';
-      const fallbackAssistant = (input: string) => {
-        const txt = input.toLowerCase();
-        if (txt.includes('service') || txt.includes('clinic') || txt.includes('growth')) {
-          const items = t.services.items.slice(0, 4).map(i => `- ${i.title}`).join('\n');
-          return `Growth Clinic pillars:\n${items}\n\nWe transform strategy into execution across data, automation, sales/marketing, and training.`;
-        }
-        if (txt.includes('returnship')) {
-          const seg = t.talentFoundry.segments[0];
-          return `Returnship Program — ${seg.target}\n${seg.desc}\nRegister via "Join Now" under Talent Foundry or the "Secure your seat" button.`;
-        }
-        if (txt.includes('contact') || txt.includes('phone') || txt.includes('whatsapp')) {
-          return `Contact:\nEgypt: +20 100 124 01 86 (WhatsApp)\nEgypt: +20 100 900 94 82 (WhatsApp)\nUAE: +971 52 281 8558 (WhatsApp)\nEmail: osama_naguib@hotmail.com`;
-        }
-        return `Quanthos bridges data strategy with real-world execution.\nAsk about Growth Clinic, Returnship, or contact details.`;
-      };
+      const fallbackAssistant = (input: string) => answerFaq(input);
       setChatMessages(prev => [
         ...prev,
         { role: 'model', text: fallbackAssistant(userText) },
@@ -306,10 +339,10 @@ function App() {
           {/* Success Stories */}
           <div className="bg-quanthos-dark rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-quanthos-magenta/10 to-transparent"></div>
-            <h3 className="text-2xl font-bold mb-8 text-center flex items-center justify-center gap-2 relative z-10">
+            <h3 className="text-2xl font-bold mb-8 text-center flex items-center justify-center gap-2 relative z-0">
               <Star className="text-quanthos-magenta fill-quanthos-magenta" /> Success Stories
             </h3>
-            <div className="grid md:grid-cols-2 gap-8 relative z-10">
+            <div className="grid md:grid-cols-2 gap-8 relative z-0">
               {t.talentFoundry.successStories.map((story, idx) => (
                 <div key={idx} className="bg-white/10 p-6 rounded-xl backdrop-blur-md border border-white/5">
                   <p className="text-lg italic text-quanthos-lightViolet mb-4">"{story.quote}"</p>
@@ -569,13 +602,13 @@ function App() {
 
       <button
         onClick={() => setIsChatOpen(prev => !prev)}
-        className="fixed bottom-6 right-6 bg-quanthos-magenta text-white rounded-full px-5 py-3 shadow-xl hover:bg-[#d633f0] flex items-center gap-2"
+        className="fixed bottom-6 right-6 bg-quanthos-magenta text-white rounded-full px-5 py-3 shadow-xl hover:bg-[#d633f0] flex items-center gap-2 z-[9999]"
       >
         <MessageCircle size={20} />
         Ask Quanthos
       </button>
 
-      <div className={`${isChatOpen ? 'block' : 'hidden'} fixed bottom-24 right-6 w-[min(420px,90vw)] bg-white border border-gray-200 rounded-2xl shadow-2xl`}>
+      <div className={`${isChatOpen ? 'block' : 'hidden'} fixed bottom-24 right-6 w-[min(420px,90vw)] bg-white border border-gray-200 rounded-2xl shadow-2xl z-[9999]`}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
           <div className="font-semibold text-quanthos-dark">
             Quanthos AI Assistant
