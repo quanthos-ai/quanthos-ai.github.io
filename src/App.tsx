@@ -44,52 +44,48 @@ function App() {
   const isRTL = lang === 'ar';
   const toggleLang = () => setLang(prev => (prev === 'en' ? 'ar' : 'en'));
   const isAssistantAvailable = true;
-  const faqs = [
-    {
-      keywords: ['growth', 'clinic', 'service', 'pillars', 'services', 'عيادة', 'الخدمات', 'ركيزة'],
-      answer: () => {
-        const items = t.services.items.map(i => `• ${i.title}`).join('\n');
-        return `${t.services.title}\n${items}\n${t.services.subtitle}`;
-      }
-    },
-    {
-      keywords: ['returnship', 'momken', 'women', 'seat', 'عودة', 'برنامج', 'ممكن'],
-      answer: () => {
-        const seg = t.talentFoundry.segments[0];
-        return `${seg.title}\n${seg.target}\n${seg.desc}\nDetails at the Returnship card in Talent Foundry.`;
-      }
-    },
-    {
-      keywords: ['contact', 'phone', 'whatsapp', 'email', 'اتصل', 'هاتف', 'واتساب', 'بريد'],
-      answer: () => `Egypt: +20 100 124 01 86\nEgypt: +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com`
-    },
-    {
-      keywords: ['about', 'quanthos', 'نبذة', 'عن', 'كوانثوث'],
-      answer: () => `${t.about.title}\n${t.about.overview}`
-    },
-    {
-      keywords: ['methodology', 'diagnose', 'activate', 'منهجية', 'التشخيص', 'التفعيل'],
-      answer: () => `${t.methodology.title}\n${t.methodology.description}`
-    },
-    {
-      keywords: ['portfolio', 'case', 'studies', 'محفظة', 'دراسات'],
-      answer: () => `${t.portfolio.title}\n${t.portfolio.subtitle}`
-    },
-    {
-      keywords: ['insight', 'insights', 'رؤى', 'أفكار'],
-      answer: () => `Insights cover diagnosis, leadership, AI in management, and financial analysis.`
-    },
-    {
-      keywords: ['book', 'consultation', 'calendly', 'احجز', 'استشارة'],
-      answer: () => `Use "Book Consultation" to open Calendly and schedule a session.`
-    }
-  ];
-  const answerFaq = (input: string) => {
+  // decision tree implemented via classifyIntent + answerFaq
+  function classifyIntent(input: string) {
     const txt = input.toLowerCase();
-    for (const f of faqs) {
-      if (f.keywords.some(k => txt.includes(k))) return f.answer();
+    const intents = [
+      { id: 'services', keys: ['services','clinic','growth','عيادة','خدمات','النمو','ركائز'] },
+      { id: 'returnship', keys: ['returnship','عودة','نساء','momken','seat','ممكن'] },
+      { id: 'contact', keys: ['contact','phone','email','whatsapp','اتصل','هاتف','بريد','واتساب'] },
+      { id: 'about', keys: ['about','quanthos','نبذة','عن','كوانثوس'] },
+      { id: 'methodology', keys: ['methodology','diagnose','activate','منهجية','تشخيص','تفعيل'] },
+      { id: 'portfolio', keys: ['portfolio','case','studies','محفظة','دراسات'] },
+      { id: 'insights', keys: ['insight','insights','رؤى','أفكار'] },
+      { id: 'booking', keys: ['book','consultation','calendly','احجز','استشارة'] },
+    ];
+    for (const it of intents) {
+      if (it.keys.some(k => txt.includes(k))) return it.id;
     }
-    return `Ask about ${t.services.title}, Returnship, or contact details.`;
+    return 'unknown';
+  }
+  const answerFaq = (input: string) => {
+    const intent = classifyIntent(input);
+    switch (intent) {
+      case 'services': {
+        const items = t.services.items.map(i => `• ${i.title}`).join('\n');
+        return `${t.services.title}\n${t.services.subtitle}\n${items}`;
+      }
+      case 'returnship':
+        return `${t.labels.returnshipTitle}\n${t.labels.returnshipDiscount}\n${t.labels.returnshipPitch}\n${t.labels.returnshipPrice}`;
+      case 'contact':
+        return `Egypt: +20 100 124 01 86\nEgypt: +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com`;
+      case 'about':
+        return `${t.about.title}\n${t.about.overview}`;
+      case 'methodology':
+        return `${t.methodology.title}\n${t.methodology.description}`;
+      case 'portfolio':
+        return `${t.portfolio.title}\n${t.portfolio.subtitle}`;
+      case 'insights':
+        return `Insights cover diagnosis, leadership, AI in management, and financial analysis.`;
+      case 'booking':
+        return `Use "${t.nav.contact}" to open Calendly and schedule a session.`;
+      default:
+        return `Ask about ${t.services.title}, ${t.talentFoundry.title}, ${t.nav.contact}, or ${t.nav.insights}.`;
+    }
   };
 
   function navigateTo(next: Page) {
@@ -117,7 +113,7 @@ function App() {
   }, []);
 
   const corporateContext =
-    "#QUANTHOS: Corporate Profile & Comprehensive Service Portfolio\n##1. Executive Overview\nQuanthos is a premier AI and Data Consultancy dedicated to bridging the critical gap between high-level data strategy and real-world business execution. In an era where businesses are drowning in data but starving for insights, Quanthos provides the missing link: Activation.\n\nWe distinguish ourselves from traditional consultancies by offering a full-stack solution. We do not simply deliver strategic reports and leave; we build the automated systems, engineer the workflows, and train the human talent required to turn those strategies into measurable competitive advantages.\n\nOur Mission: To transform raw data into a decisive engine for growth, efficiency, and market leadership.\nOur Tagline: Insight Diagnosed. Impact Engineered.\n\n##2. The \"Diagnose & Activate\" Methodology\nQuanthos was founded on a unique, dual-phased philosophy that combines scientific rigor with engineering precision. This methodology ensures that every technological investment yields a tangible business return.\n\n###Phase 1: The Diagnosis (The \"Quant\")\nLed by the principles of data science and precision analytics, we approach business challenges like a medical diagnosis. We do not guess; we analyze. By ingesting and modeling historical data, we identify the root causes of inefficiency, churn, or revenue loss. We move beyond \"what happened\" to determine \"why it happened\" and \"what will happen next.\"\n\n###Phase 2: The Activation (The \"Anthos\")\nLed by the principles of engineering and human behavioral psychology, we translate the diagnosis into action. This involves two distinct steps:\n\n1. System Engineering: Building the AI agents, automation workflows, and dashboards that fix the problem.\n2. Human Activation: Training the workforce with hands-on, role-specific skills to ensure they adopt the new tools and processes effectively.\n\n##3. Comprehensive Service Ecosystem\nOur services are organized into four interconnected pillars designed to modernize every aspect of the enterprise.\n\n###Pillar I: Data Strategy & Business Intelligence\nWe transform data from a static record-keeping tool into a dynamic asset for decision-making. We build the \"single source of truth\" that aligns the C-suite and operations.\n\n• Predictive Sales & Demand Forecasting\n• Executive Dashboards & BI Frameworks\n• AI-Readiness & Data Maturity Assessments\n• Customer Segmentation & Clustering\n\n###Pillar II: AI Automation & Workflow Orchestration\nWe serve as the architects of organizational efficiency. By deploying \"Digital Workers\" (AI Agents) and robotic process automation, we eliminate the bottleneck of manual tasks.\n\n• Robotic Process Automation (RPA)\n• Custom AI Agents\n• Workflow Integration\n• Error Reduction Protocols\n\n###Pillar III: Sales & Marketing Activation\nWe engineer the revenue engine of the future. By integrating AI into the sales funnel, we empower teams to close more deals faster and with higher precision.\n\n• AI-Powered Lead Generation\n• Hyper-Personalized Content Engines\n• CRM Process Engineering\n• Sentiment Analysis & NLP\n\n###Pillar IV: Corporate AI Training & Enablement\nTechnology is only as powerful as the people using it. We upskill the entire organization to build a resilient, AI-native culture.\n\n• The \"AI Co-Pilot\" Program\n• Role-Specific Workshops";
+    "#QUANTHOS: Corporate Profile & Comprehensive Service Portfolio\n##1. Executive Overview\nQuanthos is a premier AI and Data Consultancy dedicated to bridging the critical gap between high-level data strategy and real-world business execution. In an era where businesses are drowning in data but starving for insights, Quanthos provides the missing link: Activation.\n\nWe distinguish ourselves from traditional consultancies by offering a full-stack solution. We do not simply deliver strategic reports and leave; we build the automated systems, engineer the workflows, and train the human talent required to turn those strategies into measurable competitive advantages.\n\nOur Mission: To transform raw data into a decisive engine for growth, efficiency, and market leadership.\nOur Tagline: Insight Diagnosed. Impact Engineered.\n\n##2. The \"Diagnose & Activate\" Methodology\nQuanthos was founded on a unique, dual-phased philosophy that combines scientific rigor with engineering precision. This methodology ensures that every technological investment yields a tangible business return.\n\n###Phase 1: The Diagnosis (The \"Quant\")\nLed by the principles of data science and precision analytics, we approach business challenges like a medical diagnosis. We do not guess; we analyze. By ingesting and modeling historical data, we identify the root causes of inefficiency, churn, or revenue loss. We move beyond \"what happened\" to determine \"why it happened\" and \"what will happen next.\"\n\n###Phase 2: The Activation (The \"Anthos\")\nLed by the principles of engineering and human behavioral psychology, we translate the diagnosis into action. This involves two distinct steps:\n\n1. System Engineering: Building the AI agents, automation workflows, and dashboards that fix the problem.\n2. Human Activation: Training the workforce with hands-on, role-specific skills to ensure they adopt the new tools and processes effectively.\n\n##3. Comprehensive Service Ecosystem\nOur services are organized into four interconnected pillars designed to modernize every aspect of the enterprise:\n\n###Pillar I: Data Strategy & Business Intelligence (The Single Source of Truth)\nQuanthos transforms fragmented data into a clear, actionable roadmap for the C-suite. We specialize in building the infrastructure required for high-stakes decision-making.\n- Predictive Sales & Demand Forecasting: Moving from reactive to proactive inventory and resource planning.\n- Executive Dashboards: Real-time visibility into KPIs across marketing, sales, and operations using Power BI or Tableau.\n- AI-Readiness Assessments: Evaluating data maturity to ensure a smooth transition into large-scale AI implementation.\n- Customer Segmentation & Clustering: Identifying high-value cohorts to optimize marketing spend.\n\n###Pillar II: AI Automation & Digital Workers (The Efficiency Architects)\nWe engineer the workflows that eliminate human error and free up high-value talent for strategic work.\n- Robotic Process Automation (RPA): Automating high-volume, repetitive tasks in finance, HR, and logistics.\n- Custom AI Agents & Web Scrapers: Building specialized digital workers that can research, synthesize, and report autonomously.\n- Workflow Orchestration: Integrating disparate systems (CRM, ERP, Slack) into a seamless, automated ecosystem.\n- Zero-Error Protocols: Implementing validation layers that ensure 100% data accuracy in automated processes.\n\n###Pillar III: Sales & Marketing Engineering (The Revenue Engine)\nQuanthos re-imagines the commercial landscape by applying engineering principles to customer acquisition and retention.\n- AI-Powered Lead Generation & Scoring: Identifying and qualifying prospects with machine-learning precision.\n- Hyper-Personalized Content Engines: Using LLMs to generate tailored communication at scale.\n- CRM Process Engineering: Redesigning sales pipelines to ensure no lead falls through the cracks.\n- Sentiment Analysis & NLP: Using natural language processing to diagnose churn risk before it happens.\n\n###Pillar IV: Corporate Training & Human Enablement (The Resilient Culture)\nWe believe that technology is only as effective as the people using it. We specialize in \"Activation Training\"—hands-on, role-specific enablement.\n- The \"AI Co-Pilot\" Program: Training employees to use Generative AI for personal productivity (writing, coding, research).\n- Role-Specific AI Workshops: Tailored sessions for HR, Finance, and Sales teams on using specialized AI tools.\n- Executive AI Strategy Briefings: Helping leadership teams understand the competitive landscape of AI.\n- Train-the-Trainer Modules: Building internal capacity to sustain technological adoption.\n\n##4. The Talent Foundry\nQuanthos serves as a bridge for the workforce of tomorrow. We are committed to social and economic impact through specialized enablement tracks:\n- The \"Returnship\" Program: A focused enablement track for women returning to work after a career break, providing AI upskilling and practical confidence-building.\n- Future Leaders Track: Helping fresh graduates bridge the gap between academic theory and the practical demands of the modern, AI-native job market.\n- Corporate Upskilling: Empowering existing professionals to master the tools of the future to remain competitive in their fields.\n\n##5. Why Quanthos?\nIn a market saturated with theoretical consultants, Quanthos is the \"Clinic of Growth.\" We don't just tell you what is wrong; we engineer the cure. We are the architects of the automated, data-driven, and human-empowered future of business.\n\nContact Information:\nEgypt: +20 100 124 01 86 | +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com";
 
   // Do not show internal context to users; only use it when sending to the model.
 
@@ -214,8 +210,8 @@ function App() {
             <button onClick={() => goToSection('talent')} className="hover:text-quanthos-magenta transition-colors">{t.nav.talent}</button>
             <button onClick={() => goToSection('services')} className="hover:text-quanthos-magenta transition-colors">{t.nav.services}</button>
             <button onClick={() => goToSection('portfolio')} className="hover:text-quanthos-magenta transition-colors">{t.nav.portfolio}</button>
-            <button onClick={() => navigateTo('insights')} className="hover:text-quanthos-magenta transition-colors">Insights</button>
-            <button onClick={() => navigateTo('contact')} className="hover:text-quanthos-magenta transition-colors">Contact Us</button>
+            <button onClick={() => navigateTo('insights')} className="hover:text-quanthos-magenta transition-colors">{t.nav.insights}</button>
+            <button onClick={() => navigateTo('contact')} className="hover:text-quanthos-magenta transition-colors">{t.labels.footerContact}</button>
           </div>
           <div className="flex items-center gap-3">
           <button 
@@ -242,6 +238,7 @@ function App() {
       {/* Hero Section */}
        <header className="relative pt-36 pb-24 px-6 bg-gradient-main text-white text-center">
          <div className="max-w-5xl mx-auto">
+           <div className="absolute left-1/2 -translate-x-1/2 top-36 w-[420px] h-[420px] rounded-full blur-[100px] opacity-60 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(227,68,255,0.35), rgba(109,124,255,0.2))' }}></div>
            <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-quanthos-lightViolet text-sm font-medium mb-8 backdrop-blur-sm">
              {t.methodology.title}
            </div>
@@ -258,26 +255,38 @@ function App() {
                );
              })()}
            </div>
-           <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">Bridging the critical gap between high-level data strategy and real-world business execution.</p>
-           <div className="flex flex-col sm:flex-row justify-center gap-5">
-            <a onClick={() => goToSection('services')} className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
-              Visit the Growth Clinic
+          <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">{t.hero.sub}</p>
+          <div className="flex flex-col sm:flex-row justify-center gap-5">
+           <a onClick={() => goToSection('services')} className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
+              {t.hero.cta_primary}
             </a>
             <a onClick={() => goToSection('talent')} className="px-8 py-4 rounded-xl font-bold transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
-              Join the Talent Foundary
+              {t.hero.cta_secondary}
             </a>
-           </div>
+          </div>
            {showReturnship && (
-             <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-4 rounded-2xl shadow-xl max-w-sm text-center scale-[0.85]">
-               <button aria-label="Close" className="absolute top-2 right-2 text-white/80 hover:text-white" onClick={() => setShowReturnship(false)}>✕</button>
-               <div className="font-bold mb-1">The "Returnship" Program</div>
-               <div className="text-sm">Limited-time: 50% discount if registered before end of December or referred by "Momken" Committee.</div>
-               <div className="text-sm mt-2"><span className="font-bold">1500 L.E</span> total — 3 Practical Sessions for AI <span className="uppercase">Upskilling</span> and <span className="uppercase">Confidence-Building</span>.</div>
-               <a href="#returnship" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl">
-                 {t.labels.secureSeat}
-               </a>
-             </div>
-           )}
+            <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-5 rounded-2xl shadow-xl max-w-sm text-center scale-[0.85]">
+              <button aria-label="Close" className="absolute top-2 right-2 text-white/80 hover:text-white" onClick={() => setShowReturnship(false)}>✕</button>
+              <div className="relative">
+                <div className="absolute left-1/2 -translate-x-1/2 -top-6 w-40 h-40 rounded-full blur-2xl opacity-60 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.2), rgba(227,68,255,0.1))' }}></div>
+                <div className="font-bold mb-1">{t.labels.returnshipTitle}</div>
+              </div>
+              {t.labels.returnshipAdImageUrl ? (
+                <img src={t.labels.returnshipAdImageUrl} alt="Returnship Program Offer" className="mt-3 rounded-xl w-full h-auto border border-white/20" />
+              ) : (
+                <>
+                  <div className="text-sm">{t.labels.returnshipDiscount}</div>
+                  <div className="mt-3 rounded-xl px-4 py-3 bg-white/10 border border-white/20">
+                    <div className="text-sm font-semibold">{t.labels.returnshipPitch}</div>
+                    <div className="text-sm mt-2">{t.labels.returnshipPrice}</div>
+                  </div>
+                </>
+              )}
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl" target="_blank" rel="noopener noreferrer">
+                {t.labels.secureSeat}
+              </a>
+            </div>
+          )}
          </div>
        </header>
 
@@ -330,7 +339,7 @@ function App() {
                 <p className="text-sm font-semibold text-quanthos-magenta mb-4">{seg.target}</p>
                 <p className="text-gray-600 leading-relaxed text-sm">{seg.desc}</p>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-auto mx-auto inline-block px-4 py-2 rounded-lg text-white font-semibold" style={{ backgroundColor: '#634e86' }}>
-                  Join Now
+                  {t.labels.joinNow}
                 </a>
               </div>
             ))}
@@ -410,7 +419,7 @@ function App() {
                   <p className="text-quanthos-lightViolet">{t.portfolio.subtitle}</p>
                   <div className="mt-6">
                     <a href="Quanthos Portfolio.pdf" target="_blank" className="inline-block px-6 py-3 bg-quanthos-magenta text-white rounded-xl font-bold shadow-xl">
-                      Download Full Portfolio
+                      {t.portfolio.download}
                     </a>
                   </div>
                 </div>
@@ -474,7 +483,7 @@ function App() {
           </section>
           <section className="py-16 px-6 bg-white">
             <div className="max-w-4xl mx-auto text-center mb-10">
-              <h2 className="text-3xl font-bold text-quanthos-dark">Executive Leadership</h2>
+              <h2 className="text-3xl font-bold text-quanthos-dark">{t.team.title}</h2>
             </div>
             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -502,7 +511,7 @@ function App() {
         <main className="pt-28">
           <section className="px-6 py-16 bg-quanthos-dark text-white">
             <div className="max-w-5xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Insights</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.nav.insights}</h1>
               <p className="text-quanthos-lightViolet">Strategic ideas on diagnosis, leadership, and activation.</p>
             </div>
           </section>
@@ -530,14 +539,14 @@ function App() {
         <main className="pt-28">
           <section className="px-6 py-16 bg-quanthos-dark text-white">
             <div className="max-w-5xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-              <p className="text-quanthos-lightViolet">Reach us directly via phone, WhatsApp, or email.</p>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.labels.footerContact}</h1>
+              <p className="text-quanthos-lightViolet">{t.contact.subtitle}</p>
             </div>
           </section>
           <section className="py-16 px-6 bg-white">
             <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
               <div className="p-6 rounded-2xl bg-quanthos-panel">
-                <div className="font-semibold text-quanthos-dark mb-1">Egypt</div>
+                <div className="font-semibold text-quanthos-dark mb-1">{t.labels.countryEgypt}</div>
                 <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 124 01 86</div>
                 <a href="https://wa.me/201001240186" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
                   <WhatsAppIcon size={20} className="text-green-600" />
@@ -550,7 +559,7 @@ function App() {
                 </a>
               </div>
               <div className="p-6 rounded-2xl bg-quanthos-panel">
-                <div className="font-semibold text-quanthos-dark mb-1">UAE</div>
+                <div className="font-semibold text-quanthos-dark mb-1">{t.labels.countryUAE}</div>
                 <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +971 52 281 8558</div>
                 <a href="https://wa.me/971522818558" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
                   <WhatsAppIcon size={20} className="text-green-600" />
@@ -565,15 +574,15 @@ function App() {
       )}
 
       {/* Footer */}
-      <footer className="bg-gradient-main text-white py-16">
+      <footer className="text-white py-16 bg-[#493570]">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
           <div>
             <h4 className="font-bold mb-3">{t.labels.footerContact}</h4>
             <div className="text-white/80 text-sm space-y-2">
-              <div className="font-semibold">Egypt</div>
+              <div className="font-semibold">{t.labels.countryEgypt}</div>
               <div className="flex items-center gap-2"><Phone size={14} /> +20 100 124 01 86 <a href="https://wa.me/201001240186" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
               <div className="flex items-center gap-2"><Phone size={14} /> +20 100 900 94 82 <a href="https://wa.me/201009009482" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
-              <div className="font-semibold mt-2">UAE</div>
+              <div className="font-semibold mt-2">{t.labels.countryUAE}</div>
               <div className="flex items-center gap-2"><Phone size={14} /> +971 52 281 8558 <a href="https://wa.me/971522818558" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
               <div className="flex items-center gap-2 mt-2"><Mail size={14} /> osama_naguib@hotmail.com</div>
             </div>
@@ -581,22 +590,22 @@ function App() {
           <div>
             <h4 className="font-bold mb-3">{t.labels.footerQuickLinks}</h4>
             <div className="text-white/80 text-sm space-y-2">
-              <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">About</button>
-              <button onClick={()=>goToSection('methodology')} className="hover:text-quanthos-lightViolet block">Methodology</button>
-              <button onClick={()=>goToSection('talent')} className="hover:text-quanthos-lightViolet block">Talent Foundry</button>
-              <button onClick={()=>goToSection('services')} className="hover:text-quanthos-lightViolet block">Services</button>
-              <button onClick={()=>goToSection('portfolio')} className="hover:text-quanthos-lightViolet block">Portfolio</button>
-              <button onClick={()=>navigateTo('insights')} className="hover:text-quanthos-lightViolet block">Insights</button>
-              <button onClick={()=>navigateTo('contact')} className="hover:text-quanthos-lightViolet block">Contact Us</button>
+              <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">{t.nav.about}</button>
+              <button onClick={()=>goToSection('methodology')} className="hover:text-quanthos-lightViolet block">{t.nav.methodology}</button>
+              <button onClick={()=>goToSection('talent')} className="hover:text-quanthos-lightViolet block">{t.nav.talent}</button>
+              <button onClick={()=>goToSection('services')} className="hover:text-quanthos-lightViolet block">{t.nav.services}</button>
+              <button onClick={()=>goToSection('portfolio')} className="hover:text-quanthos-lightViolet block">{t.nav.portfolio}</button>
+              <button onClick={()=>navigateTo('insights')} className="hover:text-quanthos-lightViolet block">{t.nav.insights}</button>
+              <button onClick={()=>navigateTo('contact')} className="hover:text-quanthos-lightViolet block">{t.labels.footerContact}</button>
             </div>
           </div>
           <div className="text-right">
             <img src={logo} alt="Quanthos" style={{ height: '9.375rem' }} className="ml-auto opacity-90 cursor-pointer" onClick={() => { window.location.href = '/'; window.location.reload(); }} />
-            <div className="text-white/70 text-2xl mt-2" style={{ width: '20rem' }}>{t.labels.footerTagline}</div>
+            <div className="text-white/70 text-[150%] mt-2" style={{ width: '20rem' }}>{t.labels.footerTagline}</div>
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-4 text-center text-white/70 text-sm max-w-md mx-auto">
-          © Quanthos. All rights reserved.
+          {t.labels.copyright}
         </div>
       </footer>
 

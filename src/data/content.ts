@@ -9,6 +9,15 @@ export const content = {
       collaborators: "Collaborators",
       secureSeat: "Secure your seat",
       askQuanthos: "Ask Quanthos",
+      joinNow: "Join Now",
+      countryEgypt: "Egypt",
+      countryUAE: "UAE",
+      returnshipTitle: "The \"Returnship\" Program",
+      returnshipDiscount: "Limited-time: 50% discount if registered before end of December or referred by \"Momken\" Committee.",
+      returnshipPrice: "1500 L.E total — 3 Practical Sessions for AI Upskilling and Confidence-Building.",
+      returnshipPitch: "A focused enablement track for women returning to work—AI upskilling with practical confidence-building so you can re-enter stronger than before.",
+      returnshipAdImageUrl: "",
+      copyright: "© Quanthos. All rights reserved.",
     },
     nav: {
       about: "About",
@@ -17,13 +26,14 @@ export const content = {
       services: "Growth Clinic",
       portfolio: "Case Studies",
       team: "Leadership",
+      insights: "Insights",
       contact: "Book Consultation",
     },
     hero: {
       tagline: "Insight Diagnosed. Impact Engineered.",
-      sub: "Bridging the critical gap between high-level data strategy and real-world business execution. We do not simply deliver reports; we build the systems and train the talent to activate them.",
-      cta_primary: "Explore Services",
-      cta_secondary: "Join the Foundry",
+      sub: "Bridging the critical gap between high-level data strategy and real-world business execution.",
+      cta_primary: "Visit the Growth Clinic",
+      cta_secondary: "Join the Talent Foundary",
     },
     about: {
       title: "About Quanthos",
@@ -32,6 +42,9 @@ export const content = {
       whatIsDesc: "A fusion of “quant” and “ethos”—quantitative insight with trustworthy principles. Every recommendation is both data-driven and principled.",
       philosophyTitle: "Our Philosophy",
       philosophyDesc: "We combine practical wisdom with engineering rigor. Data with principles—decisions anchored in measurable insight and integrity."
+    },
+    contact: {
+      subtitle: "Reach us directly via phone, WhatsApp, or email."
     },
     // SECTION 1: The Core Philosophy
     methodology: {
@@ -151,6 +164,7 @@ export const content = {
     portfolio: {
       title: "Portfolio of Impact",
       subtitle: "Proven Case Studies",
+      download: "Download Full Portfolio",
       orgs: [
         {
           title: "Technology Company",
@@ -256,6 +270,15 @@ export const content = {
       collaborators: "الشركاء",
       secureSeat: "احجز مقعدك",
       askQuanthos: "اسأل كوانثوس",
+      joinNow: "انضم الآن",
+      countryEgypt: "مصر",
+      countryUAE: "الإمارات",
+      returnshipTitle: "برنامج العودة للعمل",
+      returnshipDiscount: "لفترة محدودة: خصم 50٪ عند التسجيل قبل نهاية ديسمبر أو عبر إحالة لجنة \"ممكن\".",
+      returnshipPrice: "الإجمالي 1500 جنيه — 3 جلسات عملية في الذكاء الاصطناعي لرفع المهارات وبناء الثقة.",
+      returnshipPitch: "مسار تمكيني مُركّز للنساء العائدات إلى سوق العمل—مهارات ذكاء اصطناعي عملية وبناء ثقة حقيقي لتعودي أقوى مما كنتِ.",
+      returnshipAdImageUrl: "",
+      copyright: "© كوانثوس. جميع الحقوق محفوظة.",
     },
     nav: {
       about: "نبذة عنا",
@@ -264,13 +287,14 @@ export const content = {
       services: "عيادة النمو",
       portfolio: "دراسات الحالة",
       team: "القيادة",
+      insights: "الرؤى",
       contact: "احجز استشارة",
     },
     hero: {
       tagline: "تشخيص مدروس. تأثير مُهندس.",
-      sub: "نحوّل الاستراتيجية إلى تنفيذ فعلي. لا نكتب التقارير فقط، بل نبني الأنظمة وندرب الفرق على تفعيلها.",
-      cta_primary: "استكشف الخدمات",
-      cta_secondary: "انضم إلى المصنع",
+      sub: "نجمع الافضل ما بين العالمين، عالم الاستراتيجيات المحكمة المبنية على البيانات الحقيقية، و عالم هندسة الخطط عالية الدقة و الواقعية",
+      cta_primary: "تعرّف على عيادة النمو",
+      cta_secondary: "انضم إلى مصنع المواهب",
     },
     about: {
       title: "عن كوانثوس",
@@ -279,6 +303,9 @@ export const content = {
       whatIsDesc: "مزيج من “كوانت” و“إيثوس”: بصيرة كمية مقرونة بمبادئ موثوقة. كل توصية مبنية على البيانات ومنضبطة بالقيم.",
       philosophyTitle: "فلسفتنا",
       philosophyDesc: "نمزج الحكمة العملية بالدقة الهندسية. بيانات مع مبادئ—قرارات تستند إلى قياس موثوق ونزاهة."
+    },
+    contact: {
+      subtitle: "تواصل معنا مباشرة عبر الهاتف أو واتساب أو البريد الإلكتروني."
     },
     methodology: {
       title: "منهجية “التشخيص والتفعيل”",
@@ -305,17 +332,18 @@ export const content = {
     },
     services: {
       title: "عيادة النمو",
-      subtitle: "أعمدة مترابطة لتحديث المؤسسة.",
+      subtitle: "4 ركائز مترابطة لتحقيق النمو المستدام للمؤسسات و للافراد",
       items: [
-        { title: "الركيزة I: استراتيجية البيانات والذكاء", desc: "مصدر واحد للحقيقة", points: ["تنبؤ المبيعات", "لوحات تنفيذية", "جاهزية الذكاء الاصطناعي", "تقسيم العملاء"] },
+        { title: "الركيزة I: بناء الاستراتيجية و ذكاء الاعمال", desc: "مصدر واحد للحقيقة", points: ["تنبؤ المبيعات", "لوحات تنفيذية", "جاهزية الذكاء الاصطناعي", "تقسيم العملاء"] },
         { title: "الركيزة II: الأتمتة والوكالات الرقمية", desc: "كفاءة مؤسسية", points: ["RPA", "وكلاء ويب", "تكامل الأنظمة", "تقليل الأخطاء"] },
-        { title: "الركيزة III: التسويق والمبيعات", desc: "محرك الإيرادات", points: ["توليد العملاء", "محتوى مخصص", "هندسة CRM", "تحليل المشاعر"] },
+        { title: "الركيزة III: التسويق والمبيعات", desc: "محرك الإيرادات", points: ["توليد العملاء", "محتوى مخصص", "هندسة CRM", "تحليل المشاعر و NLP للتنبؤ بمخاطر فقدان العملاء"] },
         { title: "الركيزة IV: التدريب والتمكين", desc: "ثقافة أصلية بالذكاء", points: ["برنامج المساعد", "ورش خاصة", "إحاطات تنفيذية", "تدريب المدربين"] }
       ]
     },
     portfolio: {
       title: "محفظة التأثير",
       subtitle: "دراسات حالة مثبتة",
+      download: "حمل برتفوليو الشركة كاملا",
       orgs: [
         { title: "بيع السيارات", metric: "خفض 25%", subMetric: "تأخيرات الخدمة", desc: "تحسين المخزون التنبؤي", detail: "تقليل المخزون الراكد 15%." },
         { title: "المالية", metric: "توفير 95%", subMetric: "دقة 100%", desc: "مطابقة الفواتير آليًا", detail: "استبدال 40 ساعة شهرية." }
