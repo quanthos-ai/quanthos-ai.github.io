@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, MessageCircle, Send, X, Globe, Phone, Mail } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail } from 'lucide-react';
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
 import Chatbot from './components/Chatbot';
@@ -34,60 +34,11 @@ function App() {
   const [lang, setLang] = useState<'en' | 'ar'>('en');
   const [page, setPage] = useState<Page>('home');
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatInput, setChatInput] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  const [chatMessages, setChatMessages] = useState<{ role: 'user' | 'model'; text: string }[]>([]);
-  const chatRef = useRef<HTMLDivElement | null>(null);
   const [showReturnship, setShowReturnship] = useState(true);
 
   const t = content[lang];
   const isRTL = lang === 'ar';
   const toggleLang = () => setLang(prev => (prev === 'en' ? 'ar' : 'en'));
-  const isAssistantAvailable = true;
-  // decision tree implemented via classifyIntent + answerFaq
-  function classifyIntent(input: string) {
-    const txt = input.toLowerCase();
-    const intents = [
-      { id: 'services', keys: ['services','clinic','growth','عيادة','خدمات','النمو','ركائز'] },
-      { id: 'returnship', keys: ['returnship','عودة','نساء','momken','seat','ممكن'] },
-      { id: 'contact', keys: ['contact','phone','email','whatsapp','اتصل','هاتف','بريد','واتساب'] },
-      { id: 'about', keys: ['about','quanthos','نبذة','عن','كوانثوس'] },
-      { id: 'methodology', keys: ['methodology','diagnose','activate','منهجية','تشخيص','تفعيل'] },
-      { id: 'portfolio', keys: ['portfolio','case','studies','محفظة','دراسات'] },
-      { id: 'insights', keys: ['insight','insights','رؤى','أفكار'] },
-      { id: 'booking', keys: ['book','consultation','calendly','احجز','استشارة'] },
-    ];
-    for (const it of intents) {
-      if (it.keys.some(k => txt.includes(k))) return it.id;
-    }
-    return 'unknown';
-  }
-  const answerFaq = (input: string) => {
-    const intent = classifyIntent(input);
-    switch (intent) {
-      case 'services': {
-        const items = t.services.items.map(i => `• ${i.title}`).join('\n');
-        return `${t.services.title}\n${t.services.subtitle}\n${items}`;
-      }
-      case 'returnship':
-        return `${t.labels.returnshipTitle}\n${t.labels.returnshipDiscount}\n${t.labels.returnshipPitch}\n${t.labels.returnshipPrice}`;
-      case 'contact':
-        return `Egypt: +20 100 124 01 86\nEgypt: +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com`;
-      case 'about':
-        return `${t.about.title}\n${t.about.overview}`;
-      case 'methodology':
-        return `${t.methodology.title}\n${t.methodology.description}`;
-      case 'portfolio':
-        return `${t.portfolio.title}\n${t.portfolio.subtitle}`;
-      case 'insights':
-        return `Insights cover diagnosis, leadership, AI in management, and financial analysis.`;
-      case 'booking':
-        return `Use "${t.nav.contact}" to open Calendly and schedule a session.`;
-      default:
-        return `Ask about ${t.services.title}, ${t.talentFoundry.title}, ${t.nav.contact}, or ${t.nav.insights}.`;
-    }
-  };
 
   function navigateTo(next: Page) {
     setPage(next);
@@ -113,79 +64,9 @@ function App() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  const corporateContext =
     "#QUANTHOS: Corporate Profile & Comprehensive Service Portfolio\n##1. Executive Overview\nQuanthos is a premier AI and Data Consultancy dedicated to bridging the critical gap between high-level data strategy and real-world business execution. In an era where businesses are drowning in data but starving for insights, Quanthos provides the missing link: Activation.\n\nWe distinguish ourselves from traditional consultancies by offering a full-stack solution. We do not simply deliver strategic reports and leave; we build the automated systems, engineer the workflows, and train the human talent required to turn those strategies into measurable competitive advantages.\n\nOur Mission: To transform raw data into a decisive engine for growth, efficiency, and market leadership.\nOur Tagline: Insight Diagnosed. Impact Engineered.\n\n##2. The \"Diagnose & Activate\" Methodology\nQuanthos was founded on a unique, dual-phased philosophy that combines scientific rigor with engineering precision. This methodology ensures that every technological investment yields a tangible business return.\n\n###Phase 1: The Diagnosis (The \"Quant\")\nLed by the principles of data science and precision analytics, we approach business challenges like a medical diagnosis. We do not guess; we analyze. By ingesting and modeling historical data, we identify the root causes of inefficiency, churn, or revenue loss. We move beyond \"what happened\" to determine \"why it happened\" and \"what will happen next.\"\n\n###Phase 2: The Activation (The \"Anthos\")\nLed by the principles of engineering and human behavioral psychology, we translate the diagnosis into action. This involves two distinct steps:\n\n1. System Engineering: Building the AI agents, automation workflows, and dashboards that fix the problem.\n2. Human Activation: Training the workforce with hands-on, role-specific skills to ensure they adopt the new tools and processes effectively.\n\n##3. Comprehensive Service Ecosystem\nOur services are organized into four interconnected pillars designed to modernize every aspect of the enterprise:\n\n###Pillar I: Data Strategy & Business Intelligence (The Single Source of Truth)\nQuanthos transforms fragmented data into a clear, actionable roadmap for the C-suite. We specialize in building the infrastructure required for high-stakes decision-making.\n- Predictive Sales & Demand Forecasting: Moving from reactive to proactive inventory and resource planning.\n- Executive Dashboards: Real-time visibility into KPIs across marketing, sales, and operations using Power BI or Tableau.\n- AI-Readiness Assessments: Evaluating data maturity to ensure a smooth transition into large-scale AI implementation.\n- Customer Segmentation & Clustering: Identifying high-value cohorts to optimize marketing spend.\n\n###Pillar II: AI Automation & Digital Workers (The Efficiency Architects)\nWe engineer the workflows that eliminate human error and free up high-value talent for strategic work.\n- Robotic Process Automation (RPA): Automating high-volume, repetitive tasks in finance, HR, and logistics.\n- Custom AI Agents & Web Scrapers: Building specialized digital workers that can research, synthesize, and report autonomously.\n- Workflow Orchestration: Integrating disparate systems (CRM, ERP, Slack) into a seamless, automated ecosystem.\n- Zero-Error Protocols: Implementing validation layers that ensure 100% data accuracy in automated processes.\n\n###Pillar III: Sales & Marketing Engineering (The Revenue Engine)\nQuanthos re-imagines the commercial landscape by applying engineering principles to customer acquisition and retention.\n- AI-Powered Lead Generation & Scoring: Identifying and qualifying prospects with machine-learning precision.\n- Hyper-Personalized Content Engines: Using LLMs to generate tailored communication at scale.\n- CRM Process Engineering: Redesigning sales pipelines to ensure no lead falls through the cracks.\n- Sentiment Analysis & NLP: Using natural language processing to diagnose churn risk before it happens.\n\n###Pillar IV: Corporate Training & Human Enablement (The Resilient Culture)\nWe believe that technology is only as effective as the people using it. We specialize in \"Activation Training\"—hands-on, role-specific enablement.\n- The \"AI Co-Pilot\" Program: Training employees to use Generative AI for personal productivity (writing, coding, research).\n- Role-Specific AI Workshops: Tailored sessions for HR, Finance, and Sales teams on using specialized AI tools.\n- Executive AI Strategy Briefings: Helping leadership teams understand the competitive landscape of AI.\n- Train-the-Trainer Modules: Building internal capacity to sustain technological adoption.\n\n##4. The Talent Foundry\nQuanthos serves as a bridge for the workforce of tomorrow. We are committed to social and economic impact through specialized enablement tracks:\n- The \"Returnship\" Program: A focused enablement track for women returning to work after a career break, providing AI upskilling and practical confidence-building.\n- Future Leaders Track: Helping fresh graduates bridge the gap between academic theory and the practical demands of the modern, AI-native job market.\n- Corporate Upskilling: Empowering existing professionals to master the tools of the future to remain competitive in their fields.\n\n##5. Why Quanthos?\nIn a market saturated with theoretical consultants, Quanthos is the \"Clinic of Growth.\" We don't just tell you what is wrong; we engineer the cure. We are the architects of the automated, data-driven, and human-empowered future of business.\n\nContact Information:\nEgypt: +20 100 124 01 86 | +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com";
 
-  // Do not show internal context to users; only use it when sending to the model.
 
-  useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  }, [chatMessages, isSending]);
-
-  async function sendToGemini() {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
-    if (!apiKey) {
-      const last = chatMessages[chatMessages.length - 1];
-      const userText = last?.text || '';
-      const fallbackAssistant = (input: string) => answerFaq(input);
-      setChatMessages(prev => [
-        ...prev,
-        { role: 'model', text: fallbackAssistant(userText) },
-      ]);
-      return;
-    }
-    setIsSending(true);
-    try {
-      const endpoint = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-      const body = {
-        contents: [
-          { role: 'user', parts: [{ text: corporateContext }] },
-          ...chatMessages.map(m => ({ role: m.role, parts: [{ text: m.text }] })),
-        ],
-        generationConfig: {
-          temperature: 0.7,
-          topP: 0.95,
-          topK: 40,
-          maxOutputTokens: 1024,
-        },
-      };
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText);
-      }
-      type GeminiPart = { text?: string };
-      type GeminiContent = { parts?: GeminiPart[] };
-      type GeminiCandidate = { content?: GeminiContent };
-      type GeminiResponse = { candidates?: GeminiCandidate[] };
-      const data: GeminiResponse = await res.json();
-      const text =
-        (data.candidates?.[0]?.content?.parts || [])
-          .map(p => p.text || '')
-          .join('') || 'Sorry, I could not generate a response.';
-      setChatMessages(prev => [...prev, { role: 'model', text }]);
-    } catch (e: unknown) {
-      setChatMessages(prev => [
-        ...prev,
-        { role: 'model', text: 'Error contacting AI service.' },
-      ]);
-    } finally {
-      setIsSending(false);
-    }
-  }
-
-  async function handleSend() {
-    if (!chatInput.trim()) return;
-    setChatMessages(prev => [...prev, { role: 'user', text: chatInput.trim() }]);
-    setChatInput('');
-    await sendToGemini();
-  }
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'} className="min-h-screen bg-white text-quanthos-dark font-sans overflow-x-hidden">
@@ -258,7 +139,7 @@ function App() {
            <a onClick={() => goToSection('services')} className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
               {t.hero.cta_primary}
             </a>
-            <a onClick={() => goToSection('talent')} className="px-8 py-4 rounded-xl font-bold transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
+           <a onClick={() => goToSection('talent')} className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
               {t.hero.cta_secondary}
             </a>
           </div>
@@ -614,7 +495,6 @@ function App() {
             <h4 className="font-bold mb-3">{t.labels.footerQuickLinks}</h4>
             <div className="text-white/80 text-sm space-y-2">
               <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">{t.nav.about}</button>
-              <button onClick={()=>goToSection('methodology')} className="hover:text-quanthos-lightViolet block">{t.nav.methodology}</button>
               <button onClick={()=>goToSection('talent')} className="hover:text-quanthos-lightViolet block">{t.nav.talent}</button>
               <button onClick={()=>goToSection('services')} className="hover:text-quanthos-lightViolet block">{t.nav.services}</button>
               <button onClick={()=>goToSection('portfolio')} className="hover:text-quanthos-lightViolet block">{t.nav.portfolio}</button>
@@ -632,64 +512,6 @@ function App() {
         </div>
       </footer>
 
-      <button
-        onClick={() => setIsChatOpen(prev => !prev)}
-        className="fixed bottom-6 right-6 bg-quanthos-magenta text-white rounded-full px-5 py-3 shadow-xl hover:bg-[#d633f0] flex items-center gap-2 z-[9999]"
-      >
-        <MessageCircle size={20} />
-        {t.labels.askQuanthos}
-      </button>
-
-      <div className={`${isChatOpen ? 'block' : 'hidden'} fixed bottom-24 right-6 w-[min(420px,90vw)] bg-white border border-gray-200 rounded-2xl shadow-2xl z-[9999]`}>
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-          <div className="font-semibold text-quanthos-dark">
-            Quanthos AI Assistant
-            {!isAssistantAvailable && <span className="ml-2 text-xs text-gray-500">(offline)</span>}
-          </div>
-          <button onClick={() => setIsChatOpen(false)} className="text-gray-500 hover:text-quanthos-dark">
-            <X size={18} />
-          </button>
-        </div>
-        <div ref={chatRef} className="h-80 overflow-y-auto p-4 space-y-3">
-          {chatMessages.map((m, idx) => (
-            <div key={idx} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`${m.role === 'user' ? 'bg-quanthos-magenta text-white' : 'bg-gray-100 text-quanthos-dark'} px-4 py-2 rounded-xl max-w-[75%] whitespace-pre-wrap`}>
-                {m.text}
-              </div>
-            </div>
-          ))}
-          {isSending && (
-            <div className="flex justify-start">
-              <div className="bg-gray-100 text-quanthos-dark px-4 py-2 rounded-xl">
-                Thinking...
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="flex items-center gap-2 p-3 border-t border-gray-100">
-          <input
-            value={chatInput}
-            onChange={e => setChatInput(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="Ask about Quanthos services, methodology, training..."
-            className="flex-1 border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-quanthos-magenta"
-          />
-          <button
-            onClick={handleSend}
-            disabled={isSending || !isAssistantAvailable}
-            className="bg-quanthos-magenta text-white rounded-xl px-3 py-2 hover:bg-[#d633f0] disabled:opacity-50 flex items-center gap-1"
-          >
-            <Send size={16} />
-            Send
-          </button>
-        </div>
-      </div>
-
       <PopupModal 
         url="https://calendly.com/osbazoka/short-consultation-session" 
         rootElement={document.getElementById('root')!}
@@ -697,7 +519,7 @@ function App() {
         onModalClose={() => setIsCalendlyOpen(false)}
       />
 
-      <Chatbot />
+      <Chatbot lang={lang} t={t} />
     </div>
   );
 }

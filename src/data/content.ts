@@ -258,7 +258,34 @@ export const content = {
         role: "Co-Founder | Marketing & Human Activation Lead",
         bio: "Applying an 'engineer's mindset' to the commercial landscape. Over 20 years delivering high-impact programs for SMEs and AUC, reverse-engineering business challenges."
       }
-    }
+    },
+    faqs: [
+      {
+        q: "What is the Returnship Program price?",
+        a: "600 L.E total — 3 Practical Sessions for AI Upskilling and Confidence-Building.",
+        tags: ["price", "returnship", "600"]
+      },
+      {
+        q: "How to book a consultation?",
+        a: "Use Book Consultation to open Calendly and schedule a session.",
+        tags: ["book", "consultation", "calendly"]
+      },
+      {
+        q: "What is Quanthos methodology?",
+        a: "The 'Diagnose & Activate' Methodology — We analyze root causes then activate solutions via engineered automation and enablement.",
+        tags: ["diagnose", "activate", "methodology"]
+      },
+      {
+        q: "What services does Quanthos offer?",
+        a: "Growth Clinic with four pillars: Strategy & BI, AI Automation, Sales & Marketing, Corporate Training.",
+        tags: ["services", "growth", "clinic", "pillars"]
+      },
+      {
+        q: "WhatsApp contact",
+        a: "Egypt: +20 100 124 01 86 • +20 100 900 94 82 | UAE: +971 52 281 8558",
+        tags: ["whatsapp", "contact", "phone"]
+      }
+    ]
   },
   ar: {
     labels: {
@@ -359,6 +386,33 @@ export const content = {
       title: "القيادة التنفيذية",
       osama: { name: "د. أسامة نجيب", role: "شريك مؤسس | الاستراتيجية والبيانات", bio: "تشخيص دقيق يقود النمو." },
       amrousy: { name: "د. أحمد عمروسي", role: "شريك مؤسس | التسويق والتفعيل", bio: "هندسة للتحديات التجارية." }
-    }
+    },
+    faqs: [
+      {
+        q: "ما هي تكلفة برنامج العودة للعمل؟",
+        a: "الإجمالي 600 جنيه — 3 جلسات عملية في الذكاء الاصطناعي لرفع المهارات وبناء الثقة.",
+        tags: ["السعر", "العودة للعمل", "600"]
+      },
+      {
+        q: "كيف احجز استشارة؟",
+        a: "استخدم احجز استشارة لفتح Calendly وحجز جلسة.",
+        tags: ["حجز", "استشارة", "Calendly"]
+      },
+      {
+        q: "ما هي منهجية التشخيص والتفعيل؟",
+        a: "نحلل الأسباب الجذرية ثم نفعّل الحلول عبر الأتمتة الممهندسة والتمكين العملي.",
+        tags: ["تشخيص", "تفعيل", "منهجية"]
+      },
+      {
+        q: "ما هي خدمات عيادة النمو؟",
+        a: "4 ركائز: بناء الاستراتيجية وذكاء الأعمال، الأتمتة والوكالات الرقمية، التسويق والمبيعات، التدريب والتمكين.",
+        tags: ["خدمات", "عيادة النمو", "ركائز"]
+      },
+      {
+        q: "التواصل عبر واتساب",
+        a: "مصر: +20 100 124 01 86 • +20 100 900 94 82 | الإمارات: +971 52 281 8558",
+        tags: ["واتساب", "تواصل", "هاتف"]
+      }
+    ]
   }
 };
