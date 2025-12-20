@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, MessageCircle, Send, X, Globe, Phone, Mail } from 'lucide-react';
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
+import Chatbot from './components/Chatbot';
 
 const osamaImg = new URL('../assets/Osama-DrCAYwX-.svg', import.meta.url).href;
 const amrousyImg = new URL('../assets/Amrousy-BD9BxXFd.svg', import.meta.url).href;
@@ -695,6 +696,8 @@ function App() {
         open={isCalendlyOpen}
         onModalClose={() => setIsCalendlyOpen(false)}
       />
+
+      <Chatbot />
     </div>
   );
 }
