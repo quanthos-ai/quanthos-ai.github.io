@@ -206,7 +206,6 @@ function App() {
            </div>
           <div className="hidden lg:flex gap-8 text-sm font-medium text-white">
             <button onClick={() => navigateTo('about')} className="hover:text-quanthos-magenta transition-colors">{t.nav.about}</button>
-            <button onClick={() => goToSection('methodology')} className="hover:text-quanthos-magenta transition-colors">{t.nav.methodology}</button>
             <button onClick={() => goToSection('talent')} className="hover:text-quanthos-magenta transition-colors">{t.nav.talent}</button>
             <button onClick={() => goToSection('services')} className="hover:text-quanthos-magenta transition-colors">{t.nav.services}</button>
             <button onClick={() => goToSection('portfolio')} className="hover:text-quanthos-magenta transition-colors">{t.nav.portfolio}</button>
@@ -239,9 +238,7 @@ function App() {
        <header className="relative pt-36 pb-24 px-6 bg-gradient-main text-white text-center">
          <div className="max-w-5xl mx-auto">
            <div className="absolute left-1/2 -translate-x-1/2 top-36 w-[420px] h-[420px] rounded-full blur-[100px] opacity-60 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(227,68,255,0.35), rgba(109,124,255,0.2))' }}></div>
-           <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-quanthos-lightViolet text-sm font-medium mb-8 backdrop-blur-sm">
-             {t.methodology.title}
-           </div>
+           
            <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
              {(() => {
                const parts = t.hero.tagline.split('. ');
@@ -393,7 +390,7 @@ function App() {
                       t.src = 'https://picsum.photos/id/180/600/300';
                     }}
                   />
-                  <h3 className="text-xl font-bold text-quanthos-dark mb-3 group-hover:text-quanthos-blue transition-colors">{idx === 0 ? 'Strategy and Businees Intelligence' : item.title}</h3>
+                  <h3 className="text-xl font-bold text-quanthos-dark mb-3 group-hover:text-quanthos-blue transition-colors">{item.title}</h3>
                   <p className="text-sm text-gray-500 mb-6">{item.desc}</p>
                   <ul className="space-y-4">
                     {item.points.map((pt, pIdx) => (
@@ -478,6 +475,29 @@ function App() {
               <div className="p-8 rounded-2xl bg-quanthos-panel">
                 <h2 className="text-2xl font-bold text-quanthos-dark mb-3">{t.about.philosophyTitle}</h2>
                 <p className="text-gray-700">{t.about.philosophyDesc}</p>
+              </div>
+            </div>
+          </section>
+          <section id="methodology-about" className="py-24 px-6 bg-white relative">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-quanthos-dark mb-4">{t.methodology.title}</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">{t.methodology.description}</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 items-stretch">
+                {t.methodology.phases.map((phase, idx) => (
+                  <div key={idx} className={`p-10 rounded-[32px] border transition-all hover:shadow-xl ${idx === 0 ? 'bg-quanthos-panel border-gray-100' : 'bg-quanthos-dark text-white border-quanthos-dark'}`}>
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${idx === 0 ? 'bg-quanthos-blue/10 text-quanthos-blue' : 'bg-quanthos-magenta text-white'}`}>
+                        {idx === 0 ? <Activity size={24} /> : <Zap size={24} />}
+                      </div>
+                      <span className={`font-bold tracking-widest uppercase text-sm ${idx === 0 ? 'text-quanthos-blue' : 'text-quanthos-magenta'}`}>{phase.step}</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">{phase.name}</h3>
+                    <p className={`leading-relaxed ${idx === 0 ? 'text-gray-600' : 'text-gray-300'}`}>{phase.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -567,6 +587,7 @@ function App() {
               </div>
               <div className="p-6 rounded-2xl bg-quanthos-panel md:col-span-3">
                 <div className="flex items-center gap-3 font-semibold text-quanthos-dark"><Mail size={18} /> osama_naguib@hotmail.com</div>
+                <div className="flex items-center gap-3 font-semibold text-quanthos-dark"><Mail size={18} /> ahmedamrousy@gmail.com</div>
               </div>
             </div>
           </section>
@@ -585,6 +606,7 @@ function App() {
               <div className="font-semibold mt-2">{t.labels.countryUAE}</div>
               <div className="flex items-center gap-2"><Phone size={14} /> +971 52 281 8558 <a href="https://wa.me/971522818558" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
               <div className="flex items-center gap-2 mt-2"><Mail size={14} /> osama_naguib@hotmail.com</div>
+              <div className="flex items-center gap-2 mt-2"><Mail size={14} /> ahmedamrousy@gmail.com</div>
             </div>
           </div>
           <div>

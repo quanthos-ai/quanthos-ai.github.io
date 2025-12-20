@@ -12,9 +12,9 @@ export const content = {
       joinNow: "Join Now",
       countryEgypt: "Egypt",
       countryUAE: "UAE",
-      returnshipTitle: "The \"Returnship\" Program",
+      returnshipTitle: "AI \"Returnship\" Program",
       returnshipDiscount: "Limited-time: 50% discount if registered before end of December or referred by \"Momken\" Committee.",
-      returnshipPrice: "1500 L.E total — 3 Practical Sessions for AI Upskilling and Confidence-Building.",
+      returnshipPrice: "600 L.E total — 3 Practical Sessions for AI Upskilling and Confidence-Building.",
       returnshipPitch: "A focused enablement track for women returning to work—AI upskilling with practical confidence-building so you can re-enter stronger than before.",
       returnshipAdImageUrl: "",
       copyright: "© Quanthos. All rights reserved.",
@@ -22,7 +22,7 @@ export const content = {
     nav: {
       about: "About",
       methodology: "Methodology",
-      talent: "Talent Foundry",
+      talent: "AI Talent Foundry",
       services: "Growth Clinic",
       portfolio: "Case Studies",
       team: "Leadership",
@@ -73,7 +73,7 @@ export const content = {
       description: "Technology is only as powerful as the people using it. Quanthos is a launchpad for those returning to the workforce or seeking to bridge the gap between academia and market reality.",
       segments: [
         {
-          title: "The 'Returnship' Program",
+          title: "AI 'Returnship' Program",
           target: "Women Returning to Work",
           desc: "For talented professionals who paused their careers. We provide the AI upskilling and confidence-building you need to re-enter the market not just as an employee, but as a leader.",
           icon: "Users" 
@@ -120,7 +120,7 @@ export const content = {
       subtitle: "Four interconnected pillars designed to modernize every aspect of the enterprise.",
       items: [
         {
-          title: "Pillar I: Data Strategy & BI",
+          title: "Pillar I: Strategy & BI",
           desc: "Transforming data into a 'single source of truth' for the C-suite.",
           points: [
             "Predictive Sales & Demand Forecasting",
@@ -273,9 +273,9 @@ export const content = {
       joinNow: "انضم الآن",
       countryEgypt: "مصر",
       countryUAE: "الإمارات",
-      returnshipTitle: "برنامج العودة للعمل",
+      returnshipTitle: "برنامج العودة للعمل—الذكاء الاصناعي",
       returnshipDiscount: "لفترة محدودة: خصم 50٪ عند التسجيل قبل نهاية ديسمبر أو عبر إحالة لجنة \"ممكن\".",
-      returnshipPrice: "الإجمالي 1500 جنيه — 3 جلسات عملية في الذكاء الاصطناعي لرفع المهارات وبناء الثقة.",
+      returnshipPrice: "الإجمالي 600 جنيه — 3 جلسات عملية في الذكاء الاصطناعي لرفع المهارات وبناء الثقة.",
       returnshipPitch: "مسار تمكيني مُركّز للنساء العائدات إلى سوق العمل—مهارات ذكاء اصطناعي عملية وبناء ثقة حقيقي لتعودي أقوى مما كنتِ.",
       returnshipAdImageUrl: "",
       copyright: "© كوانثوس. جميع الحقوق محفوظة.",
