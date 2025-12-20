@@ -245,7 +245,34 @@ function App() {
         </div>
       </section>
 
-       {/* Services Pillars */}
+      <section id="evidence" className="py-24 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-quanthos-dark">{t.labels.evidenceTitle}</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {t.evidence?.map((ev: { source: string; stat: string; detail: string; sourceUrl?: string }, idx: number) => (
+              <div key={idx} className="bg-quanthos-panel p-8 rounded-2xl border border-gray-100">
+                <div className="text-xl font-bold text-quanthos-magenta mb-2">{ev.stat}</div>
+                <div className="text-sm font-semibold text-quanthos-dark mb-3">{ev.source}</div>
+                <p className="text-gray-700 text-sm mb-4">{ev.detail}</p>
+                {ev.sourceUrl && (
+                  <a
+                    href={ev.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-white bg-quanthos-magenta px-4 py-2 rounded-lg font-semibold"
+                  >
+                    Source
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Pillars */}
        <section id="services" className="py-24 px-6 bg-white">
          <div className="max-w-7xl mx-auto">
            <div className="text-center mb-16">
@@ -297,7 +324,7 @@ function App() {
                   <h2 className="text-3xl font-bold mb-4">{t.portfolio.title}</h2>
                   <p className="text-quanthos-lightViolet">{t.portfolio.subtitle}</p>
                   <div className="mt-6">
-                    <a href="Quanthos Portfolio.pdf" target="_blank" className="inline-block px-6 py-3 bg-quanthos-magenta text-white rounded-xl font-bold shadow-xl">
+                    <a href="/Quanthos Portfolio.pdf" target="_blank" className="inline-block px-6 py-3 bg-quanthos-magenta text-white rounded-xl font-bold shadow-xl">
                       {t.portfolio.download}
                     </a>
                   </div>
@@ -319,7 +346,7 @@ function App() {
           </div>
           <h3 className="text-xl font-bold mb-4">Individuals</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.portfolio.individuals.map((p, idx) => (
+            {(t.portfolio.individuals as { name: string; result: string; detail: string }[]).map((p, idx) => (
               <div key={idx} className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
                 <div className="text-2xl font-bold text-white mb-2">{p.name}</div>
                 <div className="text-quanthos-magenta font-semibold mb-2">{p.result}</div>

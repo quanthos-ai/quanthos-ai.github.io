@@ -12,6 +12,7 @@ export const content = {
       joinNow: "Join Now",
       countryEgypt: "Egypt",
       countryUAE: "UAE",
+      evidenceTitle: "Scientific Evidence",
       returnshipTitle: "AI \"Returnship\" Program",
       returnshipDiscount: "Limited-time: 50% discount if registered before end of December or referred by \"Momken\" Committee.",
       returnshipPrice: "600 L.E total — 3 Practical Sessions for AI Upskilling and Confidence-Building.",
@@ -93,24 +94,19 @@ export const content = {
       ],
       successStories: [
         {
-          name: "Sarah M.",
-          role: "Former Marketing Manager (Returned after 5 years)",
-          quote: "I was worried my skills were outdated. Quanthos showed me how to use my past experience *with* AI to outperform my peers."
+          name: "T.I.",
+          role: "Product Manager (KSA)",
+          quote: "A powerhouse. He didn't just design; he fixed the business logic. Perfect combination of amazing design and real strategy."
         },
         {
-          name: "Nour A.",
-          role: "Fresh Business Graduate",
-          quote: "University taught me business, but Quanthos taught me how to actually work. I landed a job in 3 weeks because I knew how to automate workflows."
+          name: "R.F.",
+          role: "Head of R&D",
+          quote: "Engaging and insightful session. Your practical approach made concepts clear and actionable."
         },
         {
-          name: "Marwa K",
-          role: "Returning Professional",
-          quote: "Quanthos rebuilt my confidence and toolkit. In six months I wasn’t just back—I was leading initiatives powered by AI."
-        },
-        {
-          name: "Marawan G",
-          role: "Junior Analyst",
-          quote: "The Foundry program made interviews effortless. Showing my automation portfolio got me into a multinational within a month."
+          name: "K.S.",
+          role: "Field Force Manager",
+          quote: "Smart, hard worker, and has a very broad scientific base. Capable of making strong relationships with customers."
         }
       ]
     },
@@ -167,85 +163,51 @@ export const content = {
       download: "Download Full Portfolio",
       orgs: [
         {
-          title: "Technology Company",
-          metric: "28% → 16%",
-          subMetric: "Employee Turnover",
-          desc: "Leadership and environment improvement",
-          detail: "Reduced turnover and boosted satisfaction by 32% through diagnostics and leadership coaching."
+          title: "Publishing Market Transformation",
+          metric: "3x Revenue",
+          subMetric: "+11% Market Share",
+          desc: "Data-Led Strategic Turnaround",
+          detail: "Tripled revenue and increased market share by 11% over 6 years via predictive modeling. Led by O.N."
         },
         {
-          title: "Manufacturing (Family Business)",
-          metric: "+12%",
-          subMetric: "Profit Margin",
-          desc: "Decision-making discipline upgrade",
-          detail: "Improved asset efficiency by 18% and ROI by 15% over one year."
+          title: "Business Management",
+          metric: "100% Profit Growth",
+          subMetric: "In 3 Years",
+          desc: "Bottom-Line Optimization",
+          detail: "Doubled company bottom-line profit through strategic resource allocation. Led by A.A."
         },
         {
-          title: "Services Company",
-          metric: "+35%",
-          subMetric: "Cash Flow",
-          desc: "Operational diagnosis and resource allocation",
-          detail: "Stabilized cash conversion and optimized process bottlenecks."
+          title: "Pharma Product Launches",
+          metric: "6 Market Leaders",
+          subMetric: "Distinct Brands",
+          desc: "Go-to-Market Execution",
+          detail: "Successfully launched 6 distinct pharmaceutical brands achieving top category rankings. Led by O.N."
         },
         {
-          title: "Commercial Enterprise",
-          metric: "+22%",
-          subMetric: "Productivity",
-          desc: "Workflow orchestration and performance tracking",
-          detail: "Implemented KPIs and automation leading to measurable productivity gains."
-        },
-        {
-          title: "Automotive Retail",
-          metric: "25% Reduction",
-          subMetric: "in Service Delays",
-          desc: "Predictive Inventory Optimization",
-          detail: "Using ML to predict parts demand 3 months in advance, reducing 'dead stock' holding costs by 15%."
-        },
-        {
-          title: "Corporate Finance",
-          metric: "95% Time Saved",
-          subMetric: "100% Accuracy",
-          desc: "Automated Invoice Reconciliation",
-          detail: "Replaced 40 manual hours/month with a no-code RPA bot that validates PDF invoices against POs."
-        },
-        {
-          title: "B2B Manufacturing",
-          metric: "4.8/5 Score",
-          subMetric: "Lead Gen Growth",
-          desc: "Sales Force AI Activation",
-          detail: "Overcoming AI resistance via a 3-day hands-on workshop. Measurable increase in qualified leads in Month 1."
-        },
-        {
-          title: "E-Commerce",
-          metric: "+12 Point Lift",
-          subMetric: "Customer Retention",
-          desc: "Churn Diagnosis & Retention",
-          detail: "Used NLP to diagnose 'slow delivery' (not price) as the root cause of churn, re-engineering the comms workflow."
+          title: "Executive Enablement",
+          metric: "4.8/5 Rating",
+          subMetric: "R&D Heads & Directors",
+          desc: "Leadership Workshops",
+          detail: "High-impact sessions for Heads of R&D and Export Directors, rated as 'engaging and insightful'. Led by A.A."
         }
       ],
       individuals: [
-        {
-          name: "Sarah M.",
-          result: "Re-entered workforce after 5 years",
-          detail: "Applied AI to boost campaign performance; regained senior role."
-        },
-        {
-          name: "Nour A.",
-          result: "Landed first job in 3 weeks",
-          detail: "Automated workflows and stood out with practical AI skills."
-        },
-        {
-          name: "Marwa K",
-          result: "Promoted within 6 months",
-          detail: "Returned after 5+ years; Quanthos programs accelerated productivity and leadership."
-        },
-        {
-          name: "Marawan G",
-          result: "Joined a multinational in 1 month",
-          detail: "Completed the AI-Enablement & Talent Foundry program; showcased automation projects in interviews."
-        }
+        { name: "R.K.", result: "CEO — Insurance (UAE)", detail: "Outstanding job. Excellent communication, completed on time to full satisfaction. Highly recommended." },
+        { name: "M.A.", result: "Founder & CEO", detail: "A true and wonderful example of a professional who combines an educated person's mindset with a smart mind." },
+        { name: "M.A.", result: "CEO — Medical Company (KSA)", detail: "I wish you continued progress and excellence." }
       ]
     },
+    testimonials: [
+      { initials: "T.I.", role: "SME Marketing (KSA)", quote: "Work quality was excellent, and he delivered everything exactly as needed. He’s professional, reliable, and truly knows what he’s doing. I’m extremely happy with the results." },
+      { initials: "R.K.", role: "CEO — Insurance (UAE)", quote: "Outstanding job. Excellent communication, completed on time to full satisfaction. Highly recommended." },
+      { initials: "R.F.", role: "Head of R&D", quote: "Engaging and insightful session. Your practical approach made concepts clear and actionable." },
+      { initials: "K.S.", role: "Field Force Manager", quote: "Smart, hard worker, and has a very broad scientific base. Capable of making strong relationships with customers." },
+      { initials: "M.A.", role: "Founder & CEO", quote: "A true and wonderful example of a professional who combines an educated person's mindset with a smart mind." }
+    ],
+    evidence: [
+      { source: "NBER", stat: "14% Productivity Boost", detail: "Generative AI tools increased support agent productivity by 14%, with a 35% gain for newer employees.", sourceUrl: "https://www.nber.org/papers/w31161" },
+      { source: "McKinsey Global Institute", stat: "50% Vol. Reduction", detail: "AI automation can reduce human-serviced contact volume by up to 50%, freeing teams for strategic work.", sourceUrl: "https://www.mckinsey.com/capabilities/operations/our-insights/transforming-the-contact-center-with-ai" }
+    ],
     team: {
       title: "Executive Leadership",
       osama: {
@@ -300,6 +262,7 @@ export const content = {
       joinNow: "انضم الآن",
       countryEgypt: "مصر",
       countryUAE: "الإمارات",
+      evidenceTitle: "أدلة علمية",
       returnshipTitle: "برنامج العودة للعمل—الذكاء الاصناعي",
       returnshipDiscount: "لفترة محدودة: خصم 50٪ عند التسجيل قبل نهاية ديسمبر أو عبر إحالة لجنة \"ممكن\".",
       returnshipPrice: "الإجمالي 600 جنيه — 3 جلسات عملية في الذكاء الاصطناعي لرفع المهارات وبناء الثقة.",
@@ -353,8 +316,9 @@ export const content = {
         { title: "رفع مهارات الشركات", target: "نمو مهني", desc: "أتمتة الأعمال المتكررة والتركيز على الأثر." }
       ],
       successStories: [
-        { name: "سارة م.", role: "تسويق", quote: "استعدت دورًا قياديًا بفضل التفعيل العملي." },
-        { name: "نور أ.", role: "خريج أعمال", quote: "وظيفة خلال 3 أسابيع بفضل الأتمتة العملية." }
+        { name: "T.I.", role: "تسويق منشآت صغيرة (السعودية)", quote: "قدرة استثنائية. لم يكتفِ بتصميم الشرائح؛ أصلح منطق العمل. مزيج مثالي بين التصميم والاستراتيجية." },
+        { name: "R.F.", role: "رئيس البحث والتطوير", quote: "جلسة جذابة وبصيرة. جعلت المقاربات العملية المفاهيم واضحة وقابلة للتطبيق." },
+        { name: "K.S.", role: "مدير فريق المبيعات الميداني", quote: "ذكي ومجتهد وقاعدة علمية واسعة. قادر على بناء علاقات قوية مع العملاء." }
       ]
     },
     services: {
@@ -372,16 +336,27 @@ export const content = {
       subtitle: "دراسات حالة مثبتة",
       download: "حمل برتفوليو الشركة كاملا",
       orgs: [
-        { title: "بيع السيارات", metric: "خفض 25%", subMetric: "تأخيرات الخدمة", desc: "تحسين المخزون التنبؤي", detail: "تقليل المخزون الراكد 15%." },
-        { title: "المالية", metric: "توفير 95%", subMetric: "دقة 100%", desc: "مطابقة الفواتير آليًا", detail: "استبدال 40 ساعة شهرية." }
+        { title: "تحول سوق النشر", metric: "3x الإيرادات", subMetric: "+11% حصة سوقية", desc: "تحول استراتيجي قائم على البيانات", detail: "تضاعف الإيرادات ثلاث مرات وزادت الحصة السوقية 11% خلال 6 سنوات عبر النمذجة التنبؤية. بقيادة O.N." },
+        { title: "إدارة الأعمال", metric: "نمو 100% في الأرباح", subMetric: "خلال 3 سنوات", desc: "تحسين صافي الربح", detail: "مضاعفة صافي الأرباح عبر تخصيص الموارد بشكل استراتيجي. بقيادة A.A." },
+        { title: "إطلاقات دوائية", metric: "6 علامات رائدة", subMetric: "علامات مميزة", desc: "تنفيذ دخول السوق", detail: "إطلاق ناجح لـ 6 علامات دوائية حققت صدارة الفئة. بقيادة O.N." },
+        { title: "تمكين التنفيذيين", metric: "تقييم 4.8/5", subMetric: "مديرون ورؤساء R&D", desc: "ورش قيادة", detail: "جلسات عالية الأثر بتقييم 'جاذبة وبصيرة'. بقيادة A.A." }
       ],
       individuals: [
-        { name: "سارة م.", result: "عودة للعمل", detail: "استخدمت الأتمتة لاستعادة دور قيادي." },
-        { name: "نور أ.", result: "وظيفة خلال 3 أسابيع", detail: "تميّز بمهارات أتمتة عملية." },
-        { name: "مروة", result: "ترقية خلال 6 أشهر", detail: "عادت بعد 5 سنوات؛ البرامج رفعت الأداء." },
-        { name: "مروان", result: "انضم لشركة عالمية", detail: "عرض مشاريع أتمتة في المقابلات." }
+        { name: "R.K.", result: "الرئيس التنفيذي — تأمين (الإمارات)", detail: "عملٌ ممتاز. تواصل قوي، إنجاز في الوقت وبجودة عالية. أنصح به بشدة." },
+        { name: "M.A.", result: "مؤسس ورئيس تنفيذي", detail: "نموذج رائع لمهني يجمع بين عقلية متعلمة وفكر ذكي." }
       ]
     },
+    testimonials: [
+      { initials: "T.I.", role: "تسويق منشآت صغيرة (السعودية)", quote: "قدرة استثنائية. لم يكتفِ بتصميم الشرائح؛ أصلح منطق العمل. مزيج مثالي بين التصميم والاستراتيجية." },
+      { initials: "R.K.", role: "الرئيس التنفيذي — تأمين (الإمارات)", quote: "عملٌ ممتاز. تواصل قوي، إنجاز في الوقت وبجودة عالية. أنصح به بشدة." },
+      { initials: "R.F.", role: "رئيس البحث والتطوير", quote: "جلسة جذابة وبصيرة. جعلت المقاربات العملية المفاهيم واضحة وقابلة للتطبيق." },
+      { initials: "K.S.", role: "مدير فريق المبيعات الميداني", quote: "ذكي ومجتهد وقاعدة علمية واسعة. قادر على بناء علاقات قوية مع العملاء." },
+      { initials: "M.A.", role: "مؤسس ورئيس تنفيذي", quote: "نموذج رائع لمهني يجمع بين عقلية متعلمة وفكر ذكي." }
+    ],
+    evidence: [
+      { source: "NBER", stat: "زيادة إنتاجية 14%", detail: "أدوات الذكاء التوليدي رفعت إنتاجية وكلاء الدعم 14% وبنسبة 35% للموظفين الجدد.", sourceUrl: "https://www.nber.org/papers/w31161" },
+      { source: "McKinsey Global Institute", stat: "خفض 50% في حجم الاتصالات", detail: "الأتمتة بالذكاء الاصطناعي قد تقلل حجم الاتصالات البشرية حتى 50% وتحرر الفرق للعمل الاستراتيجي.", sourceUrl: "https://www.mckinsey.com/capabilities/operations/our-insights/transforming-the-contact-center-with-ai" }
+    ],
     team: {
       title: "القيادة التنفيذية",
       osama: { name: "د. أسامة نجيب", role: "شريك مؤسس | الاستراتيجية والبيانات", bio: "تشخيص دقيق يقود النمو." },
