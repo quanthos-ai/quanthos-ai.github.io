@@ -118,14 +118,26 @@ function App() {
       <>
       {/* Hero Section */}
        <header className="relative pt-36 pb-24 px-6 bg-gradient-main text-white text-center">
-         <div className="max-w-5xl mx-auto">
-           <div className="absolute left-1/2 -translate-x-1/2 top-36 w-[420px] h-[420px] rounded-full blur-[100px] opacity-60 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(227,68,255,0.35), rgba(109,124,255,0.2))' }}></div>
+       <div className="max-w-5xl mx-auto">
+          <div className="absolute left-1/2 -translate-x-1/2 top-36 w-[420px] h-[420px] rounded-full blur-[100px] opacity-60 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(227,68,255,0.35), rgba(109,124,255,0.2))' }}></div>
            
-           <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
-             {(() => {
-               const parts = t.hero.tagline.split('. ');
-               const line1 = parts[0]?.endsWith('.') ? parts[0] : (parts[0] ? parts[0] + '.' : '');
-               const line2 = parts[1] || '';
+          <div className="flex justify-center mt-8 mb-6">
+            <button
+              onClick={() => goToSection('methodology')}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/20 text-sm font-semibold tracking-wider shadow-lg hover:shadow-xl transition-all"
+              style={{ backgroundColor: '#493570', color: '#f2aaff' }}
+              aria-label="Go to Methodology"
+            >
+              <span className="inline-block w-2 h-2 rounded-full bg-quanthos-magenta"></span>
+              <span>{lang === 'en' ? t.methodology.title.toUpperCase() : t.methodology.title}</span>
+            </button>
+          </div>
+
+          <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
+            {(() => {
+              const parts = t.hero.tagline.split('. ');
+              const line1 = parts[0]?.endsWith('.') ? parts[0] : (parts[0] ? parts[0] + '.' : '');
+              const line2 = parts[1] || '';
                return (
                  <div className="inline-block">
                    <div>{line1}</div>
@@ -180,7 +192,7 @@ function App() {
           
           <div className="grid md:grid-cols-2 gap-8 items-stretch">
             {t.methodology.phases.map((phase, idx) => (
-              <div key={idx} className={`p-10 rounded-[32px] border transition-all hover:shadow-xl ${idx === 0 ? 'bg-quanthos-panel border-gray-100' : 'bg-quanthos-dark text-white border-quanthos-dark'}`}>
+              <div key={idx} className={`p-10 rounded-[32px] border transition-all hover:shadow-xl hover:-translate-y-1 ${idx === 0 ? 'bg-quanthos-panel border-gray-100 hover:border-quanthos-blue/30' : 'bg-quanthos-dark text-white border-quanthos-dark hover:border-quanthos-magenta/40'}`}>
                 <div className="flex items-center gap-4 mb-6">
                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${idx === 0 ? 'bg-quanthos-blue/10 text-quanthos-blue' : 'bg-quanthos-magenta text-white'}`}>
                     {idx === 0 ? <Activity size={24} /> : <Zap size={24} />}
