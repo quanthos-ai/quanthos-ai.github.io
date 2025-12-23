@@ -5,7 +5,7 @@ export const content = {
       successTitle: "Success Stories",
       footerContact: "Contact Us",
       footerQuickLinks: "Quick Links",
-      footerTagline: "Growth Clinic and Talent Foundary",
+      footerTagline: "Growth Clinic & Talent Foundary",
       collaborators: "Collaborators",
       secureSeat: "Secure your seat",
       askQuanthos: "Ask Quanthos",
