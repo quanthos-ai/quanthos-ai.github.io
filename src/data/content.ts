@@ -31,7 +31,7 @@ export const content = {
       contact: "Book Consultation",
     },
     hero: {
-      tagline: "Insight Diagnosed.. Impact Engineered",
+      tagline: "Insight Diagnosed .. Impact Engineered",
       sub: "Bridging the critical gap between high-level data strategy and real-world business execution.",
       cta_primary: "Visit the Growth Clinic",
       cta_secondary: "Join the Talent Foundary",
@@ -281,7 +281,7 @@ export const content = {
       contact: "احجز استشارة",
     },
     hero: {
-      tagline: "تشخيص مدروس.. تأثير مُهندس",
+      tagline: "تشخيص مدروس .. تأثير مُهندس",
       sub: "نجمع الافضل ما بين العالمين، عالم الاستراتيجيات المحكمة المبنية على البيانات الحقيقية، و عالم هندسة الخطط عالية الدقة و الواقعية",
       cta_primary: "تعرّف على عيادة النمو",
       cta_secondary: "انضم إلى مصنع المواهب",
