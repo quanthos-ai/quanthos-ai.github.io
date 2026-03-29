@@ -84,3 +84,4 @@ servers/*.token.json
 
 # DynamoDB Local files
 .dynamodb/
+servers/gcp-oauth.keys.json
