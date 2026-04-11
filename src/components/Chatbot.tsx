@@ -19,7 +19,12 @@ type Message = {
 type TContent = {
   methodology: { title: string; description: string };
   services: { subtitle: string; items: { title: string }[] };
-  labels: { returnshipTitle: string; returnshipPitch: string; returnshipDiscount: string; returnshipPrice: string };
+  labels: { 
+    returnshipTitle: string; 
+    returnshipSubHeadline: string; 
+    returnshipOffer: string; 
+    returnshipCTA: string;
+  };
 };
 
 export default function Chatbot({ lang, t }: { lang: 'en' | 'ar'; t: TContent }) {
@@ -177,9 +182,8 @@ export default function Chatbot({ lang, t }: { lang: 'en' | 'ar'; t: TContent })
         addBotMessage(
           <div className="space-y-2">
             <div className="font-semibold">{t.labels.returnshipTitle}</div>
-            <div>{t.labels.returnshipPitch}</div>
-            <div>{t.labels.returnshipDiscount}</div>
-            <div className="font-bold">{t.labels.returnshipPrice}</div>
+            <div className="text-sm italic">{t.labels.returnshipSubHeadline}</div>
+            <div className="text-sm" dangerouslySetInnerHTML={{ __html: t.labels.returnshipOffer }} />
           </div>,
           [
             { label: isRTL ? "سجل الآن" : "Register Now", action: "talent_register" },

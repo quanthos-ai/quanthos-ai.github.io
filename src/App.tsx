@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail } from 'lucide-react';
+import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
 import Chatbot from './components/Chatbot';
@@ -87,11 +87,12 @@ function App() {
             />
            </div>
           <div className="hidden lg:flex gap-8 text-sm font-medium text-white">
-            <button onClick={() => navigateTo('about')} className="hover:text-quanthos-magenta transition-colors">{t.nav.about}</button>
+            <button onClick={() => navigateTo('home')} className="hover:text-quanthos-magenta transition-colors">{t.nav.home}</button>
             <button onClick={() => goToSection('talent')} className="hover:text-quanthos-magenta transition-colors">{t.nav.talent}</button>
             <button onClick={() => goToSection('services')} className="hover:text-quanthos-magenta transition-colors">{t.nav.services}</button>
             <button onClick={() => goToSection('portfolio')} className="hover:text-quanthos-magenta transition-colors">{t.nav.portfolio}</button>
             <button onClick={() => navigateTo('insights')} className="hover:text-quanthos-magenta transition-colors">{t.nav.insights}</button>
+            <button onClick={() => navigateTo('about')} className="hover:text-quanthos-magenta transition-colors">{t.nav.about}</button>
             <button onClick={() => navigateTo('contact')} className="hover:text-quanthos-magenta transition-colors">{t.labels.footerContact}</button>
           </div>
           <div className="flex items-center gap-3">
@@ -155,26 +156,23 @@ function App() {
               {t.hero.cta_secondary}
             </a>
           </div>
-           {showReturnship && (
-            <div className="fixed top-28 right-6 z-40 bg-quanthos-magenta text-white px-6 py-5 rounded-2xl shadow-xl max-w-sm text-center scale-[0.85]">
-              <button aria-label="Close" className="absolute top-2 right-2 text-white/80 hover:text-white" onClick={() => setShowReturnship(false)}>✕</button>
+          {showReturnship && (
+            <div className={`fixed top-28 ${isRTL ? 'left-6' : 'right-6'} z-40 bg-quanthos-magenta text-white px-6 py-5 rounded-2xl shadow-xl max-w-sm text-center scale-[0.85]`}>
+              <button aria-label="Close" className={`absolute top-2 ${isRTL ? 'left-2' : 'right-2'} text-white/80 hover:text-white`} onClick={() => setShowReturnship(false)}>✕</button>
               <div className="relative">
                 <div className="absolute left-1/2 -translate-x-1/2 -top-6 w-40 h-40 rounded-full blur-2xl opacity-60 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.2), rgba(227,68,255,0.1))' }}></div>
-                <div className="font-bold mb-1">{t.labels.returnshipTitle}</div>
+                <div className="font-bold mb-1 text-lg">{t.labels.returnshipTitle}</div>
               </div>
+              <div className="text-xs text-white/90 mb-3 italic">{t.labels.returnshipSubHeadline}</div>
               {t.labels.returnshipAdImageUrl ? (
-                <img src={t.labels.returnshipAdImageUrl} alt="Returnship Program Offer" className="mt-3 rounded-xl w-full h-auto border border-white/20" />
+                <img src={t.labels.returnshipAdImageUrl} alt="Offer" className="mt-3 rounded-xl w-full h-auto border border-white/20" />
               ) : (
-                <>
-                  <div className="text-sm">{t.labels.returnshipDiscount}</div>
-                  <div className="mt-3 rounded-xl px-4 py-3 bg-white/10 border border-white/20">
-                    <div className="text-sm font-semibold">{t.labels.returnshipPitch}</div>
-                    <div className="text-sm mt-2">{t.labels.returnshipPrice}</div>
-                  </div>
-                </>
+                <div className="mt-3 rounded-xl px-4 py-3 bg-white/10 border border-white/20 text-sm leading-relaxed" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
+                  <div dangerouslySetInnerHTML={{ __html: t.labels.returnshipOffer }} />
+                </div>
               )}
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl" target="_blank" rel="noopener noreferrer">
-                {t.labels.secureSeat}
+                {t.labels.returnshipCTA}
               </a>
             </div>
           )}
@@ -488,27 +486,44 @@ function App() {
             <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
               <div className="p-6 rounded-2xl bg-quanthos-panel">
                 <div className="font-semibold text-quanthos-dark mb-1">{t.labels.countryEgypt}</div>
-                <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 124 01 86</div>
-                <a href="https://wa.me/201001240186" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
-                  <WhatsAppIcon size={20} className="text-green-600" />
-                </a>
-              </div>
-              <div className="p-6 rounded-2xl bg-quanthos-panel">
-                <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +20 100 900 94 82</div>
-                <a href="https://wa.me/201009009482" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
-                  <WhatsAppIcon size={20} className="text-green-600" />
-                </a>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3 font-semibold text-quanthos-dark">
+                    <div className="flex items-center gap-2">
+                      <Phone size={18} />
+                      <span>+20 100 124 01 86</span>
+                    </div>
+                    <a href="https://wa.me/201001240186" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:scale-110 transition-transform">
+                      <WhatsAppIcon size={20} />
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-3 font-semibold text-quanthos-dark">
+                    <div className="flex items-center gap-2">
+                      <Phone size={18} />
+                      <span>+20 100 900 94 82</span>
+                    </div>
+                    <a href="https://wa.me/201009009482" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:scale-110 transition-transform">
+                      <WhatsAppIcon size={20} />
+                    </a>
+                  </div>
+                </div>
               </div>
               <div className="p-6 rounded-2xl bg-quanthos-panel">
                 <div className="font-semibold text-quanthos-dark mb-1">{t.labels.countryUAE}</div>
-                <div className="flex items-center gap-3 font-semibold text-quanthos-dark mb-2"><Phone size={18} /> +971 52 281 8558</div>
-                <a href="https://wa.me/971522818558" className="inline-flex items-center gap-2 text-green-600 font-medium" aria-label="WhatsApp">
-                  <WhatsAppIcon size={20} className="text-green-600" />
-                </a>
+                <div className="flex items-center gap-3 font-semibold text-quanthos-dark">
+                  <div className="flex items-center gap-2">
+                    <Phone size={18} />
+                    <span>+971 52 281 8558</span>
+                  </div>
+                  <a href="https://wa.me/971522818558" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:scale-110 transition-transform">
+                    <WhatsAppIcon size={20} />
+                  </a>
+                </div>
               </div>
-              <div className="p-6 rounded-2xl bg-quanthos-panel md:col-span-3">
-                <div className="flex items-center gap-3 font-semibold text-quanthos-dark"><Mail size={18} /> osama_naguib@hotmail.com</div>
-                <div className="flex items-center gap-3 font-semibold text-quanthos-dark"><Mail size={18} /> ahmedamrousy@gmail.com</div>
+              <div className="p-6 rounded-2xl bg-quanthos-panel md:col-span-1">
+                <a href="mailto:info@quanthos.world" className="flex items-center gap-3 font-semibold text-quanthos-dark hover:text-quanthos-magenta transition-colors">
+                  <Mail size={18} />
+                  <span>info@quanthos.world</span>
+                </a>
               </div>
             </div>
           </section>
@@ -522,31 +537,77 @@ function App() {
             <h4 className="font-bold mb-3">{t.labels.footerContact}</h4>
             <div className="text-white/80 text-sm space-y-2">
               <div className="font-semibold">{t.labels.countryEgypt}</div>
-              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 124 01 86 <a href="https://wa.me/201001240186" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
-              <div className="flex items-center gap-2"><Phone size={14} /> +20 100 900 94 82 <a href="https://wa.me/201009009482" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Phone size={14} />
+                  <span>+20 100 124 01 86</span>
+                </div>
+                <a href="https://wa.me/201001240186" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:scale-110 transition-transform">
+                  <WhatsAppIcon size={16} />
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Phone size={14} />
+                  <span>+20 100 900 94 82</span>
+                </div>
+                <a href="https://wa.me/201009009482" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:scale-110 transition-transform">
+                  <WhatsAppIcon size={16} />
+                </a>
+              </div>
               <div className="font-semibold mt-2">{t.labels.countryUAE}</div>
-              <div className="flex items-center gap-2"><Phone size={14} /> +971 52 281 8558 <a href="https://wa.me/971522818558" className="inline-flex items-center ml-2 text-green-500"><WhatsAppIcon size={18} className="text-green-500" /></a></div>
-              <div className="flex items-center gap-2 mt-2"><Mail size={14} /> osama_naguib@hotmail.com</div>
-              <div className="flex items-center gap-2 mt-2"><Mail size={14} /> ahmedamrousy@gmail.com</div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Phone size={14} />
+                  <span>+971 52 281 8558</span>
+                </div>
+                <a href="https://wa.me/971522818558" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:scale-110 transition-transform">
+                  <WhatsAppIcon size={16} />
+                </a>
+              </div>
+              <a href="mailto:info@quanthos.world" className="flex items-center gap-2 mt-2 hover:text-quanthos-magenta transition-colors">
+                <Mail size={14} />
+                <span>info@quanthos.world</span>
+              </a>
             </div>
           </div>
           <div>
             <h4 className="font-bold mb-3">{t.labels.footerQuickLinks}</h4>
             <div className="text-white/80 text-sm space-y-2">
-              <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">{t.nav.about}</button>
+              <button onClick={()=>navigateTo('home')} className="hover:text-quanthos-lightViolet block">{t.nav.home}</button>
               <button onClick={()=>goToSection('talent')} className="hover:text-quanthos-lightViolet block">{t.nav.talent}</button>
               <button onClick={()=>goToSection('services')} className="hover:text-quanthos-lightViolet block">{t.nav.services}</button>
               <button onClick={()=>goToSection('portfolio')} className="hover:text-quanthos-lightViolet block">{t.nav.portfolio}</button>
               <button onClick={()=>navigateTo('insights')} className="hover:text-quanthos-lightViolet block">{t.nav.insights}</button>
+              <button onClick={()=>navigateTo('about')} className="hover:text-quanthos-lightViolet block">{t.nav.about}</button>
               <button onClick={()=>navigateTo('contact')} className="hover:text-quanthos-lightViolet block">{t.labels.footerContact}</button>
             </div>
           </div>
           <div className="text-right">
             <img src={logo} alt="Quanthos" style={{ height: '9.375rem' }} className="ml-auto opacity-90 cursor-pointer" onClick={() => { window.location.href = '/'; window.location.reload(); }} />
-            <div className="text-white/70 text-[150%] mt-2" style={{ width: '20rem' }}>{t.labels.footerTagline}</div>
+            <div className="text-white/70 text-lg mt-2">{t.labels.footerTagline}</div>
           </div>
         </div>
-        <div className="border-t border-white/10 mt-8 pt-4 text-center text-white/70 text-sm max-w-md mx-auto">
+        
+        <div className="mt-12 flex flex-col items-center justify-center border-t border-white/10 pt-8">
+          <h4 className="font-bold mb-4 text-white">Follow Us</h4>
+          <div className="flex items-center gap-6">
+            <a href="https://facebook.com/Quanthos" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-quanthos-magenta hover:text-white hover:border-quanthos-magenta transition-all">
+              <Facebook size={24} />
+            </a>
+            <a href="https://instagram.com/Quanthos" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-quanthos-magenta hover:text-white hover:border-quanthos-magenta transition-all">
+              <Instagram size={24} />
+            </a>
+            <a href="https://www.youtube.com/@QuanthosAI" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-quanthos-magenta hover:text-white hover:border-quanthos-magenta transition-all">
+              <Youtube size={24} />
+            </a>
+            <a href="https://linkedin.com/company/Quanthos" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-quanthos-magenta hover:text-white hover:border-quanthos-magenta transition-all">
+              <Linkedin size={24} />
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-8 pt-4 text-center text-white/70 text-sm max-w-md mx-auto">
           {t.labels.copyright}
         </div>
       </footer>
