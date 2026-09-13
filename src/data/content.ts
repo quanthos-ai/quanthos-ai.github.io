@@ -81,6 +81,13 @@ export const content = {
           icon: "Users" 
         },
         {
+          title: "The Senior AI Edge",
+          target: "For Senior & Experienced Professionals",
+          desc: "A 3-day AI foundations intensive specifically for leaders with 15+ years of experience. Not a technical course — a strategy and productivity course.",
+          icon: "TrendingUp",
+          link: "senior-ai-edge"
+        },
+        {
           title: "Future Leaders Track",
           target: "Fresh Graduates",
           desc: "Bridge the gap between academic theory and market reality. Learn the practical AI tools and workflows that top employers are desperate for right now.",
@@ -90,7 +97,7 @@ export const content = {
           title: "Corporate Upskilling",
           target: "Professional Growth",
           desc: "Master Generative AI to automate your manual tasks and focus on high-impact strategy.",
-          icon: "TrendingUp"
+          icon: "Activity"
         }
       ],
       successStories: [
@@ -314,6 +321,7 @@ export const content = {
       description: "نعزز الإنتاجية عبر تدريب عملي على أدوات الذكاء الاصطناعي.",
       segments: [
         { title: "برنامج العودة للعمل", target: "نساء عادوا للعمل", desc: "مهارات وذكاء اصطناعي لاستعادة الثقة والتميّز." },
+        { title: "القمة الاحترافية للذكاء الاصطناعي", target: "للمهنيين وذوي الخبرة الطويلة", desc: "برنامج مكثف لمدة 3 أيام لأساسيات الذكاء الاصطناعي مصمم خصيصاً للقادة ذوي الخبرة التي تزيد عن 15 عاماً. ليس دورة تقنية، بل دورة في الاستراتيجية والإنتاجية.", link: "senior-ai-edge" },
         { title: "مسار القادة الجدد", target: "خريجون جدد", desc: "فجوة الجامعة والسوق تُسد عبر تطبيقات عملية." },
         { title: "رفع مهارات الشركات", target: "نمو مهني", desc: "أتمتة الأعمال المتكررة والتركيز على الأثر." }
       ],

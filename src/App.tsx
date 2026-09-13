@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ArrowRight, ChevronDown, ChevronRight, Clock, MapPin, Award, BookOpen, MessageSquare, Layout, PlayCircle, FileText, Check, Quote } from 'lucide-react';
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
 import Chatbot from './components/Chatbot';
@@ -28,7 +28,539 @@ function WhatsAppIcon({ size = 18, className = "" }: { size?: number; className?
   );
 }
 
-type Page = 'home' | 'about' | 'insights' | 'contact';
+function SeniorAIEdgePage({ lang, goToSection }: { lang: 'en' | 'ar', goToSection: (id: string) => void }) {
+  const [openDay, setOpenDay] = useState<number | null>(1);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const days = [
+    {
+      number: 1,
+      title: "The Strategic Diagnosis",
+      subtitle: "Day 1: AI Foundations & The 'Diagnose' Framework",
+      topics: [
+        "The Executive AI Briefing: What is hype vs. what is profit.",
+        "Generative AI Landscape: LLMs, Midjourney, and the Agent ecosystem.",
+        "The Quanthos 'Diagnose' Method: Identifying the high-value AI opportunities in your workflow.",
+        "Security & Ethics for Leaders: Protecting proprietary data in the age of open AI."
+      ]
+    },
+    {
+      number: 2,
+      title: "The Precision Multiplier",
+      subtitle: "Day 2: Prompt Engineering for Professional Standards",
+      topics: [
+        "Beyond Chatting: Mastering the syntax of professional-grade outputs.",
+        "The Personal Prompt Library: Building your own repository of high-impact tools.",
+        "Domain-Specific AI: Custom workflows for your specific field (Finance, Strategy, Ops).",
+        "Role-Playing AI Agents: How to use AI as a strategic sparring partner."
+      ]
+    },
+    {
+      number: 3,
+      title: "The Activation Engine",
+      subtitle: "Day 3: Building Your 90-Day Implementation Plan",
+      topics: [
+        "Hands-On Lab: Building a live AI solution for a real task you currently do.",
+        "The 90-Day Roadmap Workshop: What to automate first, and how.",
+        "Team Activation: How to onboard your staff and lead an AI-native department.",
+        "Beyond Text: Audio, Video, and Multimodal AI for senior communication."
+      ]
+    }
+  ];
+
+  const deliverables = [
+    { icon: <Clock size={32} />, title: "21 Hours of Intensive Training", body: "3 full days of in-person or live-online training. Not a high-level overview — a deep dive into practical application.", color: "#0891B2" },
+    { icon: <BookOpen size={32} />, title: "Personal AI Prompt Library", body: "20 custom-built, professional-grade prompts tailored to your specific role and industry. No generic inputs.", color: "#C026D3" },
+    { icon: <FileText size={32} />, title: "Your 90-Day AI Integration Plan", body: "A written plan built during Day 3 mapping which tools you will use, for which tasks, in which sequence. Specific and actionable — not aspirational.", color: "#F59E0B" },
+    { icon: <PlayCircle size={32} />, title: "Session Video Recordings", body: "All 21 hours recorded. Revisit any session, share with a colleague, or use to onboard a team member when you return to the office.", color: "#059669" },
+    { icon: <Layout size={32} />, title: "Printed Reference Cards", body: "Quick-reference prompt cards and workflow cheat sheets. Designed to stay on your desk, not in a folder.", color: "#7C3AED" },
+    { icon: <Award size={32} />, title: "Completion Certificate + 30-Day Access", body: "Formal AI Foundations certification — suitable for LinkedIn and your CV. Plus 30 days of post-program WhatsApp and email access to your trainer.", color: "#EF4444" }
+  ];
+
+  const methods = [
+    { icon: <GraduationCap size={32} />, title: "Instructor-Led Sessions", body: "Expert trainers who work in your professional world — not academics who study AI from the outside.", color: "#7C3AED" },
+    { icon: <Activity size={32} />, title: "Live Demonstrations", body: "Every tool shown on screen in real time, on real professional scenarios. Nothing is theoretical.", color: "#0891B2" },
+    { icon: <Zap size={32} />, title: "Hands-On Lab Exercises", body: "You work on your own documents, your own problems, your own professional language — not dummy data.", color: "#C026D3" },
+    { icon: <Users size={32} />, title: "Peer Discussion", body: "Small group of maximum 15 means real conversation among professionals at the same level. Not passive attendance.", color: "#059669" },
+    { icon: <TrendingUp size={32} />, title: "Individual Coaching Moments", body: "Trainers move around the room during lab sessions. Your specific situation gets addressed — not just the general case.", color: "#F59E0B" },
+    { icon: <FileText size={32} />, title: "The 90-Day Plan Workshop", body: "You do not leave with an idea. You leave with a document. Built during the session, reviewed by your trainer.", color: "#EF4444" }
+  ];
+
+  const faqs = [
+    { q: "I am not technical at all. Will I be lost?", a: "No. This program was specifically designed for professionals with zero technical background. No coding. No IT knowledge. If you can write a professional email, you have all the technical skills this program requires." },
+    { q: "I have heard AI is replacing senior professionals. Is that true?", a: "AI is replacing the execution parts of professional work — the drafting, the formatting, the summarising, the repetitive analysis. It is not replacing judgment, relationships, domain expertise, or strategic thinking. Those are exactly what you have built over your career. This program helps you keep the irreplaceable parts and hand off the rest." },
+    { q: "I tried ChatGPT and it gave me shallow, generic answers. Is this just more of that?", a: "What you experienced is the output of a basic prompt. The entire point of this program is to teach you how to get professional-grade outputs that match your standard. The difference between a generic result and a genuinely useful one is almost entirely in how you ask. You will not leave here asking basic questions." },
+    { q: "Is this relevant to my specific field?", a: "Day 2 includes a session specifically on your domain. The program has been run with professionals in finance, legal, healthcare administration, publishing, engineering management, logistics, education, and consulting. The core methods transfer across every professional field." },
+    { q: "What if I fall behind during the sessions?", a: "The group cap of 15 exists precisely for this reason. Trainers notice and respond. Video recordings mean nothing is lost if you need to revisit. And 30-day post-program trainer access means your questions do not stop on the last day." },
+    { q: "Can my company send a group of senior professionals?", a: "Yes. For groups of 5 or more from the same organisation, we build a customised version using company-specific scenarios and materials. Contact us directly for a proposal — we will respond within 24 hours." }
+  ];
+
+  return (
+    <div className="pt-20">
+      {/* SECTION 1 - HERO */}
+      <section className="relative py-24 px-6 bg-[#0D1137] text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0D1137] via-[#1A0A2E] to-[#0D1137]"></div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <span className="inline-block px-4 py-1 rounded-full bg-[#C026D3]/10 text-[#C026D3] font-bold text-xs tracking-[3px] mb-6 border border-[#C026D3]/20 uppercase">
+              THE SENIOR AI EDGE
+            </span>
+            <h1 className="text-4xl md:text-7xl font-bold mb-8 leading-[1.1] font-serif">
+              Augment Your Experience.<br />Don't Replace It.
+            </h1>
+            <p className="text-xl md:text-2xl text-[#94A3B8] mb-12 max-w-2xl mx-auto leading-relaxed">
+              A 3-day AI foundations program for professionals with 15+ years of experience.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <button onClick={() => goToSection('registration')} className="px-8 py-4 bg-[#C026D3] hover:bg-[#9B1AB0] text-white rounded-xl font-bold transition-all shadow-xl shadow-[#C026D3]/20">
+                Reserve Your Seat
+              </button>
+              <button onClick={() => goToSection('structure')} className="px-8 py-4 border-2 border-[#C026D3] text-[#C026D3] hover:bg-[#C026D3]/5 rounded-xl font-bold transition-all">
+                View Curriculum
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2 - WHO THIS IS FOR */}
+      <section className="py-24 px-6 bg-[#F0F4F8]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">WHO THIS IS FOR</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4 text-[#1E293B]">Built for Experienced Minds</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { title: "The Senior Leader", desc: "Directors, VPs, and C-Suite executives who need to understand AI's strategic impact without becoming coders." },
+              { title: "The Specialist Expert", desc: "Senior consultants, lawyers, doctors, and engineers whose expertise is their product — and who want to multiply it." },
+              { title: "The Strategic Consultant", desc: "Experienced advisors who need to integrate AI into their client deliverables to stay competitive." }
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-10 rounded-2xl shadow-sm border-l-4 border-[#C026D3]">
+                <h3 className="text-xl font-bold text-[#1E293B] mb-4">{item.title}</h3>
+                <p className="text-[#64748B] leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 - CORE IDEA */}
+      <section className="py-24 px-6 bg-[#060B24] text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-8">
+            Experience is your unfair advantage.<br />
+            <span className="text-[#C026D3]">AI is your multiplier.</span>
+          </h2>
+          <p className="text-lg text-[#94A3B8] leading-relaxed">
+            The Senior AI Edge isn't about learning a new hobby. It's about teaching you to use AI to do the work you already do — but 10x faster, with 100% accuracy, and with zero manual repetition.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 4 - STRUCTURE */}
+      <section id="structure" className="py-24 px-6 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">PROGRAM STRUCTURE</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4 text-[#1E293B]">3 Days of Intensive Transformation</h2>
+          </div>
+          
+          <div className="space-y-4">
+            {days.map((day) => (
+              <div key={day.number} className="border border-gray-100 rounded-2xl overflow-hidden shadow-sm transition-all">
+                <button 
+                  onClick={() => setOpenDay(openDay === day.number ? null : day.number)}
+                  className={`w-full flex items-center justify-between p-6 text-left transition-colors ${openDay === day.number ? 'bg-[#C026D3] text-white' : 'bg-white text-[#1E293B] hover:bg-gray-50'}`}
+                >
+                  <div className="flex items-center gap-6">
+                    <span className={`text-4xl font-bold opacity-30 ${openDay === day.number ? 'text-white' : 'text-[#C026D3]'}`}>0{day.number}</span>
+                    <span className="text-xl font-bold">{day.title}</span>
+                  </div>
+                  {openDay === day.number ? <ChevronDown /> : <ChevronRight />}
+                </button>
+                {openDay === day.number && (
+                  <div className="p-8 bg-gray-50">
+                    <h4 className="font-bold text-[#1E293B] mb-6 text-lg">{day.subtitle}</h4>
+                    <ul className="space-y-4">
+                      {day.topics.map((topic, idx) => (
+                        <li key={idx} className="flex items-start gap-4">
+                          <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#C026D3] shrink-0"></div>
+                          <span className="text-[#64748B] leading-relaxed">{topic}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5 - DELIVERABLES */}
+      <section className="py-24 px-6 bg-[#060B24] text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">WHAT YOU LEAVE WITH</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4">Program Deliverables</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {deliverables.map((item, idx) => (
+              <div key={idx} className="bg-[#0D1B3E] p-8 rounded-2xl border border-white/5 hover:border-[#C026D3]/30 transition-all group" style={{ borderLeft: `4px solid ${item.color}` }}>
+                <div className="mb-6" style={{ color: item.color }}>{item.icon}</div>
+                <h3 className="text-xl font-bold mb-4">{item.title}</h3>
+                <p className="text-[#94A3B8] text-sm leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6 - METHODOLOGY */}
+      <section className="py-24 px-6 bg-[#F0F4F8]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">HOW IT WORKS</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4 text-[#1E293B] leading-tight">
+              This Is Not a Lecture Series.<br />It Is a Professional Workshop.
+            </h2>
+            
+            <div className="max-w-3xl mx-auto mt-12">
+              <div className="w-full h-[72px] rounded-xl overflow-hidden flex shadow-lg">
+                <div className="w-[20%] bg-[#7C3AED] flex items-center justify-center text-white font-bold text-sm md:text-base">20% Instruction</div>
+                <div className="w-[80%] bg-[#C026D3] flex items-center justify-center text-white font-bold text-sm md:text-base">80% Hands-On Application</div>
+              </div>
+              <p className="mt-4 text-[#64748B] text-sm">Every concept is introduced, then immediately applied to your own professional material.</p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {methods.map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-xl shadow-sm border-l-4 group transition-all" style={{ borderColor: item.color }}>
+                <div className="mb-6" style={{ color: item.color }}>{item.icon}</div>
+                <h3 className="text-xl font-bold text-[#1E293B] mb-4">{item.title}</h3>
+                <p className="text-[#64748B] text-sm leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7 - INSTRUCTORS */}
+      <section className="py-24 px-6 bg-[#0D1137] text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">YOUR INSTRUCTORS</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4">Who Teaches This</h2>
+            <p className="text-[#94A3B8] mt-4 max-w-xl">
+              2 domain experts. One from engineering and AI business. One from strategy and data science. Both active practitioners — nothing they teach is theoretical.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Dr. Amrousy */}
+            <div className="bg-[#0D1B3E] p-10 rounded-2xl border border-white/10 shadow-xl border-l-4 border-[#0891B2]">
+              <div className="flex items-center gap-6 mb-8">
+                <div className="w-20 h-20 rounded-full bg-[#0891B2]/15 border-2 border-[#0891B2] flex items-center justify-center text-[#0891B2] text-2xl font-bold">AA</div>
+                <div>
+                  <h3 className="text-2xl font-bold">Dr. Ahmed Amrousy</h3>
+                  <p className="text-[#0891B2] text-sm font-semibold uppercase tracking-wider">AI Business Expert · Lead Instructor</p>
+                </div>
+              </div>
+              <div className="h-px bg-[#0891B2]/30 mb-8"></div>
+              <ul className="space-y-3">
+                {[
+                  "AI Business Expert with 25+ Years of Experience",
+                  "MBA · DBA (Ongoing)",
+                  "AUC Executive Education Instructor",
+                  "Mechatronics Engineer",
+                  "National TV Guest Expert on AI for Business"
+                ].map((cred, i) => (
+                  <li key={i} className="flex items-center gap-3 text-[#94A3B8] text-sm">
+                    <div className="w-2 h-2 rounded-full bg-[#0891B2]"></div>
+                    {cred}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Dr. Osama */}
+            <div className="bg-[#0D1B3E] p-10 rounded-2xl border border-white/10 shadow-xl border-l-4 border-[#C026D3]">
+              <div className="flex items-center gap-6 mb-8">
+                <div className="w-20 h-20 rounded-full bg-[#C026D3]/15 border-2 border-[#C026D3] flex items-center justify-center text-[#C026D3] text-2xl font-bold">ON</div>
+                <div>
+                  <h3 className="text-2xl font-bold">Dr. Osama M. Naguib</h3>
+                  <p className="text-[#C026D3] text-sm font-semibold uppercase tracking-wider">Strategy, BI & Data Science Expert</p>
+                </div>
+              </div>
+              <div className="h-px bg-[#C026D3]/30 mb-8"></div>
+              <ul className="space-y-3">
+                {[
+                  "Strategy & BI Leader with 23+ Years of Experience",
+                  "International MBA · ML & Data Analysis Nanodegrees",
+                  "Certified MS Power BI Engineer",
+                  "BScPhm · TOT Certified — Azure AI",
+                  "Former Head of Strategy & BI — Nahdet Misr Publishing Group"
+                ].map((cred, i) => (
+                  <li key={i} className="flex items-center gap-3 text-[#94A3B8] text-sm">
+                    <div className="w-2 h-2 rounded-full bg-[#C026D3]"></div>
+                    {cred}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-12 p-8 md:p-12 bg-[#C026D3]/10 border border-[#C026D3]/30 rounded-2xl relative overflow-hidden">
+            <Quote className="absolute top-6 left-6 text-[#C026D3]/20 w-24 h-24" />
+            <div className="relative z-10">
+              <p className="text-xl md:text-2xl italic font-serif leading-relaxed mb-6">
+                "The professionals in this room are not beginners. We build every session around the depth they already carry — and teach them to multiply it."
+              </p>
+              <p className="text-[#94A3B8] text-sm font-semibold">— Dr. Ahmed Amrousy</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8 - INVESTMENT */}
+      <section className="py-24 px-6 bg-[#F0F4F8]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">PROGRAM FEES</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4 text-[#1E293B]">Your Investment</h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+            {/* Card 1 - Individual */}
+            <div className="bg-[#0D1137] text-white p-10 rounded-2xl shadow-2xl border-2 border-[#C026D3] relative transform md:scale-105 z-10 flex flex-col">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#C026D3] text-white text-[10px] font-bold tracking-[2px] px-4 py-1.5 rounded-full uppercase">MOST POPULAR</div>
+              <h3 className="text-2xl font-bold mb-1">Individual Enrollment</h3>
+              <p className="text-[#94A3B8] text-sm mb-8">Open cohort</p>
+              
+              <div className="mb-8">
+                <span className="text-[#64748B] text-lg line-through block">EGP 6,000</span>
+                <span className="text-[#C026D3] text-5xl font-bold block mt-1">EGP 5,500</span>
+                <span className="text-[#94A3B8] text-xs mt-2 block">Early Registration Price</span>
+              </div>
+
+              <ul className="space-y-4 mb-10 flex-grow">
+                {[
+                  "All 3 days (21 hours)",
+                  "Digital training materials",
+                  "Personal prompt library (20 prompts)",
+                  "90-day integration plan",
+                  "Video recordings of all sessions",
+                  "Completion certificate",
+                  "30-day post-program trainer access"
+                ].map((f, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm">
+                    <Check size={18} className="text-[#C026D3] shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button onClick={() => goToSection('registration')} className="w-full py-4 bg-[#C026D3] hover:bg-[#9B1AB0] text-white rounded-xl font-bold transition-all">
+                Reserve Your Seat
+              </button>
+            </div>
+
+            {/* Card 2 - Corporate */}
+            <div className="bg-white p-10 rounded-2xl border border-gray-200 flex flex-col">
+              <h3 className="text-2xl font-bold text-[#1E293B] mb-1">Corporate Group</h3>
+              <p className="text-[#64748B] text-sm mb-8">5 to 10 participants from the same organization</p>
+              
+              <div className="mb-8">
+                <span className="text-[#1E293B] text-3xl font-bold block">Custom Pricing</span>
+                <span className="text-[#64748B] text-xs mt-2 block">Contact us for a group proposal</span>
+              </div>
+
+              <ul className="space-y-4 mb-10 flex-grow">
+                {[
+                  "All individual enrollment inclusions",
+                  "Company-specific scenarios and materials",
+                  "Private cohort — your team only",
+                  "Flexible scheduling",
+                  "Custom domain focus for your industry"
+                ].map((f, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-[#64748B]">
+                    <Check size={18} className="text-[#C026D3] shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button onClick={() => goToSection('registration')} className="w-full py-4 border-2 border-[#C026D3] text-[#C026D3] hover:bg-[#C026D3]/5 rounded-xl font-bold transition-all">
+                Request a Group Proposal
+              </button>
+            </div>
+
+            {/* Card 3 - In-House */}
+            <div className="bg-white p-10 rounded-2xl border border-gray-200 flex flex-col">
+              <h3 className="text-2xl font-bold text-[#1E293B] mb-1">Private In-House</h3>
+              <p className="text-[#64748B] text-sm mb-8">Your organization, your schedule, your content</p>
+              
+              <div className="mb-8">
+                <span className="text-[#1E293B] text-3xl font-bold block">Custom Proposal</span>
+                <span className="text-[#64748B] text-xs mt-2 block">Built around your industry and team</span>
+              </div>
+
+              <ul className="space-y-4 mb-10 flex-grow">
+                {[
+                  "All individual enrollment inclusions",
+                  "Fully customized curriculum",
+                  "Delivered at your offices",
+                  "Your own internal case studies used",
+                  "Up to 20 participants"
+                ].map((f, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-[#64748B]">
+                    <Check size={18} className="text-[#C026D3] shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button onClick={() => goToSection('registration')} className="w-full py-4 border-2 border-[#C026D3] text-[#C026D3] hover:bg-[#C026D3]/5 rounded-xl font-bold transition-all">
+                Request a Custom Proposal
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-16 max-w-2xl mx-auto text-center space-y-4">
+            <p className="text-[#64748B] text-sm leading-relaxed">
+              What is included in all programs: All sessions, digital materials, personal prompt library, 90-day integration plan, video recordings, completion certificate, and 30-day post-program trainer access.
+            </p>
+            <p className="text-[#64748B] text-sm leading-relaxed font-semibold">
+              What is not included: Software subscriptions. Most tools used in this program have free tiers sufficient for the full 3 days.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9 - FAQ */}
+      <section className="py-24 px-6 bg-[#060B24] text-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">COMMON QUESTIONS</span>
+            <h2 className="text-3xl md:text-4xl font-bold mt-4">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-3">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className={`bg-[#0D1B3E] rounded-xl overflow-hidden border border-white/5 transition-all ${openFaq === idx ? 'border-l-[3px] border-l-[#C026D3]' : ''}`}>
+                <button 
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full flex items-center justify-between p-6 text-left"
+                >
+                  <span className="font-semibold">{faq.q}</span>
+                  <ChevronDown className={`transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
+                </button>
+                {openFaq === idx && (
+                  <div className="px-6 pb-6 text-[#94A3B8] text-sm leading-relaxed">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 10 - REGISTRATION */}
+      <section id="registration" className="py-24 px-6 bg-[#0D1137] text-white">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-11 gap-16 items-start">
+          <div className="lg:col-span-6">
+            <span className="text-[#C026D3] text-xs font-bold tracking-[3px] uppercase">NEXT COHORT</span>
+            <h2 className="text-4xl md:text-5xl font-bold mt-6 mb-8 leading-tight">You Have Too Much to Offer to Stand Still.</h2>
+            <div className="space-y-6 text-[#94A3B8] text-lg leading-relaxed">
+              <p>The professionals who will define the next 10 years are not the youngest in the room. They are the most experienced ones who chose to add AI to what they already know.</p>
+              <p>That combination — deep expertise multiplied by AI capability — is the most powerful professional profile in the market right now.</p>
+              <p className="font-bold text-white italic">And almost nobody holds it yet.</p>
+            </div>
+
+            <div className="mt-12 space-y-6">
+              {[
+                { icon: "📅", text: "Next cohort date: [Coming Soon — register interest below]", color: "white" },
+                { icon: "📍", text: "Location: Cairo, Egypt · In-person or live online", color: "white" },
+                { icon: "👥", text: "Group size: Maximum 15 participants", color: "white" },
+                { icon: "💰", text: "Early registration fee: EGP 5,500", color: "#C026D3", bold: true }
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-4 text-base" style={{ color: item.color, fontWeight: item.bold ? 'bold' : 'normal' }}>
+                  <span className="text-2xl">{item.icon}</span>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <div className="bg-[#0D1B3E] p-8 md:p-10 rounded-2xl border border-[#C026D3]/40 shadow-2xl shadow-[#C026D3]/10">
+              <h3 className="text-2xl font-bold mb-2">Reserve Your Seat</h3>
+              <p className="text-[#94A3B8] text-sm mb-8">Fill in your details and we will contact you within 24 hours to confirm your enrollment.</p>
+              
+              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                <div>
+                  <input type="text" placeholder="Your full name" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
+                </div>
+                <div>
+                  <input type="text" placeholder="Finance Director, VP Operations..." required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
+                </div>
+                <div>
+                  <select required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors text-white">
+                    <option value="">Years of Experience</option>
+                    <option value="15-20">15–20 years</option>
+                    <option value="21-25">21–25 years</option>
+                    <option value="26-30">26–30 years</option>
+                    <option value="30+">30+ years</option>
+                  </select>
+                </div>
+                <div>
+                  <input type="text" placeholder="Your organization (optional)" className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
+                </div>
+                <div>
+                  <input type="email" placeholder="Your professional email" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
+                </div>
+                <div>
+                  <input type="tel" placeholder="Your phone or WhatsApp number" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
+                </div>
+                <div>
+                  <select className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors text-white">
+                    <option value="">How did you hear about us?</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Colleague">A colleague</option>
+                    <option value="Google">Google Search</option>
+                    <option value="Newsletter">Quanthos newsletter</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <textarea rows={3} placeholder="Anything you want us to know before we call" className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors resize-none"></textarea>
+                </div>
+                <button type="submit" className="w-full py-5 bg-[#C026D3] hover:bg-[#9B1AB0] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 group">
+                  Send My Registration Interest <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </form>
+              <p className="mt-4 text-[#64748B] text-[11px] text-center">Your information is never shared. We will contact you by phone or WhatsApp within 24 hours.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 11 - FOOTER NOTE */}
+      <section className="py-12 px-6 bg-[#060B24] border-t border-white/5">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-[#64748B] text-sm leading-relaxed italic">
+            A note on programs: The AI Returnship Program — for women returning to work — continues to run as a separate track. The Senior AI Edge is a distinct cohort designed for professionals 15+ years into their careers who are looking for a peer group at their level. Both programs carry the same quality standard.
+          </p>
+          <div className="mt-8 h-px bg-white/5 w-full"></div>
+        </div>
+      </section>
+    </div>
+  );
+}
 
 function App() {
   const [lang, setLang] = useState<'en' | 'ar'>('en');
@@ -216,20 +748,35 @@ function App() {
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">{t.talentFoundry.description}</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {t.talentFoundry.segments.map((seg, idx) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {t.talentFoundry.segments.map((seg: any, idx: number) => (
               <div key={idx} id={idx === 0 ? 'returnship' : undefined} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-quanthos-magenta hover:-translate-y-2 transition-transform duration-300 h-full flex flex-col">
                 <div className="w-14 h-14 bg-quanthos-lightViolet/20 rounded-2xl flex items-center justify-center text-quanthos-dark mb-6">
-                  {idx === 0 && <Users size={28} />}
-                  {idx === 1 && <GraduationCap size={28} />}
-                  {idx === 2 && <TrendingUp size={28} />}
+                  {seg.icon === "Users" && <Users size={28} />}
+                  {seg.icon === "GraduationCap" && <GraduationCap size={28} />}
+                  {seg.icon === "TrendingUp" && <TrendingUp size={28} />}
+                  {seg.icon === "Activity" && <Activity size={28} />}
                 </div>
                 <h3 className="text-xl font-bold text-quanthos-dark mb-2">{seg.title}</h3>
                 <p className="text-sm font-semibold text-quanthos-magenta mb-4">{seg.target}</p>
-                <p className="text-gray-600 leading-relaxed text-sm">{seg.desc}</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-auto mx-auto inline-block px-4 py-2 rounded-lg text-white font-semibold" style={{ backgroundColor: '#634e86' }}>
-                  {t.labels.joinNow}
-                </a>
+                <p className="text-gray-600 leading-relaxed text-sm mb-6">{seg.desc}</p>
+                {seg.link ? (
+                  <button 
+                    onClick={() => navigateTo(seg.link as Page)}
+                    className="mt-auto mx-auto inline-block px-4 py-2 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: '#634e86' }}
+                  >
+                    {lang === 'en' ? 'View Program Details' : 'عرض تفاصيل البرنامج'}
+                  </button>
+                ) : (
+                  <a 
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" 
+                    className="mt-auto mx-auto inline-block px-4 py-2 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity" 
+                    style={{ backgroundColor: '#634e86' }}
+                  >
+                    {t.labels.joinNow}
+                  </a>
+                )}
               </div>
             ))}
           </div>
