@@ -1,8 +1,14 @@
-import { useState, useEffect } from 'react';
-import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ArrowRight, ChevronDown, ChevronRight, Clock, MapPin, Award, BookOpen, MessageSquare, Layout, PlayCircle, FileText, Check, Quote } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ArrowRight, ChevronDown, ChevronRight, Clock, Award, BookOpen, Layout, PlayCircle, FileText, Check, Quote } from 'lucide-react';
 import { content } from './data/content';
 import { PopupModal } from 'react-calendly';
 import Chatbot from './components/Chatbot';
+
+type Page = 'home' | 'insights' | 'about' | 'contact' | 'senior-ai-edge';
+
+function trackMetaEvent(eventName: string, parameters?: Record<string, unknown>) {
+  window.fbq?.('track', eventName, parameters);
+}
 
 const osamaImg = new URL('../assets/Osama-DrCAYwX-.svg', import.meta.url).href;
 const amrousyImg = new URL('../assets/Amrousy-BD9BxXFd.svg', import.meta.url).href;
@@ -28,7 +34,7 @@ function WhatsAppIcon({ size = 18, className = "" }: { size?: number; className?
   );
 }
 
-function SeniorAIEdgePage({ lang, goToSection }: { lang: 'en' | 'ar', goToSection: (id: string) => void }) {
+function SeniorAIEdgePage({ goToSection }: { goToSection: (id: string) => void }) {
   const [openDay, setOpenDay] = useState<number | null>(1);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
@@ -500,7 +506,13 @@ function SeniorAIEdgePage({ lang, goToSection }: { lang: 'en' | 'ar', goToSectio
               <h3 className="text-2xl font-bold mb-2">Reserve Your Seat</h3>
               <p className="text-[#94A3B8] text-sm mb-8">Fill in your details and we will contact you within 24 hours to confirm your enrollment.</p>
               
-              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <form
+                className="space-y-5"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  trackMetaEvent('Lead', { content_name: 'Senior AI Edge registration' });
+                }}
+              >
                 <div>
                   <input type="text" placeholder="Your full name" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
                 </div>
@@ -567,6 +579,7 @@ function App() {
   const [page, setPage] = useState<Page>('home');
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
   const [showReturnship, setShowReturnship] = useState(true);
+  const hasTrackedInitialPageView = useRef(false);
 
   const t = content[lang];
   const isRTL = lang === 'ar';
@@ -589,12 +602,27 @@ function App() {
 
   useEffect(() => {
     const onPop = () => {
-      const hash = window.location.hash.replace('#', '') as Page;
-      setPage((hash as Page) || 'home');
+      const hash = window.location.hash.replace('#', '');
+      const nextPage: Page = ['insights', 'about', 'contact', 'senior-ai-edge'].includes(hash)
+        ? (hash as Page)
+        : 'home';
+      setPage(nextPage);
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
+
+  useEffect(() => {
+    if (!hasTrackedInitialPageView.current) {
+      hasTrackedInitialPageView.current = true;
+      return;
+    }
+    trackMetaEvent('PageView', { page });
+  }, [page]);
+
+  if (page === 'senior-ai-edge') {
+    return <SeniorAIEdgePage goToSection={goToSection} />;
+  }
 
     "#QUANTHOS: Corporate Profile & Comprehensive Service Portfolio\n##1. Executive Overview\nQuanthos is a premier AI and Data Consultancy dedicated to bridging the critical gap between high-level data strategy and real-world business execution. In an era where businesses are drowning in data but starving for insights, Quanthos provides the missing link: Activation.\n\nWe distinguish ourselves from traditional consultancies by offering a full-stack solution. We do not simply deliver strategic reports and leave; we build the automated systems, engineer the workflows, and train the human talent required to turn those strategies into measurable competitive advantages.\n\nOur Mission: To transform raw data into a decisive engine for growth, efficiency, and market leadership.\nOur Tagline: Insight Diagnosed. Impact Engineered.\n\n##2. The \"Diagnose & Activate\" Methodology\nQuanthos was founded on a unique, dual-phased philosophy that combines scientific rigor with engineering precision. This methodology ensures that every technological investment yields a tangible business return.\n\n###Phase 1: The Diagnosis (The \"Quant\")\nLed by the principles of data science and precision analytics, we approach business challenges like a medical diagnosis. We do not guess; we analyze. By ingesting and modeling historical data, we identify the root causes of inefficiency, churn, or revenue loss. We move beyond \"what happened\" to determine \"why it happened\" and \"what will happen next.\"\n\n###Phase 2: The Activation (The \"Anthos\")\nLed by the principles of engineering and human behavioral psychology, we translate the diagnosis into action. This involves two distinct steps:\n\n1. System Engineering: Building the AI agents, automation workflows, and dashboards that fix the problem.\n2. Human Activation: Training the workforce with hands-on, role-specific skills to ensure they adopt the new tools and processes effectively.\n\n##3. Comprehensive Service Ecosystem\nOur services are organized into four interconnected pillars designed to modernize every aspect of the enterprise:\n\n###Pillar I: Data Strategy & Business Intelligence (The Single Source of Truth)\nQuanthos transforms fragmented data into a clear, actionable roadmap for the C-suite. We specialize in building the infrastructure required for high-stakes decision-making.\n- Predictive Sales & Demand Forecasting: Moving from reactive to proactive inventory and resource planning.\n- Executive Dashboards: Real-time visibility into KPIs across marketing, sales, and operations using Power BI or Tableau.\n- AI-Readiness Assessments: Evaluating data maturity to ensure a smooth transition into large-scale AI implementation.\n- Customer Segmentation & Clustering: Identifying high-value cohorts to optimize marketing spend.\n\n###Pillar II: AI Automation & Digital Workers (The Efficiency Architects)\nWe engineer the workflows that eliminate human error and free up high-value talent for strategic work.\n- Robotic Process Automation (RPA): Automating high-volume, repetitive tasks in finance, HR, and logistics.\n- Custom AI Agents & Web Scrapers: Building specialized digital workers that can research, synthesize, and report autonomously.\n- Workflow Orchestration: Integrating disparate systems (CRM, ERP, Slack) into a seamless, automated ecosystem.\n- Zero-Error Protocols: Implementing validation layers that ensure 100% data accuracy in automated processes.\n\n###Pillar III: Sales & Marketing Engineering (The Revenue Engine)\nQuanthos re-imagines the commercial landscape by applying engineering principles to customer acquisition and retention.\n- AI-Powered Lead Generation & Scoring: Identifying and qualifying prospects with machine-learning precision.\n- Hyper-Personalized Content Engines: Using LLMs to generate tailored communication at scale.\n- CRM Process Engineering: Redesigning sales pipelines to ensure no lead falls through the cracks.\n- Sentiment Analysis & NLP: Using natural language processing to diagnose churn risk before it happens.\n\n###Pillar IV: Corporate Training & Human Enablement (The Resilient Culture)\nWe believe that technology is only as effective as the people using it. We specialize in \"Activation Training\"—hands-on, role-specific enablement.\n- The \"AI Co-Pilot\" Program: Training employees to use Generative AI for personal productivity (writing, coding, research).\n- Role-Specific AI Workshops: Tailored sessions for HR, Finance, and Sales teams on using specialized AI tools.\n- Executive AI Strategy Briefings: Helping leadership teams understand the competitive landscape of AI.\n- Train-the-Trainer Modules: Building internal capacity to sustain technological adoption.\n\n##4. The Talent Foundry\nQuanthos serves as a bridge for the workforce of tomorrow. We are committed to social and economic impact through specialized enablement tracks:\n- The \"Returnship\" Program: A focused enablement track for women returning to work after a career break, providing AI upskilling and practical confidence-building.\n- Future Leaders Track: Helping fresh graduates bridge the gap between academic theory and the practical demands of the modern, AI-native job market.\n- Corporate Upskilling: Empowering existing professionals to master the tools of the future to remain competitive in their fields.\n\n##5. Why Quanthos?\nIn a market saturated with theoretical consultants, Quanthos is the \"Clinic of Growth.\" We don't just tell you what is wrong; we engineer the cure. We are the architects of the automated, data-driven, and human-empowered future of business.\n\nContact Information:\nEgypt: +20 100 124 01 86 | +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com";
 
@@ -629,7 +657,10 @@ function App() {
           </div>
           <div className="flex items-center gap-3">
           <button 
-            onClick={() => setIsCalendlyOpen(true)}
+            onClick={() => {
+              trackMetaEvent('Contact', { content_name: 'Consultation booking' });
+              setIsCalendlyOpen(true);
+            }}
             className="px-6 py-2.5 text-white rounded-full font-semibold transition-all text-sm shadow-lg"
             style={{ backgroundImage: 'linear-gradient(135deg, #E344FF, #6D7CFF)' }}
           >
@@ -749,13 +780,13 @@ function App() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {t.talentFoundry.segments.map((seg: any, idx: number) => (
+            {t.talentFoundry.segments.map((seg, idx: number) => (
               <div key={idx} id={idx === 0 ? 'returnship' : undefined} className="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-quanthos-magenta hover:-translate-y-2 transition-transform duration-300 h-full flex flex-col">
                 <div className="w-14 h-14 bg-quanthos-lightViolet/20 rounded-2xl flex items-center justify-center text-quanthos-dark mb-6">
-                  {seg.icon === "Users" && <Users size={28} />}
-                  {seg.icon === "GraduationCap" && <GraduationCap size={28} />}
-                  {seg.icon === "TrendingUp" && <TrendingUp size={28} />}
-                  {seg.icon === "Activity" && <Activity size={28} />}
+                  {'icon' in seg && seg.icon === "Users" && <Users size={28} />}
+                  {'icon' in seg && seg.icon === "GraduationCap" && <GraduationCap size={28} />}
+                  {'icon' in seg && seg.icon === "TrendingUp" && <TrendingUp size={28} />}
+                  {'icon' in seg && seg.icon === "Activity" && <Activity size={28} />}
                 </div>
                 <h3 className="text-xl font-bold text-quanthos-dark mb-2">{seg.title}</h3>
                 <p className="text-sm font-semibold text-quanthos-magenta mb-4">{seg.target}</p>
