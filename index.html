@@ -1,14 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <title>Quanthos | Insight Diagnosed. Impact Engineered.</title>
-    <script type="module" crossorigin src="/assets/index-CctSYm-k.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CsypNt3-.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <title>Quanthos | Insight Diagnosed. Impact Engineered.</title>
+
+  <!-- Meta Pixel Code (Main Tracking Script) -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1792613551926380');
+    fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel Script -->
+
+  <script type="module" crossorigin src="/assets/index-DJB7K0H3.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CN3Qi0s1.css">
+</head>
+
+<body>
+  <!-- Meta Pixel Fallback (Moved here to satisfy Vite's rules) -->
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=1792613551926380&ev=PageView&noscript=1"
+      alt=""
+    />
+  </noscript>
+
+  <div id="root"></div>
+</body>
+
 </html>
