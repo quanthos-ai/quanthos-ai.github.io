@@ -22,7 +22,7 @@ function trackGoogleEvent(eventName: string, parameters?: Record<string, unknown
 }
 
 function trackConversion(eventName: string, parameters?: Record<string, unknown>) {
-  const eventParameters = { ...getCampaignParameters(), ...parameters };
+  const eventParameters = { ...initialCampaignParameters, ...getCampaignParameters(), ...parameters };
   trackMetaEvent(eventName, eventParameters);
   trackGoogleEvent(eventName === 'Lead' ? 'generate_lead' : 'contact', eventParameters);
 }
@@ -48,6 +48,8 @@ function getCampaignParameters() {
 
   return campaignParameters;
 }
+
+const initialCampaignParameters = getCampaignParameters();
 
 const osamaImg = new URL('../assets/Osama-DrCAYwX-.svg', import.meta.url).href;
 const amrousyImg = new URL('../assets/Amrousy-BD9BxXFd.svg', import.meta.url).href;
