@@ -22,8 +22,9 @@ function trackGoogleEvent(eventName: string, parameters?: Record<string, unknown
 }
 
 function trackConversion(eventName: string, parameters?: Record<string, unknown>) {
-  trackMetaEvent(eventName, parameters);
-  trackGoogleEvent(eventName === 'Lead' ? 'generate_lead' : 'contact', parameters);
+  const eventParameters = { ...getCampaignParameters(), ...parameters };
+  trackMetaEvent(eventName, eventParameters);
+  trackGoogleEvent(eventName === 'Lead' ? 'generate_lead' : 'contact', eventParameters);
 }
 
 function getCampaignParameters() {
