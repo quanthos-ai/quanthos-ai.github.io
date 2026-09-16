@@ -647,11 +647,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const campaignParameters = getCampaignParameters();
     if (!hasTrackedInitialPageView.current) {
       hasTrackedInitialPageView.current = true;
       return;
     }
-    const campaignParameters = getCampaignParameters();
     trackGoogleEvent('page_view', {
       page_title: document.title,
       page_location: window.location.href,
