@@ -6,8 +6,46 @@ import Chatbot from './components/Chatbot';
 
 type Page = 'home' | 'insights' | 'about' | 'contact' | 'senior-ai-edge';
 
+function getPageFromLocation(): Page {
+  const hash = window.location.hash.replace('#', '');
+  return ['insights', 'about', 'contact', 'senior-ai-edge'].includes(hash)
+    ? (hash as Page)
+    : 'home';
+}
+
 function trackMetaEvent(eventName: string, parameters?: Record<string, unknown>) {
   window.fbq?.('track', eventName, parameters);
+}
+
+function trackGoogleEvent(eventName: string, parameters?: Record<string, unknown>) {
+  window.gtag?.('event', eventName, parameters);
+}
+
+function trackConversion(eventName: string, parameters?: Record<string, unknown>) {
+  trackMetaEvent(eventName, parameters);
+  trackGoogleEvent(eventName === 'Lead' ? 'generate_lead' : 'contact', parameters);
+}
+
+function getCampaignParameters() {
+  const parameters = new URLSearchParams(window.location.search);
+  const campaignParameters: Record<string, string> = {};
+
+  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
+    const value = parameters.get(key);
+    if (value) campaignParameters[key] = value;
+  }
+
+  if (Object.keys(campaignParameters).length > 0) {
+    window.sessionStorage.setItem('quanthos_campaign_parameters', JSON.stringify(campaignParameters));
+    return campaignParameters;
+  }
+
+  const storedParameters = window.sessionStorage.getItem('quanthos_campaign_parameters');
+  if (storedParameters) {
+    return JSON.parse(storedParameters) as Record<string, string>;
+  }
+
+  return campaignParameters;
 }
 
 const osamaImg = new URL('../assets/Osama-DrCAYwX-.svg', import.meta.url).href;
@@ -510,7 +548,7 @@ function SeniorAIEdgePage({ goToSection }: { goToSection: (id: string) => void }
                 className="space-y-5"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  trackMetaEvent('Lead', { content_name: 'Senior AI Edge registration' });
+                  trackConversion('Lead', { content_name: 'Senior AI Edge registration' });
                 }}
               >
                 <div>
@@ -576,7 +614,7 @@ function SeniorAIEdgePage({ goToSection }: { goToSection: (id: string) => void }
 
 function App() {
   const [lang, setLang] = useState<'en' | 'ar'>('en');
-  const [page, setPage] = useState<Page>('home');
+  const [page, setPage] = useState<Page>(getPageFromLocation);
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
   const [showReturnship, setShowReturnship] = useState(true);
   const hasTrackedInitialPageView = useRef(false);
@@ -602,11 +640,7 @@ function App() {
 
   useEffect(() => {
     const onPop = () => {
-      const hash = window.location.hash.replace('#', '');
-      const nextPage: Page = ['insights', 'about', 'contact', 'senior-ai-edge'].includes(hash)
-        ? (hash as Page)
-        : 'home';
-      setPage(nextPage);
+      setPage(getPageFromLocation());
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -617,7 +651,14 @@ function App() {
       hasTrackedInitialPageView.current = true;
       return;
     }
-    trackMetaEvent('PageView', { page });
+    const campaignParameters = getCampaignParameters();
+    trackGoogleEvent('page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      ...campaignParameters,
+      page,
+    });
+    trackMetaEvent('PageView', { page, ...campaignParameters });
   }, [page]);
 
   if (page === 'senior-ai-edge') {
@@ -658,7 +699,7 @@ function App() {
           <div className="flex items-center gap-3">
           <button 
             onClick={() => {
-              trackMetaEvent('Contact', { content_name: 'Consultation booking' });
+              trackConversion('Contact', { content_name: 'Consultation booking' });
               setIsCalendlyOpen(true);
             }}
             className="px-6 py-2.5 text-white rounded-full font-semibold transition-all text-sm shadow-lg"
