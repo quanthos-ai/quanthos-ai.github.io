@@ -1,3 +1,31 @@
+// Single Google Form used by every program. `registrationFormUrl` pre-selects the
+// "Service/ Program of Interest" answer so each lead arrives already attributed.
+export const REGISTRATION_FORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSe2iKtN8tdU9hn-kgLRQ57laeLDnloMSt30GMRlp-zN_zPUDg/viewform';
+
+const PROGRAM_OF_INTEREST_ENTRY = 'entry.1383867571';
+
+// NOTE: the prefilled label must match the form's option text EXACTLY. A value with
+// no matching option is silently dropped by Google Forms. The Senior AI Edge entry
+// only starts pre-selecting once "Senior AI Edge" is added to that question.
+export const REGISTRATION_PROGRAMS = {
+  returnship: 'AI Returnship Program',
+  seniorAiEdge: 'Senior AI Edge',
+  futureLeaders: 'Future Leaders Track',
+  corporateUpskilling: 'Corporate Upskilling',
+} as const;
+
+export type RegistrationProgram = keyof typeof REGISTRATION_PROGRAMS;
+
+export function registrationFormUrl(program?: RegistrationProgram) {
+  if (!program) return REGISTRATION_FORM_URL;
+  const parameters = new URLSearchParams({
+    usp: 'pp_url',
+    [PROGRAM_OF_INTEREST_ENTRY]: REGISTRATION_PROGRAMS[program],
+  });
+  return `${REGISTRATION_FORM_URL}?${parameters.toString()}`;
+}
+
 export const content = {
   en: {
     labels: {

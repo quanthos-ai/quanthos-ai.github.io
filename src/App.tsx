@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircle, GraduationCap, Users, TrendingUp, Star, Activity, Zap, Globe, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, ArrowRight, ChevronDown, ChevronRight, Clock, Award, BookOpen, Layout, PlayCircle, FileText, Check, Quote } from 'lucide-react';
-import { content } from './data/content';
-import { PopupModal } from 'react-calendly';
+import { content, registrationFormUrl, REGISTRATION_PROGRAMS, type RegistrationProgram } from './data/content';
+import { PopupModal, useCalendlyEventListener } from 'react-calendly';
 import Chatbot from './components/Chatbot';
+import { trackConversion, trackGoogleEvent, trackMetaEvent, getCampaignParameters } from './lib/analytics';
 
 type Page = 'home' | 'insights' | 'about' | 'contact' | 'senior-ai-edge';
 
@@ -13,43 +14,23 @@ function getPageFromLocation(): Page {
     : 'home';
 }
 
-function trackMetaEvent(eventName: string, parameters?: Record<string, unknown>) {
-  window.fbq?.('track', eventName, parameters);
-}
+// Talent Foundry segments that register through the Google Form, keyed by render
+// order. Index 1 (The Senior AI Edge) links to its own page instead.
+const TALENT_SEGMENT_PROGRAMS: Record<number, RegistrationProgram> = {
+  0: 'returnship',
+  2: 'futureLeaders',
+  3: 'corporateUpskilling',
+};
 
-function trackGoogleEvent(eventName: string, parameters?: Record<string, unknown>) {
-  window.gtag?.('event', eventName, parameters);
-}
-
-function trackConversion(eventName: string, parameters?: Record<string, unknown>) {
-  const eventParameters = { ...initialCampaignParameters, ...getCampaignParameters(), ...parameters };
-  trackMetaEvent(eventName, eventParameters);
-  trackGoogleEvent(eventName === 'Lead' ? 'generate_lead' : 'contact', eventParameters);
-}
-
-function getCampaignParameters() {
-  const parameters = new URLSearchParams(window.location.search);
-  const campaignParameters: Record<string, string> = {};
-
-  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
-    const value = parameters.get(key);
-    if (value) campaignParameters[key] = value;
-  }
-
-  if (Object.keys(campaignParameters).length > 0) {
-    window.sessionStorage.setItem('quanthos_campaign_parameters', JSON.stringify(campaignParameters));
-    return campaignParameters;
-  }
-
-  const storedParameters = window.sessionStorage.getItem('quanthos_campaign_parameters');
-  if (storedParameters) {
-    return JSON.parse(storedParameters) as Record<string, string>;
-  }
-
-  return campaignParameters;
-}
-
-const initialCampaignParameters = getCampaignParameters();
+// Per-route titles. Hash routes are not separately indexable, so these mainly serve
+// browser tabs, history and screen readers.
+const PAGE_TITLES: Record<Page, string> = {
+  home: 'Quanthos | AI Consultancy, Data Strategy & Corporate AI Training',
+  insights: 'Insights | Quanthos AI & Data Consultancy',
+  about: 'About Quanthos | Insight Diagnosed. Impact Engineered.',
+  contact: 'Contact Quanthos | AI Consultancy in Cairo, Egypt',
+  'senior-ai-edge': 'The Senior AI Edge | 3-Day AI Intensive for Senior Leaders',
+};
 
 const osamaImg = new URL('../assets/Osama-DrCAYwX-.svg', import.meta.url).href;
 const amrousyImg = new URL('../assets/Amrousy-BD9BxXFd.svg', import.meta.url).href;
@@ -545,57 +526,17 @@ function SeniorAIEdgePage({ goToSection }: { goToSection: (id: string) => void }
           <div className="lg:col-span-5">
             <div className="bg-[#0D1B3E] p-8 md:p-10 rounded-2xl border border-[#C026D3]/40 shadow-2xl shadow-[#C026D3]/10">
               <h3 className="text-2xl font-bold mb-2">Reserve Your Seat</h3>
-              <p className="text-[#94A3B8] text-sm mb-8">Fill in your details and we will contact you within 24 hours to confirm your enrollment.</p>
-              
-              <form
-                className="space-y-5"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  trackConversion('Lead', { content_name: 'Senior AI Edge registration' });
-                }}
+              <p className="text-[#94A3B8] text-sm mb-8">Registration is handled through our secure Google Form. It takes two minutes, and we will contact you within 24 hours to confirm your enrollment.</p>
+
+              <a
+                href={registrationFormUrl('seniorAiEdge')}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackConversion('Lead', { content_name: 'Senior AI Edge registration' })}
+                className="w-full py-5 bg-[#C026D3] hover:bg-[#9B1AB0] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 group"
               >
-                <div>
-                  <input type="text" placeholder="Your full name" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
-                </div>
-                <div>
-                  <input type="text" placeholder="Finance Director, VP Operations..." required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
-                </div>
-                <div>
-                  <select required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors text-white">
-                    <option value="">Years of Experience</option>
-                    <option value="15-20">15–20 years</option>
-                    <option value="21-25">21–25 years</option>
-                    <option value="26-30">26–30 years</option>
-                    <option value="30+">30+ years</option>
-                  </select>
-                </div>
-                <div>
-                  <input type="text" placeholder="Your organization (optional)" className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
-                </div>
-                <div>
-                  <input type="email" placeholder="Your professional email" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
-                </div>
-                <div>
-                  <input type="tel" placeholder="Your phone or WhatsApp number" required className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors" />
-                </div>
-                <div>
-                  <select className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors text-white">
-                    <option value="">How did you hear about us?</option>
-                    <option value="LinkedIn">LinkedIn</option>
-                    <option value="Instagram">Instagram</option>
-                    <option value="Colleague">A colleague</option>
-                    <option value="Google">Google Search</option>
-                    <option value="Newsletter">Quanthos newsletter</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <textarea rows={3} placeholder="Anything you want us to know before we call" className="w-full bg-[#0D1137] border border-white/15 rounded-xl px-5 py-4 focus:outline-none focus:border-[#C026D3] transition-colors resize-none"></textarea>
-                </div>
-                <button type="submit" className="w-full py-5 bg-[#C026D3] hover:bg-[#9B1AB0] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 group">
-                  Send My Registration Interest <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-              </form>
+                Reserve Your Seat <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </a>
               <p className="mt-4 text-[#64748B] text-[11px] text-center">Your information is never shared. We will contact you by phone or WhatsApp within 24 hours.</p>
             </div>
           </div>
@@ -664,8 +605,26 @@ function App() {
     trackMetaEvent('PageView', { page, ...campaignParameters });
   }, [page]);
 
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.title = PAGE_TITLES[page];
+  }, [page, lang, isRTL]);
+
+  useCalendlyEventListener({
+    onEventScheduled: (e) => {
+      if (e.origin !== 'https://calendly.com') return;
+      trackConversion('Contact', { content_name: 'Consultation booking' });
+    },
+  });
+
   if (page === 'senior-ai-edge') {
-    return <SeniorAIEdgePage goToSection={goToSection} />;
+    return (
+      <>
+        <SeniorAIEdgePage goToSection={goToSection} />
+        <Chatbot lang={lang} t={t} />
+      </>
+    );
   }
 
     "#QUANTHOS: Corporate Profile & Comprehensive Service Portfolio\n##1. Executive Overview\nQuanthos is a premier AI and Data Consultancy dedicated to bridging the critical gap between high-level data strategy and real-world business execution. In an era where businesses are drowning in data but starving for insights, Quanthos provides the missing link: Activation.\n\nWe distinguish ourselves from traditional consultancies by offering a full-stack solution. We do not simply deliver strategic reports and leave; we build the automated systems, engineer the workflows, and train the human talent required to turn those strategies into measurable competitive advantages.\n\nOur Mission: To transform raw data into a decisive engine for growth, efficiency, and market leadership.\nOur Tagline: Insight Diagnosed. Impact Engineered.\n\n##2. The \"Diagnose & Activate\" Methodology\nQuanthos was founded on a unique, dual-phased philosophy that combines scientific rigor with engineering precision. This methodology ensures that every technological investment yields a tangible business return.\n\n###Phase 1: The Diagnosis (The \"Quant\")\nLed by the principles of data science and precision analytics, we approach business challenges like a medical diagnosis. We do not guess; we analyze. By ingesting and modeling historical data, we identify the root causes of inefficiency, churn, or revenue loss. We move beyond \"what happened\" to determine \"why it happened\" and \"what will happen next.\"\n\n###Phase 2: The Activation (The \"Anthos\")\nLed by the principles of engineering and human behavioral psychology, we translate the diagnosis into action. This involves two distinct steps:\n\n1. System Engineering: Building the AI agents, automation workflows, and dashboards that fix the problem.\n2. Human Activation: Training the workforce with hands-on, role-specific skills to ensure they adopt the new tools and processes effectively.\n\n##3. Comprehensive Service Ecosystem\nOur services are organized into four interconnected pillars designed to modernize every aspect of the enterprise:\n\n###Pillar I: Data Strategy & Business Intelligence (The Single Source of Truth)\nQuanthos transforms fragmented data into a clear, actionable roadmap for the C-suite. We specialize in building the infrastructure required for high-stakes decision-making.\n- Predictive Sales & Demand Forecasting: Moving from reactive to proactive inventory and resource planning.\n- Executive Dashboards: Real-time visibility into KPIs across marketing, sales, and operations using Power BI or Tableau.\n- AI-Readiness Assessments: Evaluating data maturity to ensure a smooth transition into large-scale AI implementation.\n- Customer Segmentation & Clustering: Identifying high-value cohorts to optimize marketing spend.\n\n###Pillar II: AI Automation & Digital Workers (The Efficiency Architects)\nWe engineer the workflows that eliminate human error and free up high-value talent for strategic work.\n- Robotic Process Automation (RPA): Automating high-volume, repetitive tasks in finance, HR, and logistics.\n- Custom AI Agents & Web Scrapers: Building specialized digital workers that can research, synthesize, and report autonomously.\n- Workflow Orchestration: Integrating disparate systems (CRM, ERP, Slack) into a seamless, automated ecosystem.\n- Zero-Error Protocols: Implementing validation layers that ensure 100% data accuracy in automated processes.\n\n###Pillar III: Sales & Marketing Engineering (The Revenue Engine)\nQuanthos re-imagines the commercial landscape by applying engineering principles to customer acquisition and retention.\n- AI-Powered Lead Generation & Scoring: Identifying and qualifying prospects with machine-learning precision.\n- Hyper-Personalized Content Engines: Using LLMs to generate tailored communication at scale.\n- CRM Process Engineering: Redesigning sales pipelines to ensure no lead falls through the cracks.\n- Sentiment Analysis & NLP: Using natural language processing to diagnose churn risk before it happens.\n\n###Pillar IV: Corporate Training & Human Enablement (The Resilient Culture)\nWe believe that technology is only as effective as the people using it. We specialize in \"Activation Training\"—hands-on, role-specific enablement.\n- The \"AI Co-Pilot\" Program: Training employees to use Generative AI for personal productivity (writing, coding, research).\n- Role-Specific AI Workshops: Tailored sessions for HR, Finance, and Sales teams on using specialized AI tools.\n- Executive AI Strategy Briefings: Helping leadership teams understand the competitive landscape of AI.\n- Train-the-Trainer Modules: Building internal capacity to sustain technological adoption.\n\n##4. The Talent Foundry\nQuanthos serves as a bridge for the workforce of tomorrow. We are committed to social and economic impact through specialized enablement tracks:\n- The \"Returnship\" Program: A focused enablement track for women returning to work after a career break, providing AI upskilling and practical confidence-building.\n- Future Leaders Track: Helping fresh graduates bridge the gap between academic theory and the practical demands of the modern, AI-native job market.\n- Corporate Upskilling: Empowering existing professionals to master the tools of the future to remain competitive in their fields.\n\n##5. Why Quanthos?\nIn a market saturated with theoretical consultants, Quanthos is the \"Clinic of Growth.\" We don't just tell you what is wrong; we engineer the cure. We are the architects of the automated, data-driven, and human-empowered future of business.\n\nContact Information:\nEgypt: +20 100 124 01 86 | +20 100 900 94 82\nUAE: +971 52 281 8558\nEmail: osama_naguib@hotmail.com";
@@ -702,7 +661,6 @@ function App() {
           <div className="flex items-center gap-3">
           <button 
             onClick={() => {
-              trackConversion('Contact', { content_name: 'Consultation booking' });
               setIsCalendlyOpen(true);
             }}
             className="px-6 py-2.5 text-white rounded-full font-semibold transition-all text-sm shadow-lg"
@@ -741,19 +699,19 @@ function App() {
             </button>
           </div>
 
-          <div className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight mt-6">
             {(() => {
               const parts = t.hero.tagline.split('. ');
               const line1 = parts[0]?.endsWith('.') ? parts[0] : (parts[0] ? parts[0] + '.' : '');
               const line2 = parts[1] || '';
                return (
-                 <div className="inline-block">
-                   <div>{line1}</div>
-                   {line2 && <div>{line2}</div>}
-                 </div>
+                 <span className="inline-block">
+                   <span className="block">{line1}</span>
+                   {line2 && <span className="block">{line2}</span>}
+                 </span>
                );
              })()}
-           </div>
+           </h1>
           <p className="text-xl text-quanthos-panel/90 mb-12 max-w-2xl mx-auto leading-relaxed">{t.hero.sub}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-5">
            <a onClick={() => goToSection('services')} className="px-8 py-4 rounded-xl font-bold hover:scale-105 transition-all shadow-xl text-white cursor-pointer" style={{ backgroundColor: '#634e86' }}>
@@ -778,7 +736,13 @@ function App() {
                   <div dangerouslySetInnerHTML={{ __html: t.labels.returnshipOffer }} />
                 </div>
               )}
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl" target="_blank" rel="noopener noreferrer">
+              <a
+                href={registrationFormUrl('returnship')}
+                onClick={() => trackConversion('Lead', { content_name: 'AI Returnship Program registration' })}
+                className="mt-3 inline-block bg-white text-quanthos-magenta font-bold px-3 py-2 rounded-xl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {t.labels.returnshipCTA}
               </a>
             </div>
@@ -845,9 +809,12 @@ function App() {
                   </button>
                 ) : (
                   <a 
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform?usp=dialog" 
+                    href={registrationFormUrl(TALENT_SEGMENT_PROGRAMS[idx])}
+                    onClick={() => trackConversion('Lead', { content_name: `${REGISTRATION_PROGRAMS[TALENT_SEGMENT_PROGRAMS[idx]]} registration` })}
                     className="mt-auto mx-auto inline-block px-4 py-2 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity" 
                     style={{ backgroundColor: '#634e86' }}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {t.labels.joinNow}
                   </a>

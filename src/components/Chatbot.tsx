@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X } from 'lucide-react';
+import { REGISTRATION_FORM_URL } from '../data/content';
+import { trackConversion } from '../lib/analytics';
 
 const LINKS = {
   calendly: "https://calendly.com/osbazoka/short-consultation-session",
-  registrationForm: "https://docs.google.com/forms/d/e/1FAIpQLSe1o7xImAP_qllI2b-ce8dKItamsT6wMGNTNcOOwcn7ixuFPQ/viewform",
+  registrationForm: REGISTRATION_FORM_URL,
   waBusiness: "https://wa.me/201001240186",
   waTalentPrimary: "https://wa.me/201001240186",
   waTalentSecondary: "https://wa.me/201009009482"
@@ -224,7 +226,13 @@ export default function Chatbot({ lang, t }: { lang: 'en' | 'ar'; t: TContent })
           <div>
             {isRTL ? "احجز مقعدك عبر هذا النموذج:" : "Secure your spot by filling this form:"}
             <br/>
-            <a href={LINKS.registrationForm} target="_blank" rel="noopener noreferrer" className="text-quanthos-magenta underline font-bold mt-2 block">
+            <a
+              href={LINKS.registrationForm}
+              onClick={() => trackConversion('Lead', { content_name: 'Chatbot registration' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-quanthos-magenta underline font-bold mt-2 block"
+            >
               {isRTL ? "📝 افتح نموذج التسجيل" : "📝 Open Registration Form"}
             </a>
           </div>,
