@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Build artefacts and source maps carry no ranking value.
+Disallow: /*.map$
+
+Sitemap: https://quanthos.world/sitemap.xml
