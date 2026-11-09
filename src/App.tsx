@@ -126,27 +126,40 @@ function SeniorAIEdgePage({ goToSection }: { goToSection: (id: string) => void }
   return (
     <div className="pt-20">
       {/* SECTION 1 - HERO */}
-      <section className="relative py-24 px-6 bg-[#0D1137] text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D1137] via-[#1A0A2E] to-[#0D1137]"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <span className="inline-block px-4 py-1 rounded-full bg-[#C026D3]/10 text-[#C026D3] font-bold text-xs tracking-[3px] mb-6 border border-[#C026D3]/20 uppercase">
+      <section className="relative isolate py-16 sm:py-20 lg:py-24 px-6 bg-[#0D0A2B] text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0D1137] via-[#1A0A2E] to-[#24105A]"></div>
+        <div className="absolute inset-0 pointer-events-none opacity-70" style={{ background: 'radial-gradient(ellipse at 78% 48%, rgba(192,38,211,0.24), transparent 48%)' }}></div>
+        <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-[1.02fr_0.98fr] gap-10 lg:gap-12 items-center">
+          <div className="max-w-2xl text-left mx-auto lg:mx-0">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#C026D3]/10 text-[#E344FF] font-bold text-xs tracking-[3px] mb-7 border border-[#C026D3]/30 uppercase">
               THE SENIOR AI EDGE
             </span>
-            <h1 className="text-4xl md:text-7xl font-bold mb-8 leading-[1.1] font-serif">
-              Augment Your Experience.<br />Don't Replace It.
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-7 leading-[1.02] font-serif tracking-tight">
+              Augment Your<br />Experience.<br />Don't Replace It.
             </h1>
-            <p className="text-xl md:text-2xl text-[#94A3B8] mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl lg:text-2xl text-[#A9A9C2] mb-10 max-w-xl leading-relaxed">
               A 3-day AI foundations program for professionals with 15+ years of experience.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <button onClick={() => goToSection('registration')} className="px-8 py-4 bg-[#C026D3] hover:bg-[#9B1AB0] text-white rounded-xl font-bold transition-all shadow-xl shadow-[#C026D3]/20">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-4 sm:gap-5">
+              <button onClick={() => goToSection('registration')} className="px-8 py-4 min-h-[64px] bg-[#C026D3] hover:bg-[#D633F0] text-white rounded-xl font-bold transition-all shadow-xl shadow-[#C026D3]/25 hover:-translate-y-0.5">
                 Reserve Your Seat
               </button>
-              <button onClick={() => goToSection('structure')} className="px-8 py-4 border-2 border-[#C026D3] text-[#C026D3] hover:bg-[#C026D3]/5 rounded-xl font-bold transition-all">
+              <button onClick={() => goToSection('structure')} className="px-8 py-4 min-h-[64px] border-2 border-[#C026D3] text-[#E344FF] hover:bg-[#C026D3]/10 rounded-xl font-bold transition-all">
                 View Curriculum
               </button>
             </div>
+          </div>
+          <div className="relative w-full max-w-2xl mx-auto lg:max-w-none">
+            <div className="absolute -inset-3 rounded-[30px] bg-gradient-to-br from-[#C026D3]/25 via-transparent to-[#6D28D9]/25 blur-2xl"></div>
+            <img
+              src="/assets/senior-ai-edge-executive.webp"
+              alt="Experienced silver-haired executive exploring AI, with the official Quanthos logo on his coffee mug and laptop"
+              width={520}
+              height={477}
+              loading="eager"
+              decoding="async"
+              className="relative z-10 block w-full h-[360px] sm:h-[460px] lg:h-[560px] object-cover object-center rounded-[26px] border border-white/10 shadow-2xl shadow-black/40"
+            />
           </div>
         </div>
       </section>
